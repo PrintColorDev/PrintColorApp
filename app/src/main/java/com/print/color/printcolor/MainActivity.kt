@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             PrintColorTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "Android Test",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
