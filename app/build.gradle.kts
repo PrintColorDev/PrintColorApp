@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.print.color.printcolor"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.print.color.printcolor"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
