@@ -5,6 +5,8 @@ plugins {
     //Dagger Hilt
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
     alias(libs.plugins.hilt)
+    //Firebase
+    alias(libs.plugins.google.play.services)
 }
 
 android {
@@ -49,6 +51,9 @@ dependencies {
     //Dagger Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

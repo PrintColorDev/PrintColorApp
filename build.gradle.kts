@@ -6,4 +6,6 @@ plugins {
     //Dagger Hilt
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt) apply false
+    //Firebase
+    alias(libs.plugins.google.play.services) apply false
 }
