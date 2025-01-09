@@ -13,7 +13,13 @@ composeBom = "2024.04.01"
 hilt = "2.48"
 #Firebase
 google-play-services = "4.4.2"
-firebase-bom = "33.4.0"
+firebase-bom = "33.7.0"
+#Auth
+playServicesAuth = "21.3.0"
+#Lottie
+lottieCompose = "6.6.0"
+#Glide
+glide = "1.0.0-beta01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +42,21 @@ dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref 
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 #Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-remoteconfig-ktx = { module = "com.google.firebase:firebase-config-ktx" }
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
+firebase-databse-ktx = { module = "com.google.firebase:firebase-database-ktx" }
+#Auth
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+#Lottie
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+#Glide
+compose-glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
