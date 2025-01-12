@@ -3,7 +3,6 @@ package com.print.color.printcolor.ui.components.NavigationRail
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,11 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -44,36 +41,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
-import com.print.color.printcolor.ui.components.NavigationRail.model.Screen
+import com.print.color.printcolor.ui.components.NavigationRail.model.Routes
+import com.print.color.printcolor.ui.home.HomeScreen
+import com.print.color.printcolor.ui.productQuotation.QuotationScreen
+import com.print.color.printcolor.ui.profile.ProfileScreen
+import com.print.color.printcolor.ui.settings.SettingsScreen
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun PcSNavigationRail(modifier: Modifier = Modifier) {
+fun PcSNavigationRail() {
     val items = listOf(
         NavigationRailData(
-            title = "Profile",
-            selectedIcon = Icons.Filled.AccountCircle,
-            unselectedIcon = Icons.Outlined.AccountCircle,
+            title = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
             hasNews = false,
-        ),
-        NavigationRailData(
-            title = "Quotation",
-            selectedIcon = Icons.Filled.AddCircle,
-            unselectedIcon = Icons.Outlined.AddCircle,
-            hasNews = false,
-            badgeCount = 45
         ),
         NavigationRailData(
             title = "Settings",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
-            hasNews = true,
+            hasNews = false,
         )
     )
 
@@ -90,11 +85,6 @@ fun PcSNavigationRail(modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.background
     ) {
         Scaffold(
-            bottomBar = {
-                //if (!showNavigationRail) {
-                //    // NavigationBar()
-                //}
-            },
             modifier = Modifier.fillMaxSize()
         ) { paddingValues ->
             Row(Modifier.padding(paddingValues)) {
@@ -105,26 +95,29 @@ fun PcSNavigationRail(modifier: Modifier = Modifier) {
                         onNavigate = { index ->
                             selectedItemIndex = index
                             when (items[index].title) {
-                                "Profile" -> navController.navigate(Screen.Profile.route)
-                                "Quotation" -> navController.navigate(Screen.Quotation.route)
-                                "Settings" -> navController.navigate(Screen.Settings.route)
+                                "Profile" -> navController.navigate(Routes.Profile.route)
+                                "Home" -> navController.navigate(Routes.Home.route)
                             }
-                        }
+                        },
+                        navController = navController
                     )
                 }
                 NavHost(
                     navController = navController,
-                    startDestination = Screen.Quotation.route,
+                    startDestination = Routes.Quotation.route,
                     modifier = Modifier.weight(1f)
                 ) {
-                    composable(Screen.Profile.route) {
+                    composable(Routes.Profile.route) {
                         ProfileScreen()
                     }
-                    composable(Screen.Quotation.route) {
+                    composable(Routes.Quotation.route) {
                         QuotationScreen()
                     }
-                    composable(Screen.Settings.route) {
+                    composable(Routes.Settings.route) {
                         SettingsScreen()
+                    }
+                    composable(Routes.Home.route) {
+                        HomeScreen()
                     }
                 }
             }
@@ -136,23 +129,28 @@ fun PcSNavigationRail(modifier: Modifier = Modifier) {
 fun PcSNavigationSideBar(
     items: List<NavigationRailData>,
     selectedItemIndex: Int,
-    onNavigate: (Int) -> Unit
+    onNavigate: (Int) -> Unit,
+    navController: NavHostController
 ) {
     NavigationRail(
         header = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                navController.navigate(Routes.Profile.route)
+            }) {
                 Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Menu"
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "Profile"
                 )
             }
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(Routes.Quotation.route)
+                },
                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add"
+                    contentDescription = "Add Quotation"
                 )
             }
         },
@@ -205,27 +203,6 @@ fun NavigationIcon(
             imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
             contentDescription = item.title
         )
-    }
-}
-
-@Composable
-fun ProfileScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Home Screen")
-    }
-}
-
-@Composable
-fun QuotationScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Chat Screen")
-    }
-}
-
-@Composable
-fun SettingsScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Settings Screen")
     }
 }
 
