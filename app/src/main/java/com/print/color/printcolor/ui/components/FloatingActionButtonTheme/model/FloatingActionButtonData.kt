@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * @param typeFAB: The type of the FAB.
  * */
 data class FloatingActionButtonData(
-    val stringFAB: String,
     val leadingIcon: ImageVector? = null,
-    val typeFAB: TypeFAB
+    val typeFAB: TypeFAB,
+    val contentDescription: String
 )
 
 enum class TypeFAB {
     SMALL_FAB,
-    ANIMATED_FAB
+    NORMAL_FAB
 }
