@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.hilt)
     //Firebase
     alias(libs.plugins.google.play.services)
+    alias(libs.plugins.firebase.crashlitycs)
 }
 
 android {
@@ -72,6 +73,8 @@ dependencies {
     //Glide
     implementation (libs.compose.glide)
 
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.1")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
