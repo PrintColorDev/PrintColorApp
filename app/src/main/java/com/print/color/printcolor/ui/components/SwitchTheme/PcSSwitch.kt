@@ -59,7 +59,8 @@ fun PcSSwitchPreview(modifier: Modifier = Modifier) {
         SwitchData(
             switchString = "Switch State: $switchValue",
             isChecked = switchValue,
-            onCheckedChange = { switchValue = it })
+            onCheckedChange = { switchValue = it },
+            contentDescription = "Switch $switchValue")
     PrintColorTheme {
         PcSSwitch(data = switchData, modifier = modifier)
     }
