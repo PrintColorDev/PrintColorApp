@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PrintColor</string>
+
+    //Quotations Screen Strings
+    <string name="quotation_screen_title">Cotización, Hola %1$s!</string>
+    <string name="quotation_screen_switch_label">Facturación</string>
+
+    //Billing Screen Strings
+    <string name="quotation_screen_billing_tax_regime">Regimen Fiscal</string>
+    <string name="quotation_screen_billing_rfc">RFC</string>
+    <string name="quotation_screen_billing_address">Dirección</string>
+    <string name="quotation_screen_billing_zip_code">Codigo Postal</string>
+    <string name="quotation_screen_billing_state">Estado</string>
+    <string name="quotation_screen_billing_municipality">Municipio</string>
+    <string name="quotation_screen_billing_cfdi">CFDI</string>
+    <string name="quotation_screen_billing_email">Correo Electrónico</string>
+    <string name="quotation_screen_billing_payment_method">Forma de pago</string>
+
+
 </resources>

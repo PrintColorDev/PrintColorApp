@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">PrintColor</string>
+
+    //Quotations Screen Strings
+    <string name="quotation_screen_title">Quotation, Hello %1$s!</string>
+    <string name="quotation_screen_switch_label">Billing</string>
+
+    //Billing Screen Strings
+    <string name="quotation_screen_billing_tax_regime">Regimen Fiscal</string>
+    <string name="quotation_screen_billing_rfc">RFC</string>
+    <string name="quotation_screen_billing_address">Address</string>
+    <string name="quotation_screen_billing_zip_code">Zip Code</string>
+    <string name="quotation_screen_billing_state">Status</string>
+    <string name="quotation_screen_billing_municipality">Municipality</string>
+    <string name="quotation_screen_billing_cfdi">CFDI</string>
+    <string name="quotation_screen_billing_email">Email</string>
+    <string name="quotation_screen_billing_payment_method">Payment Method</string>
+
+
 </resources>
