@@ -10,7 +10,9 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -83,7 +85,13 @@ fun PcsTextField(
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = data.keyboardType),
                 trailingIcon = trailingIcon,
-                leadingIcon = leadingIcon
+                leadingIcon = leadingIcon,
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedTextColor = MaterialTheme.colorScheme.error,
+                    focusedTextColor = MaterialTheme.colorScheme.scrim,
+                    focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.scrim,
+                )
             )
         }
     }
@@ -103,7 +111,7 @@ fun PcsTextFieldPreview(modifier: Modifier = Modifier) {
     val textFieldData1 = TextFieldData(
         textFieldType = FILLED,
         label = "Label",
-        placeHolder = "Placeholder",
+        placeHolder = "Placeholder rrrr",
         keyboardType = KeyboardType.Text,
         leadingIcon = Icons.Filled.Search
     )

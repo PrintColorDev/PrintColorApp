@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -71,8 +72,8 @@ fun QuotationScreen() {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Image(
-                modifier = Modifier.background(Color.Black),
-                painter = painterResource(R.drawable.ic_launcher_foreground),
+                modifier = Modifier.size(width = 130.dp, height = 110.dp),
+                painter = painterResource(R.drawable.ic_pc_logo),
                 contentDescription = "Logo"
             )
             Text(
