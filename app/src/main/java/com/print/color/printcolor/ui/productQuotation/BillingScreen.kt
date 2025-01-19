@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,8 +40,7 @@ fun BillingScreenFields() {
         modifier = Modifier.padding(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
-        /** Tax Regime */
+        /** TextField Tax Regime */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
@@ -51,7 +53,7 @@ fun BillingScreenFields() {
             onValueChange = { taxRegime = it },
             value = taxRegime
         )
-        /** RFC */
+        /** TextField RFC */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
@@ -64,33 +66,33 @@ fun BillingScreenFields() {
             onValueChange = { rfc = it },
             value = rfc
         )
-        /** Address */
+        /** TextField Address */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_address),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Filled.AccountCircle
+                leadingIcon = Icons.Outlined.Home
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { address = it },
             value = address
         )
-        /** Zip Code */
+        /** TextField Zip Code */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_zip_code),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Filled.AccountCircle
+                leadingIcon = Icons.Outlined.Place
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { zipCode = it },
             value = zipCode
         )
-        /** State */
+        /** TextField State */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
@@ -103,7 +105,7 @@ fun BillingScreenFields() {
             onValueChange = { state = it },
             value = state
         )
-        /** CFDI */
+        /** TextField CFDI */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
@@ -116,7 +118,7 @@ fun BillingScreenFields() {
             onValueChange = { cfdi = it },
             value = cfdi
         )
-        /** Payment Method */
+        /** TextField Payment Method */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
@@ -129,7 +131,7 @@ fun BillingScreenFields() {
             onValueChange = { paymentMethod = it },
             value = paymentMethod
         )
-        /** Municipality */
+        /** TextField Municipality */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
@@ -143,14 +145,14 @@ fun BillingScreenFields() {
             value = municipality
         )
 
-        /** Email */
+        /** TextField Email */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_email),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Filled.AccountCircle
+                leadingIcon = Icons.Outlined.Email
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { email = it },

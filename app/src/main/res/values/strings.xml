@@ -4,6 +4,11 @@
     //Quotations Screen Strings
     <string name="quotation_screen_title">Quotation, Hello %1$s!</string>
     <string name="quotation_screen_switch_label">Billing</string>
+    <string name="quotation_screen_client_name">Client Name</string>
+    <string name="quotation_screen_contact">Contact</string>
+    <string name="quotation_screen_customer_name">Customer Name</string>
+    <string name="quotation_screen_extra_data">Extra Data</string>
+    <string name="quotation_screen_save_quotation">Save Quotation</string>
 
     //Billing Screen Strings
     <string name="quotation_screen_billing_tax_regime">Regimen Fiscal</string>

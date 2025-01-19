@@ -5,6 +5,12 @@
     //Quotations Screen Strings
     <string name="quotation_screen_title">Cotización, Hola %1$s!</string>
     <string name="quotation_screen_switch_label">Facturación</string>
+    <string name="quotation_screen_client_name">Client Name</string>
+    <string name="quotation_screen_contact">Contacto</string>
+    <string name="quotation_screen_customer_name">Nombre del cliente</string>
+    <string name="quotation_screen_extra_data">Datos Extras</string>
+    <string name="quotation_screen_save_quotation">Guardar cotización</string>
+
 
     //Billing Screen Strings
     <string name="quotation_screen_billing_tax_regime">Regimen Fiscal</string>

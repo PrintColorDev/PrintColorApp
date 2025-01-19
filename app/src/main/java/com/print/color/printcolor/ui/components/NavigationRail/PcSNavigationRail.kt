@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
@@ -137,7 +138,7 @@ fun PcSNavigationSideBar(
                 navController.navigate(Routes.Profile.route)
             }) {
                 Icon(
-                    imageVector = Icons.Default.AccountCircle,
+                    imageVector = Icons.Default.Face,
                     contentDescription = "Profile"
                 )
             }

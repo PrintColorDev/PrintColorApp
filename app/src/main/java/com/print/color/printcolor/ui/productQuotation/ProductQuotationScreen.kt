@@ -15,6 +15,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material.icons.rounded.Face
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,49 +87,53 @@ fun QuotationScreen() {
             )
         }
         /** Quotation Fields */
+        /** TextField Customer Name*/
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "",
-                placeHolder = "Customer Name",
+                placeHolder = stringResource(R.string.quotation_screen_customer_name),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Filled.AccountCircle
+                leadingIcon = Icons.Rounded.Face
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { nameValue = it },
             value = nameValue
         )
+        /** TextField Client Name*/
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "",
-                placeHolder = "Client Name",
+                placeHolder = stringResource(R.string.quotation_screen_client_name),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Filled.AccountCircle
+                leadingIcon = Icons.Rounded.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { clientNameValue = it },
             value = clientNameValue
         )
+        /** TextField Contact */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "",
-                placeHolder = "Contact",
+                placeHolder = stringResource(R.string.quotation_screen_contact),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Filled.AccountCircle
+                leadingIcon = Icons.Rounded.Phone
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { contactValue = it },
             value = contactValue
         )
+        /** TextField Extra Data */
         PcsTextField(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "",
-                placeHolder = "Extra Data",
+                placeHolder = stringResource(R.string.quotation_screen_extra_data),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Filled.AccountCircle
+                leadingIcon = Icons.Rounded.Info
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { extraDataValue = it },
@@ -137,12 +145,13 @@ fun QuotationScreen() {
         AnimatedVisibility(switchValue) {
             BillingScreenFields()
         }
+        /** Button save quotation */
         PcsButton(
             onClick = {
                 Toast.makeText(context, "Button Clicked", Toast.LENGTH_SHORT).show()
             },
             data = ButtonData(
-                label = "Save Quotation",
+                label = stringResource(R.string.quotation_screen_save_quotation),
                 type = ButtonType.FILLED,
                 contentDescription = "Content Description"
             ),
