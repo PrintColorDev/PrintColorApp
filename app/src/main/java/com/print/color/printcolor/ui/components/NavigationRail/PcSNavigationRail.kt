@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
@@ -39,7 +38,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
 import com.print.color.printcolor.ui.components.NavigationRail.model.Routes
 import com.print.color.printcolor.ui.home.HomeScreen
+import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.productQuotation.QuotationScreen
 import com.print.color.printcolor.ui.profile.ProfileScreen
 import com.print.color.printcolor.ui.settings.SettingsScreen
@@ -58,7 +57,7 @@ import com.print.color.printcolor.ui.theme.PrintColorTheme
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun PcSNavigationRail() {
+fun PcSNavigationRail(productQuotationViewModel: ProductQuotationViewModel, onAddQuotationSave: () -> Unit) {
     val items = listOf(
         NavigationRailData(
             title = "Home",
@@ -111,7 +110,7 @@ fun PcSNavigationRail() {
                         ProfileScreen()
                     }
                     composable(Routes.Quotation.route) {
-                        QuotationScreen()
+                        QuotationScreen(productQuotationViewModel, onAddQuotationSave = onAddQuotationSave)
                     }
                     composable(Routes.Settings.route) {
                         SettingsScreen()
@@ -210,6 +209,6 @@ fun NavigationIcon(
 @Composable
 fun PcSNavigationRailPreview() {
     PrintColorTheme {
-        PcSNavigationRail()
+        //PcSNavigationRail()
     }
 }

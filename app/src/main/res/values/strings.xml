@@ -15,7 +15,7 @@
     <string name="quotation_screen_billing_rfc">RFC</string>
     <string name="quotation_screen_billing_address">Address</string>
     <string name="quotation_screen_billing_zip_code">Zip Code</string>
-    <string name="quotation_screen_billing_state">Status</string>
+    <string name="quotation_screen_billing_state">State</string>
     <string name="quotation_screen_billing_municipality">Municipality</string>
     <string name="quotation_screen_billing_cfdi">CFDI</string>
     <string name="quotation_screen_billing_email">Email</string>

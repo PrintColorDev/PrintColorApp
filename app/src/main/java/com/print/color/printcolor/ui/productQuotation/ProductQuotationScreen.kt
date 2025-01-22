@@ -1,9 +1,7 @@
 package com.print.color.printcolor.ui.productQuotation
 
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.Info
@@ -26,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,7 +43,7 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDa
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 
 @Composable
-fun QuotationScreen() {
+fun QuotationScreen(productQuotationViewModel: ProductQuotationViewModel, onAddQuotationSave: () -> Unit) {
     /** Quotation Fields */
     var nameValue by remember { mutableStateOf("") }
     var clientNameValue by remember { mutableStateOf("") }
@@ -141,24 +137,32 @@ fun QuotationScreen() {
         )
         /** Switch Billing validation */
         PcSSwitch(data = switchData, modifier = Modifier.fillMaxWidth())
-        HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp))
+        HorizontalDivider(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp))
         AnimatedVisibility(switchValue) {
             BillingScreenFields()
         }
         /** Button save quotation */
         PcsButton(
             onClick = {
-                Toast.makeText(context, "Button Clicked", Toast.LENGTH_SHORT).show()
+                productQuotationViewModel.onAddQuotation {
+                    onAddQuotationSave()
+                }
+                //Toast.makeText(context, "Button Clicked", Toast.LENGTH_SHORT).show()
             },
             data = ButtonData(
                 label = stringResource(R.string.quotation_screen_save_quotation),
-                type = ButtonType.FILLED,
+                type = ButtonType.OUTLINED,
                 contentDescription = "Content Description"
             ),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
+
 }
+
+
 
 @Preview(
     showBackground = true,
@@ -168,5 +172,5 @@ fun QuotationScreen() {
 )
 @Composable
 fun QuotationScreenPreview() {
-    QuotationScreen()
+    //QuotationScreen(productQuotationViewModel)
 }
