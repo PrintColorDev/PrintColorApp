@@ -18,6 +18,10 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
     private val _uiState = MutableStateFlow(AddQuotationUIState())
     val uiState: StateFlow<AddQuotationUIState> = _uiState
 
+    fun onClientNameChanged(name: String) {
+        _uiState.update { it.copy(clientName = name.toString()) }
+    }
+
     private fun showLoading(show: Boolean) {
         _uiState.update { it.copy(isLoading = show) }
     }
@@ -40,7 +44,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
     }
 
     data class AddQuotationUIState(
-        val clientName: String = "test insert",
+        val clientName: String = "",
         val isLoading: Boolean = false,
         val error: String? = null
     ) {

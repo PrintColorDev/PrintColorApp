@@ -43,7 +43,10 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDa
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 
 @Composable
-fun QuotationScreen(productQuotationViewModel: ProductQuotationViewModel, onAddQuotationSave: () -> Unit) {
+fun QuotationScreen(
+    productQuotationViewModel: ProductQuotationViewModel,
+    onAddQuotationSave: () -> Unit
+) {
     /** Quotation Fields */
     var nameValue by remember { mutableStateOf("") }
     var clientNameValue by remember { mutableStateOf("") }
@@ -93,7 +96,10 @@ fun QuotationScreen(productQuotationViewModel: ProductQuotationViewModel, onAddQ
                 leadingIcon = Icons.Rounded.Face
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { nameValue = it },
+            onValueChange = {
+                productQuotationViewModel.onClientNameChanged(it)
+                nameValue = it
+            },
             value = nameValue
         )
         /** TextField Client Name*/
@@ -137,9 +143,11 @@ fun QuotationScreen(productQuotationViewModel: ProductQuotationViewModel, onAddQ
         )
         /** Switch Billing validation */
         PcSSwitch(data = switchData, modifier = Modifier.fillMaxWidth())
-        HorizontalDivider(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp))
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+        )
         AnimatedVisibility(switchValue) {
             BillingScreenFields()
         }
@@ -147,9 +155,9 @@ fun QuotationScreen(productQuotationViewModel: ProductQuotationViewModel, onAddQ
         PcsButton(
             onClick = {
                 productQuotationViewModel.onAddQuotation {
+                    nameValue = ""
                     onAddQuotationSave()
                 }
-                //Toast.makeText(context, "Button Clicked", Toast.LENGTH_SHORT).show()
             },
             data = ButtonData(
                 label = stringResource(R.string.quotation_screen_save_quotation),
@@ -161,7 +169,6 @@ fun QuotationScreen(productQuotationViewModel: ProductQuotationViewModel, onAddQ
     }
 
 }
-
 
 
 @Preview(

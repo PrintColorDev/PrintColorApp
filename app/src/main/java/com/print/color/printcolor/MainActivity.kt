@@ -36,21 +36,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    /*
-    * private fun initUIState() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addProductViewModel.uiState.collect { state ->
-                    binding.pbLoading.isVisible = state.isLoading
-                    binding.btnAddProduct.isEnabled = state.isValidProduct()
-                    showImage(state.imageURL)
-                    if (state.error.isNullOrBlank()) {
-
-                    }
-                }
-            }
-        }
-    }*/
 }
 
 
