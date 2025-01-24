@@ -7,12 +7,10 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.lifecycleScope
 import com.print.color.printcolor.ui.components.NavigationRail.PcSNavigationRail
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -25,13 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             PrintColorTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    PcSNavigationRail(addProductViewModel) {
-                        lifecycleScope.launch{
-                            addProductViewModel.uiState.collect {
-                                it.isValidQuotation()
-                            }
-                        }
-                    }
+                    PcSNavigationRail(addProductViewModel)
                 }
             }
         }

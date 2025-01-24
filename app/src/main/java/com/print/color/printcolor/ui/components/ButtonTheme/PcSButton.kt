@@ -51,7 +51,6 @@ fun PcsButton(
             ElevatedButton(
                 onClick = { onClick() },
                 modifier = modifier,
-                //shape = shape,
                 content = content
             )
         }
@@ -59,8 +58,9 @@ fun PcsButton(
         OUTLINED -> {
             OutlinedButton(
                 onClick = { onClick() },
+                enabled = data.isEnabled,
                 modifier = modifier,
-                content = content
+                content = content,
             )
         }
         TEXT -> {

@@ -20,6 +20,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -44,9 +45,11 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldTy
 
 @Composable
 fun QuotationScreen(
-    productQuotationViewModel: ProductQuotationViewModel,
-    onAddQuotationSave: () -> Unit
+    productQuotationViewModel: ProductQuotationViewModel
 ) {
+    val uiState by productQuotationViewModel.uiState.collectAsState()
+    val isButtonEnabled = uiState.isValidQuotation()
+
     /** Quotation Fields */
     var nameValue by remember { mutableStateOf("") }
     var clientNameValue by remember { mutableStateOf("") }
@@ -112,7 +115,10 @@ fun QuotationScreen(
                 leadingIcon = Icons.Rounded.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { clientNameValue = it },
+            onValueChange = {
+                productQuotationViewModel.onCustomerNameChanged(it)
+                clientNameValue = it
+            },
             value = clientNameValue
         )
         /** TextField Contact */
@@ -125,7 +131,10 @@ fun QuotationScreen(
                 leadingIcon = Icons.Rounded.Phone
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { contactValue = it },
+            onValueChange = {
+                productQuotationViewModel.onContactChanged(it)
+                contactValue = it
+            },
             value = contactValue
         )
         /** TextField Extra Data */
@@ -138,7 +147,10 @@ fun QuotationScreen(
                 leadingIcon = Icons.Rounded.Info
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { extraDataValue = it },
+            onValueChange = {
+                productQuotationViewModel.onExtraDaraChanged(it)
+                extraDataValue = it
+            },
             value = extraDataValue
         )
         /** Switch Billing validation */
@@ -156,13 +168,13 @@ fun QuotationScreen(
             onClick = {
                 productQuotationViewModel.onAddQuotation {
                     nameValue = ""
-                    onAddQuotationSave()
                 }
             },
             data = ButtonData(
                 label = stringResource(R.string.quotation_screen_save_quotation),
                 type = ButtonType.OUTLINED,
-                contentDescription = "Content Description"
+                contentDescription = "Content Description",
+                isEnabled = isButtonEnabled
             ),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -170,6 +182,8 @@ fun QuotationScreen(
 
 }
 
+private fun isValidQuotation(productQuotationViewModel: ProductQuotationViewModel) {
+}
 
 @Preview(
     showBackground = true,

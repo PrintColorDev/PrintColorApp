@@ -14,10 +14,10 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
 
     suspend fun newQuotation(
         clientName: String,
-        /*customerName: String,
+        customerName: String,
         contact: String,
         extraData: String,
-        isBillRequired: Boolean,
+        /*isBillRequired: Boolean,
         taxRegime: String,
         rfc: String,
         address: String,
@@ -28,15 +28,14 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         email: String,
         paymentMethod: String*/
     ): Boolean {
-
         val id = generateProductId()
         val quotation = hashMapOf(
             "id" to id,
             "clientName" to clientName,
-            /*"customerName" to customerName,
+            "customerName" to customerName,
             "contact" to contact,
             "extraData" to extraData,
-            "isBillRequired" to isBillRequired,
+            /*"isBillRequired" to isBillRequired,
             "taxRegime" to taxRegime,
             "rfc" to rfc,
             "address" to address,

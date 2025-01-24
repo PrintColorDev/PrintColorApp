@@ -13,7 +13,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService: FirebaseDataBaseService): ViewModel() {
+class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService: FirebaseDataBaseService) :
+    ViewModel() {
 
     private val _uiState = MutableStateFlow(AddQuotationUIState())
     val uiState: StateFlow<AddQuotationUIState> = _uiState
@@ -21,6 +22,19 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
     fun onClientNameChanged(name: String) {
         _uiState.update { it.copy(clientName = name.toString()) }
     }
+
+    fun onCustomerNameChanged(customerName: String) {
+        _uiState.update { it.copy(customerName = customerName.toString()) }
+    }
+
+    fun onContactChanged(contact: String) {
+        _uiState.update { it.copy(contact = contact.toString()) }
+    }
+
+    fun onExtraDaraChanged(extraData: String) {
+        _uiState.update { it.copy(extraData = extraData.toString()) }
+    }
+
 
     private fun showLoading(show: Boolean) {
         _uiState.update { it.copy(isLoading = show) }
@@ -30,7 +44,12 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         viewModelScope.launch {
             showLoading(true)
             val result = withContext(Dispatchers.IO) {
-                firebaseDataBaseService.newQuotation(clientName = _uiState.value.clientName)
+                firebaseDataBaseService.newQuotation(
+                    clientName = _uiState.value.clientName,
+                    customerName = _uiState.value.customerName,
+                    contact = _uiState.value.contact,
+                    extraData = _uiState.value.extraData
+                )
             }
             if (result) {
                 onSuccessQuotation()
@@ -45,9 +64,13 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
 
     data class AddQuotationUIState(
         val clientName: String = "",
+        val customerName: String = "",
+        val contact: String = "",
+        val extraData: String = "",
         val isLoading: Boolean = false,
         val error: String? = null
     ) {
-        fun isValidQuotation() = clientName.isNotBlank()
+        fun isValidQuotation() =
+            clientName.isNotBlank() && customerName.isNotBlank() && contact.isNotBlank() && extraData.isNotBlank()
     }
 }

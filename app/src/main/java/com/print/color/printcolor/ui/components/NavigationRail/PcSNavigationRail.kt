@@ -54,10 +54,9 @@ import com.print.color.printcolor.ui.profile.ProfileScreen
 import com.print.color.printcolor.ui.settings.SettingsScreen
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
-
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun PcSNavigationRail(productQuotationViewModel: ProductQuotationViewModel, onAddQuotationSave: () -> Unit) {
+fun PcSNavigationRail(productQuotationViewModel: ProductQuotationViewModel) {
     val items = listOf(
         NavigationRailData(
             title = "Home",
@@ -110,7 +109,7 @@ fun PcSNavigationRail(productQuotationViewModel: ProductQuotationViewModel, onAd
                         ProfileScreen()
                     }
                     composable(Routes.Quotation.route) {
-                        QuotationScreen(productQuotationViewModel, onAddQuotationSave = onAddQuotationSave)
+                        QuotationScreen(productQuotationViewModel = productQuotationViewModel/*, onAddQuotationSave = onAddQuotationSave*/)
                     }
                     composable(Routes.Settings.route) {
                         SettingsScreen()
