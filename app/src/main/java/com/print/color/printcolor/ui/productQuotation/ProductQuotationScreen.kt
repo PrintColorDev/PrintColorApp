@@ -66,6 +66,7 @@ fun QuotationScreen(
             onCheckedChange = { switchValue = it },
             contentDescription = "Switch billing $switchValue"
         )
+    productQuotationViewModel.isBillingRequired(isBillingEnabled = switchValue)
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -148,7 +149,7 @@ fun QuotationScreen(
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = {
-                productQuotationViewModel.onExtraDaraChanged(it)
+                productQuotationViewModel.onExtraDataChanged(it)
                 extraDataValue = it
             },
             value = extraDataValue
@@ -161,7 +162,7 @@ fun QuotationScreen(
                 .padding(vertical = 16.dp)
         )
         AnimatedVisibility(switchValue) {
-            BillingScreenFields()
+            BillingScreenFields(productQuotationViewModel = productQuotationViewModel)
         }
         /** Button save quotation */
         PcsButton(
@@ -180,9 +181,6 @@ fun QuotationScreen(
         )
     }
 
-}
-
-private fun isValidQuotation(productQuotationViewModel: ProductQuotationViewModel) {
 }
 
 @Preview(

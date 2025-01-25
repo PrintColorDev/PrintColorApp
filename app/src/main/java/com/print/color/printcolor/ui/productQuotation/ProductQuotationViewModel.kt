@@ -31,10 +31,49 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         _uiState.update { it.copy(contact = contact.toString()) }
     }
 
-    fun onExtraDaraChanged(extraData: String) {
+    fun onExtraDataChanged(extraData: String) {
         _uiState.update { it.copy(extraData = extraData.toString()) }
     }
 
+    fun isBillingRequired(isBillingEnabled: Boolean) {
+        _uiState.update { it.copy(isBillingRequired = isBillingEnabled) }
+    }
+
+    fun onTaxRegimeChanged(taxRegime: String) {
+        _uiState.update { it.copy(taxRegime = taxRegime.toString()) }
+    }
+
+    fun onRFCChanged(rfc: String) {
+        _uiState.update { it.copy(rfc = rfc.toString()) }
+    }
+
+    fun onAddressChanged(address: String) {
+        _uiState.update { it.copy(address = address.toString()) }
+    }
+
+    fun onZipCodeChanged(zipCode: String) {
+        _uiState.update { it.copy(zipCode = zipCode.toString()) }
+    }
+
+    fun onStateChanged(state: String) {
+        _uiState.update { it.copy(state = state.toString()) }
+    }
+
+    fun onMunicipalityChanged(municipality: String) {
+        _uiState.update { it.copy(municipality = municipality.toString()) }
+    }
+
+    fun onCFDIChanged(cfdi: String) {
+        _uiState.update { it.copy(cfdi = cfdi.toString()) }
+    }
+
+    fun onEmailChanged(email: String) {
+        _uiState.update { it.copy(email = email.toString()) }
+    }
+
+    fun onPaymentMethodChanged(paymentMethod: String) {
+        _uiState.update { it.copy(paymentMethod = paymentMethod.toString()) }
+    }
 
     private fun showLoading(show: Boolean) {
         _uiState.update { it.copy(isLoading = show) }
@@ -48,7 +87,17 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                     clientName = _uiState.value.clientName,
                     customerName = _uiState.value.customerName,
                     contact = _uiState.value.contact,
-                    extraData = _uiState.value.extraData
+                    extraData = _uiState.value.extraData,
+                    isBillRequired = _uiState.value.isBillingRequired,
+                    taxRegime = _uiState.value.taxRegime,
+                    rfc = _uiState.value.rfc,
+                    address = _uiState.value.address,
+                    zipCode = _uiState.value.zipCode.toInt(),
+                    state = _uiState.value.state,
+                    municipality = _uiState.value.municipality,
+                    cfdi = _uiState.value.cfdi,
+                    email = _uiState.value.email,
+                    paymentMethod = _uiState.value.paymentMethod
                 )
             }
             if (result) {
@@ -67,10 +116,24 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         val customerName: String = "",
         val contact: String = "",
         val extraData: String = "",
+        val isBillingRequired: Boolean = false,
+        val taxRegime: String = "",
+        val rfc: String = "",
+        val address: String = "",
+        val zipCode: String = "",
+        val state: String = "",
+        val municipality: String = "",
+        val cfdi: String = "",
+        val email: String = "",
+        val paymentMethod: String = "",
         val isLoading: Boolean = false,
         val error: String? = null
     ) {
         fun isValidQuotation() =
-            clientName.isNotBlank() && customerName.isNotBlank() && contact.isNotBlank() && extraData.isNotBlank()
+            if (!isBillingRequired) {
+                clientName.isNotBlank() && customerName.isNotBlank() && contact.isNotBlank() && extraData.isNotBlank()
+            } else {
+                taxRegime.isNotBlank() && rfc.isNotBlank() && address.isNotBlank() && zipCode.isNotBlank() && state.isNotBlank() && municipality.isNotBlank() && cfdi.isNotBlank() && email.isNotBlank() && paymentMethod.isNotBlank()
+            }
     }
 }

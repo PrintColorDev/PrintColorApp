@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +26,8 @@ import com.print.color.printcolor.R
 
 
 @Composable
-fun BillingScreenFields() {
+fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
+
     var taxRegime by remember { mutableStateOf("") }
     var rfc by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
@@ -50,7 +52,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Filled.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { taxRegime = it },
+            onValueChange = {
+                productQuotationViewModel.onTaxRegimeChanged(it)
+                taxRegime = it
+            },
             value = taxRegime
         )
         /** TextField RFC */
@@ -63,7 +68,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Filled.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { rfc = it },
+            onValueChange = {
+                productQuotationViewModel.onRFCChanged(it)
+                rfc = it
+            },
             value = rfc
         )
         /** TextField Address */
@@ -76,7 +84,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Outlined.Home
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { address = it },
+            onValueChange = {
+                productQuotationViewModel.onAddressChanged(it)
+                address = it
+            },
             value = address
         )
         /** TextField Zip Code */
@@ -89,7 +100,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Outlined.Place
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { zipCode = it },
+            onValueChange = {
+                productQuotationViewModel.onZipCodeChanged(it)
+                zipCode = it
+            },
             value = zipCode
         )
         /** TextField State */
@@ -102,7 +116,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Filled.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { state = it },
+            onValueChange = {
+                productQuotationViewModel.onStateChanged(it)
+                state = it
+            },
             value = state
         )
         /** TextField CFDI */
@@ -115,7 +132,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Filled.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { cfdi = it },
+            onValueChange = {
+                productQuotationViewModel.onCFDIChanged(it)
+                cfdi = it
+            },
             value = cfdi
         )
         /** TextField Payment Method */
@@ -128,7 +148,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Filled.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { paymentMethod = it },
+            onValueChange = {
+                productQuotationViewModel.onPaymentMethodChanged(it)
+                paymentMethod = it
+            },
             value = paymentMethod
         )
         /** TextField Municipality */
@@ -141,7 +164,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Filled.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { municipality = it },
+            onValueChange = {
+                productQuotationViewModel.onMunicipalityChanged(it)
+                municipality = it
+            },
             value = municipality
         )
 
@@ -155,7 +181,10 @@ fun BillingScreenFields() {
                 leadingIcon = Icons.Outlined.Email
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { email = it },
+            onValueChange = {
+                productQuotationViewModel.onEmailChanged(it)
+                email = it
+            },
             value = email
         )
     }

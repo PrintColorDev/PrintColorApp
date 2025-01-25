@@ -17,7 +17,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         customerName: String,
         contact: String,
         extraData: String,
-        /*isBillRequired: Boolean,
+        isBillRequired: Boolean,
         taxRegime: String,
         rfc: String,
         address: String,
@@ -26,7 +26,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         municipality: String,
         cfdi: String,
         email: String,
-        paymentMethod: String*/
+        paymentMethod: String
     ): Boolean {
         val id = generateProductId()
         val quotation = hashMapOf(
@@ -35,7 +35,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
             "customerName" to customerName,
             "contact" to contact,
             "extraData" to extraData,
-            /*"isBillRequired" to isBillRequired,
+            "isBillRequired" to isBillRequired,
             "taxRegime" to taxRegime,
             "rfc" to rfc,
             "address" to address,
@@ -44,7 +44,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
             "municipality" to municipality,
             "cfdi" to cfdi,
             "email" to email,
-            "paymentMethod" to paymentMethod*/
+            "paymentMethod" to paymentMethod
         )
 
         return suspendCancellableCoroutine { suspendCancellableCoroutine ->
