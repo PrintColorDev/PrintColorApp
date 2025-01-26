@@ -1,0 +1,174 @@
+package com.print.color.printcolor.ui.components.AlertDialog
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.R
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
+import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
+import com.print.color.printcolor.ui.components.ButtonTheme.ButtonType
+import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
+
+@Composable
+fun PcSAlertDialog(
+    data: AlertDialogData,
+    modifier: Modifier = Modifier,
+    autoPlayAnimation: Boolean = true,
+    animationRepeatCount: Int = LottieConstants.IterateForever,
+    lottieAnimation: Int,
+) {
+    when (data.type) {
+        AlertDialogType.CONFIRMATION -> {
+            AlertDialog(
+                onDismissRequest = {
+                    if (data.dismissOnClickOutside) data.onDismiss()
+                },
+                title = {
+                    Text(
+                        text = data.title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                text = {
+                    Text(
+                        text = data.message,
+                        fontSize = 16.sp
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = data.onConfirm) {
+                        Text(
+                            text = data.confirmButtonText,
+                            color = Color.Blue
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = data.onDismiss) {
+                        Text(
+                            text = data.dismissButtonText,
+                            color = Color.Gray
+                        )
+                    }
+                }
+            )
+        }
+
+        AlertDialogType.ANIMATION -> {
+            AlertDialog(
+                modifier = modifier.wrapContentWidth(),
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                onDismissRequest = {
+                    if (data.dismissOnClickOutside) data.onDismiss()
+                },
+                title = {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = data.title,
+                            fontSize = 16.sp
+                        )
+                    }
+                },
+                text = {
+                    // Animación Lottie
+                    val composition by rememberLottieComposition(
+                        LottieCompositionSpec.RawRes(
+                            lottieAnimation
+                        )
+                    )
+                    val progress by animateLottieCompositionAsState(
+                        composition = composition,
+                        iterations = animationRepeatCount,
+                        isPlaying = autoPlayAnimation
+                    )
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        LottieAnimation(
+                            composition = composition,
+                            progress = progress,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .size(120.dp)
+                        )
+                    }
+                },
+                confirmButton = {
+                    PcsButton(
+                        onClick = {
+                            data.onConfirm()
+                        },
+                        data = ButtonData(
+                            label = data.confirmButtonText,
+                            type = ButtonType.TEXT,
+                            contentDescription = "Content Description",
+                        ),
+                        modifier = Modifier
+                    )
+                }
+            )
+        }
+    }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PcSAlertDialogPreview(modifier: Modifier = Modifier) {
+    PrintColorTheme {
+        var showDialog = remember { mutableStateOf(true) }
+
+        val data = AlertDialogData(
+            title = "Alert Dialog Title",
+            message = "This is an alert dialog message",
+            confirmButtonText = "OK",
+            dismissButtonText = "Cancel",
+            onConfirm = {},
+            onDismiss = {},
+            type = AlertDialogType.CONFIRMATION,
+            dismissOnClickOutside = true
+        )
+
+        if (showDialog.value) {
+            Column {
+                PcSAlertDialog(
+                    data = data,
+                    autoPlayAnimation = true,
+                    animationRepeatCount = 1,
+                    lottieAnimation = R.raw.pcs_success_anim
+                )
+            }
+        }
+    }
+}

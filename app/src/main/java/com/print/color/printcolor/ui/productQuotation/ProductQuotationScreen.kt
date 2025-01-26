@@ -22,6 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,6 +38,8 @@ import com.print.color.printcolor.ui.components.ButtonTheme.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
+import androidx.compose.runtime.setValue
+import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
@@ -54,6 +58,8 @@ fun QuotationScreen(
     var contactValue = uiState.contact
     var extraDataValue = uiState.extraData
     val context = LocalContext.current
+
+    var showDialog by remember { mutableStateOf(false) }
 
     /** Switch Value */
     val switchData =
@@ -157,6 +163,7 @@ fun QuotationScreen(
                 productQuotationViewModel.onAddQuotation {
                     productQuotationViewModel.clearFields()
                     onAddQuotationSave()
+                    showDialog = true
                 }
             },
             data = ButtonData(
@@ -167,6 +174,26 @@ fun QuotationScreen(
             ),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
+        if (showDialog) {
+            PcSAlertDialog(
+                data = ,
+                title = "Cargando datos",
+                message = "Por favor espera mientras cargamos la información.",
+                lottieAnimation = R.raw.pcs_success_anim,
+                confirmButtonText = "Aceptar",
+                dismissButtonText = "Cancelar",
+                onConfirm = {
+                    println("Confirmado")
+                    showDialog = false
+                },
+                onDismiss = {
+                    println("Cancelado")
+                    showDialog = false
+                },
+                autoPlayAnimation = true,
+                animationRepeatCount = 1
+            )
+        }
     }
 }
 
