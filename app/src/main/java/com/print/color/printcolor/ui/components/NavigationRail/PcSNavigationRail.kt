@@ -56,7 +56,10 @@ import com.print.color.printcolor.ui.theme.PrintColorTheme
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun PcSNavigationRail(productQuotationViewModel: ProductQuotationViewModel) {
+fun PcSNavigationRail(
+    productQuotationViewModel: ProductQuotationViewModel,
+    //onAddQuotationSave: () -> Unit
+) {
     val items = listOf(
         NavigationRailData(
             title = "Home",
@@ -81,7 +84,8 @@ fun PcSNavigationRail(productQuotationViewModel: ProductQuotationViewModel) {
         mutableIntStateOf(0)
     }
     Surface(
-        modifier = Modifier.fillMaxSize()) {
+        modifier = Modifier.fillMaxSize()
+    ) {
         Scaffold(
             modifier = Modifier.fillMaxSize()
         ) { paddingValues ->
@@ -109,7 +113,10 @@ fun PcSNavigationRail(productQuotationViewModel: ProductQuotationViewModel) {
                         ProfileScreen()
                     }
                     composable(Routes.Quotation.route) {
-                        QuotationScreen(productQuotationViewModel = productQuotationViewModel/*, onAddQuotationSave = onAddQuotationSave*/)
+                        QuotationScreen(
+                            productQuotationViewModel = productQuotationViewModel,
+                            onAddQuotationSave = {}
+                        )
                     }
                     composable(Routes.Settings.route) {
                         SettingsScreen()

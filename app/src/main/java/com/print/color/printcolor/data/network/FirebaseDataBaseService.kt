@@ -21,7 +21,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         taxRegime: String,
         rfc: String,
         address: String,
-        zipCode: Int,
+        zipCode: String,
         state: String,
         municipality: String,
         cfdi: String,

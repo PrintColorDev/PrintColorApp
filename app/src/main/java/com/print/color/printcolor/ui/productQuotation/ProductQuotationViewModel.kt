@@ -92,7 +92,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                     taxRegime = _uiState.value.taxRegime,
                     rfc = _uiState.value.rfc,
                     address = _uiState.value.address,
-                    zipCode = _uiState.value.zipCode.toInt(),
+                    zipCode = _uiState.value.zipCode,
                     state = _uiState.value.state,
                     municipality = _uiState.value.municipality,
                     cfdi = _uiState.value.cfdi,
@@ -108,6 +108,28 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                 }
                 showLoading(false)
             }
+            showLoading(false)
+        }
+    }
+
+    fun clearFields() {
+        _uiState.update {
+            it.copy(
+                clientName = "",
+                customerName = "",
+                contact = "",
+                extraData = "",
+                isBillingRequired = false,
+                taxRegime = "",
+                rfc = "",
+                address = "",
+                zipCode = "",
+                state = "",
+                municipality = "",
+                cfdi = "",
+                email = "",
+                paymentMethod = ""
+            )
         }
     }
 
@@ -133,7 +155,9 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
             if (!isBillingRequired) {
                 clientName.isNotBlank() && customerName.isNotBlank() && contact.isNotBlank() && extraData.isNotBlank()
             } else {
-                taxRegime.isNotBlank() && rfc.isNotBlank() && address.isNotBlank() && zipCode.isNotBlank() && state.isNotBlank() && municipality.isNotBlank() && cfdi.isNotBlank() && email.isNotBlank() && paymentMethod.isNotBlank()
+                taxRegime.isNotBlank() && rfc.isNotBlank() && address.isNotBlank()
+                        && zipCode.isNotBlank() && state.isNotBlank() && municipality.isNotBlank()
+                        && cfdi.isNotBlank() && email.isNotBlank() && paymentMethod.isNotBlank()
             }
     }
 }

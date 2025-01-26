@@ -21,52 +21,48 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
-import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
 import com.print.color.printcolor.ui.components.ButtonTheme.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
+import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 
 @Composable
 fun QuotationScreen(
-    productQuotationViewModel: ProductQuotationViewModel
+    productQuotationViewModel: ProductQuotationViewModel,
+    onAddQuotationSave: () -> Unit
 ) {
     val uiState by productQuotationViewModel.uiState.collectAsState()
     val isButtonEnabled = uiState.isValidQuotation()
 
     /** Quotation Fields */
-    var nameValue by remember { mutableStateOf("") }
-    var clientNameValue by remember { mutableStateOf("") }
-    var contactValue by remember { mutableStateOf("") }
-    var extraDataValue by remember { mutableStateOf("") }
+    var nameValue = uiState.clientName
+    var clientNameValue = uiState.customerName
+    var contactValue = uiState.contact
+    var extraDataValue = uiState.extraData
     val context = LocalContext.current
 
     /** Switch Value */
-    var switchValue by remember { mutableStateOf(false) }
     val switchData =
         SwitchData(
             switchString = stringResource(R.string.quotation_screen_switch_label),
-            isChecked = switchValue,
-            onCheckedChange = { switchValue = it },
-            contentDescription = "Switch billing $switchValue"
+            isChecked = uiState.isBillingRequired,
+            onCheckedChange = { productQuotationViewModel.isBillingRequired(it) },
+            contentDescription = "Switch billing $uiState.isBillingRequired"
         )
-    productQuotationViewModel.isBillingRequired(isBillingEnabled = switchValue)
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -100,10 +96,7 @@ fun QuotationScreen(
                 leadingIcon = Icons.Rounded.Face
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = {
-                productQuotationViewModel.onClientNameChanged(it)
-                nameValue = it
-            },
+            onValueChange = { productQuotationViewModel.onClientNameChanged(it) },
             value = nameValue
         )
         /** TextField Client Name*/
@@ -116,10 +109,7 @@ fun QuotationScreen(
                 leadingIcon = Icons.Rounded.AccountCircle
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = {
-                productQuotationViewModel.onCustomerNameChanged(it)
-                clientNameValue = it
-            },
+            onValueChange = { productQuotationViewModel.onCustomerNameChanged(it) },
             value = clientNameValue
         )
         /** TextField Contact */
@@ -128,14 +118,11 @@ fun QuotationScreen(
                 textFieldType = OUTLINED,
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_contact),
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Phone,
                 leadingIcon = Icons.Rounded.Phone
             ),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = {
-                productQuotationViewModel.onContactChanged(it)
-                contactValue = it
-            },
+            onValueChange = { productQuotationViewModel.onContactChanged(it) },
             value = contactValue
         )
         /** TextField Extra Data */
@@ -150,7 +137,6 @@ fun QuotationScreen(
             modifier = Modifier.fillMaxWidth(),
             onValueChange = {
                 productQuotationViewModel.onExtraDataChanged(it)
-                extraDataValue = it
             },
             value = extraDataValue
         )
@@ -161,14 +147,16 @@ fun QuotationScreen(
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
         )
-        AnimatedVisibility(switchValue) {
+        AnimatedVisibility(uiState.isBillingRequired) {
             BillingScreenFields(productQuotationViewModel = productQuotationViewModel)
         }
         /** Button save quotation */
         PcsButton(
+            isVisible = uiState.isLoading,
             onClick = {
                 productQuotationViewModel.onAddQuotation {
-                    nameValue = ""
+                    productQuotationViewModel.clearFields()
+                    onAddQuotationSave()
                 }
             },
             data = ButtonData(
@@ -180,7 +168,6 @@ fun QuotationScreen(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
-
 }
 
 @Preview(

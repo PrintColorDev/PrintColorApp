@@ -23,7 +23,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             PrintColorTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    PcSNavigationRail(addProductViewModel)
+                    PcSNavigationRail(addProductViewModel) /*{
+
+                        addProductViewModel.uiState.collect {
+
+                        }
+                    }*/
                 }
             }
         }
