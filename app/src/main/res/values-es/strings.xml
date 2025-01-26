@@ -7,7 +7,7 @@
     <string name="quotation_screen_switch_label">Facturación</string>
     <string name="quotation_screen_client_name">Nombre del cliente</string>
     <string name="quotation_screen_contact">Contacto</string>
-    <string name="quotation_screen_customer_name">Nombre del cliente</string>
+    <string name="quotation_screen_company_name">Nombre de la empresa</string>
     <string name="quotation_screen_extra_data">Datos Extras</string>
     <string name="quotation_screen_save_quotation">Guardar cotización</string>
 

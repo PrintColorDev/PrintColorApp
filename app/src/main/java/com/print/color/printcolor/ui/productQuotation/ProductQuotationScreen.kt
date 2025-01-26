@@ -91,7 +91,7 @@ fun QuotationScreen(
             data = TextFieldData(
                 textFieldType = OUTLINED,
                 label = "",
-                placeHolder = stringResource(R.string.quotation_screen_customer_name),
+                placeHolder = stringResource(R.string.quotation_screen_company_name),
                 keyboardType = KeyboardType.Text,
                 leadingIcon = Icons.Rounded.Face
             ),
