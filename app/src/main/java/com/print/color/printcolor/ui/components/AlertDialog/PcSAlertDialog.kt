@@ -94,7 +94,7 @@ fun PcSAlertDialog(
                     ) {
                         Text(
                             text = data.title,
-                            fontSize = 16.sp
+                            fontSize = 20.sp
                         )
                     }
                 },

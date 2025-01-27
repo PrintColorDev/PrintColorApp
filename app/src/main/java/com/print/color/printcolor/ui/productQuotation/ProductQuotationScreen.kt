@@ -40,6 +40,8 @@ import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
 import androidx.compose.runtime.setValue
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
@@ -60,6 +62,13 @@ fun QuotationScreen(
     val context = LocalContext.current
 
     var showDialog by remember { mutableStateOf(false) }
+
+    /*LaunchedEffect(uiState.error) {
+        uiState.error?.let { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            productQuotationViewModel._uiState.update { it.copy(error = null) } // Limpia el error
+        }
+    }*/
 
     /** Switch Value */
     val switchData =
@@ -158,7 +167,7 @@ fun QuotationScreen(
         }
         /** Button save quotation */
         PcsButton(
-            isVisible = uiState.isLoading,
+            isVisible = uiState.isQuotationSaved,
             onClick = {
                 productQuotationViewModel.onAddQuotation {
                     productQuotationViewModel.clearFields()
@@ -176,20 +185,16 @@ fun QuotationScreen(
         )
         if (showDialog) {
             PcSAlertDialog(
-                data = ,
-                title = "Cargando datos",
-                message = "Por favor espera mientras cargamos la información.",
+                data = AlertDialogData(
+                    title = stringResource(R.string.quotation_screen_alert_dialog_title),
+                    message = "",
+                    confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
+                    dismissButtonText = "",
+                    onConfirm = { showDialog = false },
+                    dismissOnClickOutside = false,
+                    type = AlertDialogType.ANIMATION,
+                    onDismiss = {}),
                 lottieAnimation = R.raw.pcs_success_anim,
-                confirmButtonText = "Aceptar",
-                dismissButtonText = "Cancelar",
-                onConfirm = {
-                    println("Confirmado")
-                    showDialog = false
-                },
-                onDismiss = {
-                    println("Cancelado")
-                    showDialog = false
-                },
                 autoPlayAnimation = true,
                 animationRepeatCount = 1
             )

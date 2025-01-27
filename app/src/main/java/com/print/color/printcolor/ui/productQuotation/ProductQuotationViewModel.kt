@@ -75,13 +75,13 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         _uiState.update { it.copy(paymentMethod = paymentMethod.toString()) }
     }
 
-    private fun showLoading(show: Boolean) {
-        _uiState.update { it.copy(isLoading = show) }
+    private fun isQuotationSaved(show: Boolean) {
+        _uiState.update { it.copy(isQuotationSaved = show) }
     }
 
     fun onAddQuotation(onSuccessQuotation: () -> Unit) {
         viewModelScope.launch {
-            showLoading(true)
+            isQuotationSaved(true)
             val result = withContext(Dispatchers.IO) {
                 firebaseDataBaseService.newQuotation(
                     clientName = _uiState.value.clientName,
@@ -106,9 +106,9 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                 _uiState.update {
                     it.copy(error = "An error has been occurred")
                 }
-                showLoading(false)
+                isQuotationSaved(false)
             }
-            showLoading(false)
+            isQuotationSaved(false)
         }
     }
 
@@ -148,7 +148,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         val cfdi: String = "",
         val email: String = "",
         val paymentMethod: String = "",
-        val isLoading: Boolean = false,
+        val isQuotationSaved: Boolean = false,
         val error: String? = null
     ) {
         fun isValidQuotation() =

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">PrintColor</string>
 
+    //Alert Dialog Strings
+    <string name="alert_dialog_confirm_button_text">Confirm</string>
+    <string name="alert_dialog_dismiss_button_text">Cancel</string>
+
     //Quotations Screen Strings
     <string name="quotation_screen_title">Quotation, Hello %1$s!</string>
     <string name="quotation_screen_switch_label">Billing</string>
@@ -9,6 +13,7 @@
     <string name="quotation_screen_company_name">Company Name</string>
     <string name="quotation_screen_extra_data">Extra Data</string>
     <string name="quotation_screen_save_quotation">Save Quotation</string>
+    <string name="quotation_screen_alert_dialog_title">Quotation saved successfully!</string>
 
     //Billing Screen Strings
     <string name="quotation_screen_billing_tax_regime">Regimen Fiscal</string>

@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name">PrintColor</string>
 
+    //Alert Dialog Strings
+    <string name="alert_dialog_confirm_button_text">Confirmar</string>
+    <string name="alert_dialog_dismiss_button_text">Cancelar</string>
+
     //Quotations Screen Strings
     <string name="quotation_screen_title">Cotización, Hola %1$s!</string>
     <string name="quotation_screen_switch_label">Facturación</string>
@@ -10,6 +14,7 @@
     <string name="quotation_screen_company_name">Nombre de la empresa</string>
     <string name="quotation_screen_extra_data">Datos Extras</string>
     <string name="quotation_screen_save_quotation">Guardar cotización</string>
+    <string name="quotation_screen_alert_dialog_title">Cotización guardada con éxito!</string>
 
 
     //Billing Screen Strings
