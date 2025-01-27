@@ -21,5 +21,6 @@ data class TextFieldData(
 
 enum class TextFieldType {
     FILLED,
-    OUTLINED
+    OUTLINED,
+    OUTLINED_LIST
 }

@@ -26,7 +26,11 @@
     <string name="quotation_screen_billing_municipality">Municipio</string>
     <string name="quotation_screen_billing_cfdi">CFDI</string>
     <string name="quotation_screen_billing_email">Correo Electrónico</string>
-    <string name="quotation_screen_billing_payment_method">Forma de pago</string>
-
+    <string name="quotation_screen_billing_payment_method">Seleccione la forma de pago</string>
+    <string-array name="quotation_screen_billing_payment_method_list">
+        <item>Transferencia Bancaria</item>
+        <item>Efectivo</item>
+        <item>Tarjeta de Crédito/Debito</item>
+    </string-array>
 
 </resources>
