@@ -1,7 +1,10 @@
 package com.print.color.printcolor.data.network
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.print.color.printcolor.data.response.QuotationResponse
+import com.print.color.printcolor.domain.model.Quotation
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import java.util.Date
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -59,5 +62,12 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
 
     private fun generateProductId(): String {
         return Date().time.toString()
+    }
+
+    /** Get all Quotation */
+    suspend fun getAllProducts(): List<Quotation> {
+        return firebaseFireStore.collection(QUOTATION_PATH).get().await().map { quotation ->
+            quotation.toObject(QuotationResponse::class.java).toDomain()
+        }
     }
 }

@@ -10,4 +10,5 @@ sealed class Routes(val route: String) {
     object Quotation : Routes("quotation")
     object Settings : Routes("settings")
     object Home : Routes("home")
+    object QuotationList : Routes("quotationList")
 }

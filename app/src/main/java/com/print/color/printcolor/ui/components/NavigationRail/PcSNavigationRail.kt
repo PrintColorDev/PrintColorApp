@@ -13,8 +13,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -51,6 +53,8 @@ import com.print.color.printcolor.ui.home.HomeScreen
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.productQuotation.QuotationScreen
 import com.print.color.printcolor.ui.profile.ProfileScreen
+import com.print.color.printcolor.ui.quotationList.QuotationListScreen
+import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.settings.SettingsScreen
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
@@ -58,6 +62,7 @@ import com.print.color.printcolor.ui.theme.PrintColorTheme
 @Composable
 fun PcSNavigationRail(
     productQuotationViewModel: ProductQuotationViewModel,
+    quotationListViewModel: QuotationListViewModel,
     //onAddQuotationSave: () -> Unit
 ) {
     val items = listOf(
@@ -72,7 +77,14 @@ fun PcSNavigationRail(
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
             hasNews = false,
+        ),
+        NavigationRailData(
+            title = "QuotationList",
+            selectedIcon = Icons.Filled.Menu,
+            unselectedIcon = Icons.Outlined.Menu,
+            hasNews = false,
         )
+
     )
 
     val context = LocalContext.current
@@ -99,6 +111,8 @@ fun PcSNavigationRail(
                             when (items[index].title) {
                                 "Profile" -> navController.navigate(Routes.Profile.route)
                                 "Home" -> navController.navigate(Routes.Home.route)
+                                "Settings" -> navController.navigate(Routes.Settings.route)
+                                "QuotationList" -> navController.navigate(Routes.QuotationList.route)
                             }
                         },
                         navController = navController
@@ -123,6 +137,11 @@ fun PcSNavigationRail(
                     }
                     composable(Routes.Home.route) {
                         HomeScreen()
+                    }
+                    composable(Routes.QuotationList.route) {
+                        QuotationListScreen(
+                            quotationListViewModel = quotationListViewModel
+                        )
                     }
                 }
             }

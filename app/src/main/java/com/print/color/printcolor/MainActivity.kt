@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.print.color.printcolor.ui.components.NavigationRail.PcSNavigationRail
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
+import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val addProductViewModel: ProductQuotationViewModel by viewModels()
+    val quotationViewModel: QuotationListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             PrintColorTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    PcSNavigationRail(addProductViewModel) /*{
+                    PcSNavigationRail(
+                        productQuotationViewModel = addProductViewModel,
+                        quotationListViewModel = quotationViewModel,
+                    ) /*{
 
                         addProductViewModel.uiState.collect {
 
