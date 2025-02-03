@@ -30,7 +30,10 @@
     <string-array name="quotation_screen_billing_payment_method_list">
         <item>Transferencia Bancaria</item>
         <item>Efectivo</item>
-        <item>Tarjeta de Crédito/Debito</item>
+        <item>Tarjeta de Crédito</item>
+        <item>Tarjeta de Debito</item>
     </string-array>
 
+    //Quotation List Screen Strings
+    <string name="quotation_list_screen_search_bar">Buscar</string>
 </resources>

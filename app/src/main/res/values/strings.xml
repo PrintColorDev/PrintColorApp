@@ -29,6 +29,10 @@
         <item>Bank transfer</item>
         <item>Cash</item>
         <item>Credit/Debit Card</item>
+        <item>Debit Card</item>
     </string-array>
+
+    //Quotation List Screen Strings
+    <string name="quotation_list_screen_search_bar">Search</string>
 
 </resources>

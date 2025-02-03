@@ -7,6 +7,7 @@ val Pink = Color(0xFFE91E63)
 val LightBlue = Color(0xFF03A9F4)
 val Yellow = Color(0xFFFFC107)
 val White = Color(0xFFFFFFFF)
+val Green = Color(0xFF8BC34A)
 
 // Extended colors for more flexibility
 val DarkGray = Color(0xFF333333)
