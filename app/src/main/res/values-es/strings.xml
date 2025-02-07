@@ -36,4 +36,27 @@
 
     //Quotation List Screen Strings
     <string name="quotation_list_screen_search_bar">Buscar</string>
+    <string name="quotation_list_screen_tooltip_action_step1">Paso 1</string>
+    <string name="quotation_list_screen_tooltip_title_step1">Cotización</string>
+    <string name="quotation_list_screen_tooltip_description_step1">En espera de ser aprobada y posible pago pendiente.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step2">Paso 2</string>
+    <string name="quotation_list_screen_tooltip_title_step2">Cotización Aprobada</string>
+    <string name="quotation_list_screen_tooltip_description_step2">Pago del 50% realizado, pendiente de comenzar con diseño.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step3">Paso 3</string>
+    <string name="quotation_list_screen_tooltip_title_step3">Diseño</string>
+    <string name="quotation_list_screen_tooltip_description_step3">Cotización en proceso diseño, posibles cambios por parte del cliente.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step4">Paso 4</string>
+    <string name="quotation_list_screen_tooltip_title_step4">Areá de cortado</string>
+    <string name="quotation_list_screen_tooltip_description_step4">Pedido en proceso de impresión, pendiente/finalización de su corte.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step5">Paso 5</string>
+    <string name="quotation_list_screen_tooltip_title_step5">Entrega</string>
+    <string name="quotation_list_screen_tooltip_description_step5">Pedido en proceso de entrega, pendiente de su recepción o de su entrega.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step6">Paso 6</string>
+    <string name="quotation_list_screen_tooltip_title_step6">Encuesta</string>
+    <string name="quotation_list_screen_tooltip_description_step6">Encuesta enviada al cliente, pendiente de su respuesta.</string>
 </resources>

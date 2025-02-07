@@ -34,5 +34,28 @@
 
     //Quotation List Screen Strings
     <string name="quotation_list_screen_search_bar">Search</string>
+    <string name="quotation_list_screen_tooltip_action_step1">Paso 1</string>
+    <string name="quotation_list_screen_tooltip_title_step1">Cotización</string>
+    <string name="quotation_list_screen_tooltip_description_step1">En espera de ser aprobada y posible pago pendiente.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step2">Paso 1</string>
+    <string name="quotation_list_screen_tooltip_title_step2">Cotización</string>
+    <string name="quotation_list_screen_tooltip_description_step2">En espera de ser aprobada y posible pago pendiente.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step3">Paso 2</string>
+    <string name="quotation_list_screen_tooltip_title_step3">Cotización Aprobada</string>
+    <string name="quotation_list_screen_tooltip_description_step3">Pago del 50% realizado, pendiente de comenzar con diseño.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step4">Paso 1</string>
+    <string name="quotation_list_screen_tooltip_title_step4">Cotización</string>
+    <string name="quotation_list_screen_tooltip_description_step4">En espera de ser aprobada y posible pago pendiente.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step5">Paso 2</string>
+    <string name="quotation_list_screen_tooltip_title_step5">Cotización Aprobada</string>
+    <string name="quotation_list_screen_tooltip_description_step5">Pago del 50% realizado, pendiente de comenzar con diseño.</string>
+
+    <string name="quotation_list_screen_tooltip_action_step6">Paso 1</string>
+    <string name="quotation_list_screen_tooltip_title_step6">Cotización</string>
+    <string name="quotation_list_screen_tooltip_description_step6">En espera de ser aprobada y posible pago pendiente.</string>
 
 </resources>
