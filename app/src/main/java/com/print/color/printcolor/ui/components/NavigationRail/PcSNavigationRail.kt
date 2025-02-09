@@ -10,14 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.FloatingActionButton
@@ -41,6 +34,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -57,6 +52,8 @@ import com.print.color.printcolor.ui.quotationList.QuotationListScreen
 import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.settings.SettingsScreen
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.R
+
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
@@ -65,26 +62,30 @@ fun PcSNavigationRail(
     quotationListViewModel: QuotationListViewModel,
     //onAddQuotationSave: () -> Unit
 ) {
+    val homeOption = stringResource(R.string.navigation_rail_home)
+    val settingsOption = stringResource(R.string.navigation_rail_settings)
+    val quotationsOption = stringResource(R.string.navigation_rail_quotations)
+    val profileOption = stringResource(R.string.navigation_rail_profile)
+
     val items = listOf(
         NavigationRailData(
-            title = "Home",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
+            title = homeOption,
+            selectedIcon = painterResource(R.drawable.ic_pcs_home_filled),
+            unselectedIcon = painterResource(R.drawable.ic_pcs_home_outlined),
             hasNews = false,
         ),
         NavigationRailData(
-            title = "Settings",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
+            title = settingsOption,
+            selectedIcon = painterResource(R.drawable.ic_pcs_settings_filled),
+            unselectedIcon = painterResource(R.drawable.ic_pcs_settings_outlined),
             hasNews = false,
         ),
         NavigationRailData(
-            title = "QuotationList",
-            selectedIcon = Icons.Filled.Menu,
-            unselectedIcon = Icons.Outlined.Menu,
+            title = quotationsOption,
+            selectedIcon = painterResource(R.drawable.ic_pcs_list_filled),
+            unselectedIcon = painterResource(R.drawable.ic_pcs_list_outlined),
             hasNews = false,
         )
-
     )
 
     val context = LocalContext.current
@@ -109,10 +110,10 @@ fun PcSNavigationRail(
                         onNavigate = { index ->
                             selectedItemIndex = index
                             when (items[index].title) {
-                                "Profile" -> navController.navigate(Routes.Profile.route)
-                                "Home" -> navController.navigate(Routes.Home.route)
-                                "Settings" -> navController.navigate(Routes.Settings.route)
-                                "QuotationList" -> navController.navigate(Routes.QuotationList.route)
+                                profileOption -> navController.navigate(Routes.Profile.route)
+                                homeOption -> navController.navigate(Routes.Home.route)
+                                settingsOption -> navController.navigate(Routes.Settings.route)
+                                quotationsOption -> navController.navigate(Routes.Quotations.route)
                             }
                         },
                         navController = navController
@@ -138,7 +139,7 @@ fun PcSNavigationRail(
                     composable(Routes.Home.route) {
                         HomeScreen()
                     }
-                    composable(Routes.QuotationList.route) {
+                    composable(Routes.Quotations.route) {
                         QuotationListScreen(
                             quotationListViewModel = quotationListViewModel
                         )
@@ -173,7 +174,7 @@ fun PcSNavigationSideBar(
                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    painter = painterResource(R.drawable.ic_pcs_add),
                     contentDescription = "Add Quotation"
                 )
             }
@@ -224,7 +225,7 @@ fun NavigationIcon(
         }
     ) {
         Icon(
-            imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
+            painter = if (selected) item.selectedIcon else item.unselectedIcon,
             contentDescription = item.title
         )
     }

@@ -14,5 +14,6 @@ data class Quotation(
     val municipality: String,
     val cfdi: String,
     val email: String,
-    val paymentMethod: String
+    val paymentMethod: String,
+    val status: String,
 )

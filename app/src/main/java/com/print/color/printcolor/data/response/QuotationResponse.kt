@@ -17,7 +17,8 @@ data class QuotationResponse(
     val municipality: String = "",
     val cfdi: String = "",
     val email: String = "",
-    val paymentMethod: String = ""
+    val paymentMethod: String = "",
+    val status: String = ""
 ) {
     fun toDomain(): Quotation {
         return Quotation(
@@ -34,7 +35,8 @@ data class QuotationResponse(
             municipality = municipality,
             cfdi = cfdi,
             email = email,
-            paymentMethod = paymentMethod
+            paymentMethod = paymentMethod,
+            status = status
         )
     }
 

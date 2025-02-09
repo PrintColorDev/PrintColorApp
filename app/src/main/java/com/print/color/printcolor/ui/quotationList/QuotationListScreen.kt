@@ -2,7 +2,6 @@ package com.print.color.printcolor.ui.quotationList
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,18 +23,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,7 +46,6 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldTy
 import com.print.color.printcolor.ui.components.ToolTip.PcSRichTooltip
 import com.print.color.printcolor.ui.components.ToolTip.model.ToolTipData
 import com.print.color.printcolor.ui.theme.PrintColorTheme
-import kotlinx.coroutines.launch
 
 
 /*@Preview(
@@ -66,7 +59,6 @@ fun QuotationListScreen(
     quotationListViewModel: QuotationListViewModel,
     modifier: Modifier = Modifier
 ) {
-
     val uiState by quotationListViewModel.uiState.collectAsState()
     var searchBarText by remember { mutableStateOf("") }
 
@@ -133,7 +125,6 @@ fun PcSSteps(modifier: Modifier = Modifier) {
                     shape = RoundedCornerShape(8.dp)
                 )
                 .fillMaxWidth()
-                //.padding(all = 8.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -254,26 +245,42 @@ fun QuotationList(isLoading: Boolean, quotations: List<Quotation>, searchBarText
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            items(filteredData.chunked(2)) { rowItems -> // Agrupa los elementos en pares
+            items(filteredData.chunked(2)) { rowItems ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp) // Espacio entre columnas
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     rowItems.forEach { quotation ->
                         Card(
                             modifier = Modifier
-                                .weight(1f) // Cada Card ocupa el mismo espacio
-                                .padding(8.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.LightGray)
+                                .padding(all = 8.dp)
+                                .border(
+                                    BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .weight(1f),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                         ) {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text("ID: ${quotation.id}", fontWeight = FontWeight.Bold)
-                                Text("Contact: ${quotation.contact}")
-                                Text("Client: ${quotation.clientName}")
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(all = 16.dp)) {
+                                Column(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("ID: ${quotation.id}", fontWeight = FontWeight.Bold)
+                                    Text("Contact: ${quotation.contact}")
+                                    Text("Client: ${quotation.clientName}")
+                                }
+                                PcSStepImage(
+                                    icon = R.drawable.ic_pcs_survey,
+                                    contentDescription = "",
+                                    modifier = Modifier.align(
+                                        Alignment.CenterVertically
+                                    )
+                                )
                             }
                         }
                     }
-                    // Si hay un número impar de elementos, agrega un espacio vacío para mantener alineación
                     if (rowItems.size < 2) {
                         Spacer(modifier = Modifier.weight(1f))
                     }
@@ -281,5 +288,4 @@ fun QuotationList(isLoading: Boolean, quotations: List<Quotation>, searchBarText
             }
         }
     }
-
 }

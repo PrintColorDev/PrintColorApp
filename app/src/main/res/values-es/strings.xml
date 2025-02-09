@@ -2,6 +2,13 @@
 <resources>
     <string name="app_name">PrintColor</string>
 
+    //Navigation Rail Strings
+    <string name="navigation_rail_profile">Perfil</string>
+    <string name="navigation_rail_quotations">Cotizaciónes</string>
+    <string name="navigation_rail_quotation">Cotización</string>
+    <string name="navigation_rail_settings">Configuración</string>
+    <string name="navigation_rail_home">Inicio</string>
+
     //Alert Dialog Strings
     <string name="alert_dialog_confirm_button_text">Confirmar</string>
     <string name="alert_dialog_dismiss_button_text">Cancelar</string>
