@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,99 +55,99 @@ import com.print.color.printcolor.ui.settings.SettingsScreen
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.R
 
+@Composable
+fun NavigationGraph(
+    navController: NavHostController,
+    productQuotationViewModel: ProductQuotationViewModel,
+    quotationListViewModel: QuotationListViewModel
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Routes.Quotation.route,
+        //modifier = Modifier.weight(1f)
+    ) {
+        composable(Routes.Profile.route) { ProfileScreen() }
+        composable(Routes.Quotation.route) {
+            QuotationScreen(
+                productQuotationViewModel = productQuotationViewModel,
+                onAddQuotationSave = {}
+            )
+        }
+        composable(Routes.Settings.route) { SettingsScreen() }
+        composable(Routes.Home.route) { HomeScreen() }
+        composable(Routes.Quotations.route) {
+            QuotationListScreen(quotationListViewModel = quotationListViewModel)
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+fun shouldShowNavigationRail(): Boolean {
+    val context = LocalContext.current
+    val windowClass = calculateWindowSizeClass(context as Activity)
+    return windowClass.widthSizeClass != WindowWidthSizeClass.Compact
+}
+
 @Composable
 fun PcSNavigationRail(
     productQuotationViewModel: ProductQuotationViewModel,
     quotationListViewModel: QuotationListViewModel,
-    //onAddQuotationSave: () -> Unit
+    navigationRailList: List<NavigationRailData>
 ) {
+    val navController = rememberNavController()
+    val showNavigationRail = shouldShowNavigationRail()
+    var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
+
     val homeOption = stringResource(R.string.navigation_rail_home)
     val settingsOption = stringResource(R.string.navigation_rail_settings)
     val quotationsOption = stringResource(R.string.navigation_rail_quotations)
     val profileOption = stringResource(R.string.navigation_rail_profile)
 
-    val items = listOf(
-        NavigationRailData(
-            title = homeOption,
-            selectedIcon = painterResource(R.drawable.ic_pcs_home_filled),
-            unselectedIcon = painterResource(R.drawable.ic_pcs_home_outlined),
-            hasNews = false,
-        ),
-        NavigationRailData(
-            title = settingsOption,
-            selectedIcon = painterResource(R.drawable.ic_pcs_settings_filled),
-            unselectedIcon = painterResource(R.drawable.ic_pcs_settings_outlined),
-            hasNews = false,
-        ),
-        NavigationRailData(
-            title = quotationsOption,
-            selectedIcon = painterResource(R.drawable.ic_pcs_list_filled),
-            unselectedIcon = painterResource(R.drawable.ic_pcs_list_outlined),
-            hasNews = false,
-        )
-    )
-
-    val context = LocalContext.current
-    val navController = rememberNavController()
-    val windowClass = calculateWindowSizeClass(context as Activity)
-    val showNavigationRail =
-        windowClass.widthSizeClass != WindowWidthSizeClass.Compact
-    var selectedItemIndex by rememberSaveable {
-        mutableIntStateOf(0)
-    }
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize()
-        ) { paddingValues ->
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
             Row(Modifier.padding(paddingValues)) {
                 if (showNavigationRail) {
                     PcSNavigationSideBar(
-                        items = items,
+                        items = navigationRailList,
                         selectedItemIndex = selectedItemIndex,
                         onNavigate = { index ->
                             selectedItemIndex = index
-                            when (items[index].title) {
-                                profileOption -> navController.navigate(Routes.Profile.route)
-                                homeOption -> navController.navigate(Routes.Home.route)
-                                settingsOption -> navController.navigate(Routes.Settings.route)
-                                quotationsOption -> navController.navigate(Routes.Quotations.route)
-                            }
+                            navigateToRoute(
+                                navController,
+                                navigationRailList[index].title,
+                                homeOption,
+                                settingsOption,
+                                quotationsOption,
+                                profileOption
+                            )
                         },
                         navController = navController
                     )
                 }
-                NavHost(
+                NavigationGraph(
                     navController = navController,
-                    startDestination = Routes.Quotation.route,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    composable(Routes.Profile.route) {
-                        ProfileScreen()
-                    }
-                    composable(Routes.Quotation.route) {
-                        QuotationScreen(
-                            productQuotationViewModel = productQuotationViewModel,
-                            onAddQuotationSave = {}
-                        )
-                    }
-                    composable(Routes.Settings.route) {
-                        SettingsScreen()
-                    }
-                    composable(Routes.Home.route) {
-                        HomeScreen()
-                    }
-                    composable(Routes.Quotations.route) {
-                        QuotationListScreen(
-                            quotationListViewModel = quotationListViewModel
-                        )
-                    }
-                }
+                    productQuotationViewModel = productQuotationViewModel,
+                    quotationListViewModel = quotationListViewModel
+                )
             }
         }
+    }
+}
+
+private fun navigateToRoute(
+    navController: NavController,
+    route: String,
+    homeOption: String,
+    settingsOption: String,
+    quotationsOption: String,
+    profileOption: String
+) {
+    when (route) {
+        profileOption -> navController.navigate(Routes.Profile.route)
+        homeOption -> navController.navigate(Routes.Home.route)
+        settingsOption -> navController.navigate(Routes.Settings.route)
+        quotationsOption -> navController.navigate(Routes.Quotations.route)
     }
 }
 
