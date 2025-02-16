@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
@@ -78,11 +79,12 @@ fun QuotationListScreen(
                         label = "",
                         placeHolder = stringResource(R.string.quotation_list_screen_search_bar),
                         keyboardType = KeyboardType.Text,
-                        leadingIcon = Icons.Rounded.Search
+                        leadingIcon = painterResource(R.drawable.ic_pcs_search)
                     ),
                     modifier = Modifier.weight(1f),
                     onValueChange = { searchBarText = it },
-                    value = searchBarText
+                    value = searchBarText,
+                    imeAction = ImeAction.Search
                 )
                 IconButton(onClick = {}) {
                     Icon(

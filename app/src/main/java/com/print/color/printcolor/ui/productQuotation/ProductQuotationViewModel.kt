@@ -1,5 +1,7 @@
 package com.print.color.printcolor.ui.productQuotation
 
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
@@ -10,7 +12,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import javax.inject.Inject
+
+/** Quotation Screen Constants */
+const val CONTACT_MAX_LENGTH = 10
+const val TAX_REGIME_MAX_LENGTH = 3
+const val RFC_MAX_LENGTH = 13
+const val ZIP_CODE_MAX_LENGTH = 5
+const val CFDI_MAX_LENGTH = 3
 
 @HiltViewModel
 class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService: FirebaseDataBaseService) :
@@ -18,6 +29,22 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
 
     private val _uiState = MutableStateFlow(AddQuotationUIState())
     val uiState: StateFlow<AddQuotationUIState> = _uiState
+
+    var email1 by mutableStateOf("")
+        private set
+
+    val emailHasErrors by derivedStateOf {
+        if (email1.isNotEmpty()) {
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email1).matches()
+        } else {
+            false
+        }
+    }
+
+    fun updateEmail(input: String) {
+        onEmailChanged(input)
+        //email1 = input
+    }
 
     fun onClientNameChanged(name: String) {
         _uiState.update { it.copy(clientName = name.toString()) }
@@ -78,6 +105,8 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
     private fun isQuotationSaved(show: Boolean) {
         _uiState.update { it.copy(isQuotationSaved = show) }
     }
+
+
 
     fun onAddQuotation(onSuccessQuotation: () -> Unit) {
         viewModelScope.launch {
@@ -153,11 +182,11 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
     ) {
         fun isValidQuotation() =
             if (!isBillingRequired) {
-                clientName.isNotBlank() && customerName.isNotBlank() && contact.isNotBlank() && extraData.isNotBlank()
+                clientName.isNotBlank() && customerName.isNotBlank() && contact.length >= CONTACT_MAX_LENGTH && extraData.isNotBlank()
             } else {
-                taxRegime.isNotBlank() && rfc.isNotBlank() && address.isNotBlank()
-                        && zipCode.isNotBlank() && state.isNotBlank() && municipality.isNotBlank()
-                        && cfdi.isNotBlank() && email.isNotBlank() && paymentMethod.isNotBlank()
+                taxRegime.length >= TAX_REGIME_MAX_LENGTH && rfc.length >= RFC_MAX_LENGTH && address.isNotBlank()
+                        && zipCode.length >= ZIP_CODE_MAX_LENGTH && state.isNotBlank() && municipality.isNotBlank()
+                        && cfdi.length >= CFDI_MAX_LENGTH && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && paymentMethod.isNotBlank()
             }
     }
 }

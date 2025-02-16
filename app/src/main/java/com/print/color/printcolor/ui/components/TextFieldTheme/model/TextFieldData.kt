@@ -1,5 +1,6 @@
 package com.print.color.printcolor.ui.components.TextFieldTheme.model
 
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 
@@ -16,7 +17,8 @@ data class TextFieldData(
     val label: String,
     val placeHolder: String,
     val keyboardType: KeyboardType,
-    val leadingIcon: ImageVector? = null
+    val leadingIcon: Painter? = null,
+    val isTextCountRequred: Boolean = false
 )
 
 enum class TextFieldType {

@@ -7,16 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.Face
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,24 +19,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
+import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
 import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
 import com.print.color.printcolor.ui.components.ButtonTheme.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
-import androidx.compose.runtime.setValue
-import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
@@ -109,11 +104,12 @@ fun QuotationScreen(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_company_name),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Rounded.Face
+                leadingIcon = painterResource(R.drawable.ic_pcs_business_center)
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onClientNameChanged(it) },
-            value = nameValue
+            value = nameValue,
+            imeAction = ImeAction.Next
         )
         /** TextField Client Name*/
         PcsTextField(
@@ -122,11 +118,12 @@ fun QuotationScreen(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_client_name),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Rounded.AccountCircle
+                leadingIcon = painterResource(R.drawable.ic_pcs_client)
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onCustomerNameChanged(it) },
-            value = clientNameValue
+            value = clientNameValue,
+            imeAction = ImeAction.Next
         )
         /** TextField Contact */
         PcsTextField(
@@ -135,12 +132,14 @@ fun QuotationScreen(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_contact),
                 keyboardType = KeyboardType.Phone,
-                leadingIcon = Icons.Rounded.Phone
+                leadingIcon = painterResource(R.drawable.ic_pcs_phone),
+                isTextCountRequred = true
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onContactChanged(it) },
             value = contactValue,
-            maxLength = 10
+            maxLength = 10,
+            imeAction = ImeAction.Next
         )
         /** TextField Extra Data */
         PcsTextField(
@@ -149,14 +148,19 @@ fun QuotationScreen(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_extra_data),
                 keyboardType = KeyboardType.Text,
-                leadingIcon = Icons.Rounded.Info
+                leadingIcon = painterResource(R.drawable.ic_pcs_extra_data)
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = {
                 productQuotationViewModel.onExtraDataChanged(it)
             },
             maxLength = 200,
-            value = extraDataValue
+            value = extraDataValue,
+            imeAction = if (uiState.isBillingRequired) {
+                ImeAction.Next
+            } else {
+                ImeAction.Done
+            }
         )
         /** Switch Billing validation */
         PcSSwitch(data = switchData, modifier = Modifier.fillMaxWidth())
@@ -182,7 +186,7 @@ fun QuotationScreen(
                 label = stringResource(R.string.quotation_screen_save_quotation),
                 type = ButtonType.OUTLINED,
                 contentDescription = "Content Description",
-                isEnabled = isButtonEnabled
+                isEnabled = isButtonEnabled && productQuotationViewModel.emailHasErrors
             ),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
