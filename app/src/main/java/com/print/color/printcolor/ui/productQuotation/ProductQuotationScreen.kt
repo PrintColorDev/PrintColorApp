@@ -186,7 +186,7 @@ fun QuotationScreen(
                 label = stringResource(R.string.quotation_screen_save_quotation),
                 type = ButtonType.OUTLINED,
                 contentDescription = "Content Description",
-                isEnabled = isButtonEnabled && productQuotationViewModel.emailHasErrors
+                isEnabled = isButtonEnabled
             ),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )

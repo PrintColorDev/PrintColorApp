@@ -107,7 +107,6 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
     }
 
 
-
     fun onAddQuotation(onSuccessQuotation: () -> Unit) {
         viewModelScope.launch {
             isQuotationSaved(true)
@@ -180,13 +179,15 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         val isQuotationSaved: Boolean = false,
         val error: String? = null
     ) {
-        fun isValidQuotation() =
+        fun isValidQuotation(): Boolean =
             if (!isBillingRequired) {
                 clientName.isNotBlank() && customerName.isNotBlank() && contact.length >= CONTACT_MAX_LENGTH && extraData.isNotBlank()
             } else {
                 taxRegime.length >= TAX_REGIME_MAX_LENGTH && rfc.length >= RFC_MAX_LENGTH && address.isNotBlank()
                         && zipCode.length >= ZIP_CODE_MAX_LENGTH && state.isNotBlank() && municipality.isNotBlank()
-                        && cfdi.length >= CFDI_MAX_LENGTH && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && paymentMethod.isNotBlank()
-            }
+                        && cfdi.length >= CFDI_MAX_LENGTH && android.util.Patterns.EMAIL_ADDRESS.matcher(
+                    email
+                ).matches() && paymentMethod.isNotBlank()
+        }
     }
 }
