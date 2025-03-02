@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,7 +19,7 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
     ViewModel() {
 
     private var _uiState: MutableStateFlow<QuotationListUIState> = MutableStateFlow(QuotationListUIState())
-    val uiState: StateFlow<QuotationListUIState> = _uiState
+    val uiState: StateFlow<QuotationListUIState> = _uiState.asStateFlow()
 
     init {
         getAllProducts()
@@ -26,10 +27,12 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
 
     private fun getAllProducts() {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
             val response = withContext(Dispatchers.IO) {
                 firebaseDataBaseService.getAllProducts()
             }
             _uiState.update { it.copy(quotations = response) }
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 }
