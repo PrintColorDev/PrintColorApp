@@ -65,5 +65,21 @@
     <string name="quotation_list_screen_tooltip_title_step6">Survey</string>
     <string name="quotation_list_screen_tooltip_description_step6">Survey sent to the client, awaiting response.</string>
 
-
+    //Quotation List BottomSheet details
+    <string name="quotation_list_bottom_sheet_details_title">Details</string>
+    <string name="quotation_list_bottom_sheet_details_id">Quotation ID: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_client">Client: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_customer">Customer: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_contact">Contact: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_extra_data">Extra Data: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_is_bill_required">Bill required: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_tax_regime">Tax Regime: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_rfc">RFC: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_address">Address: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_zip_code">Zip code: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_state">State: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_municipality">Municipality: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_cfdi">CFDI: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_email">email: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_payment_method">Payment method: %1$s</string>
 </resources>

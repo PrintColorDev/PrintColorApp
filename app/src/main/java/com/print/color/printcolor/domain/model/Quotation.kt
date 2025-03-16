@@ -3,6 +3,7 @@ package com.print.color.printcolor.domain.model
 data class Quotation(
     val id: String,
     val clientName: String,
+    val customerName: String,
     val contact: String,
     val extraData: String,
     val isBillRequired: Boolean,

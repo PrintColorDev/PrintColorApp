@@ -70,7 +70,7 @@ fun QuotationScreen(
     val switchData =
         SwitchData(
             switchString = stringResource(R.string.quotation_screen_switch_label),
-            isChecked = uiState.isBillingRequired,
+            isChecked = uiState.isBillRequired,
             onCheckedChange = { productQuotationViewModel.isBillingRequired(it) },
             contentDescription = "Switch billing $uiState.isBillingRequired"
         )
@@ -156,7 +156,7 @@ fun QuotationScreen(
             },
             maxLength = 200,
             value = extraDataValue,
-            imeAction = if (uiState.isBillingRequired) {
+            imeAction = if (uiState.isBillRequired) {
                 ImeAction.Next
             } else {
                 ImeAction.Done
@@ -169,7 +169,7 @@ fun QuotationScreen(
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
         )
-        AnimatedVisibility(uiState.isBillingRequired) {
+        AnimatedVisibility(uiState.isBillRequired) {
             BillingScreenFields(productQuotationViewModel = productQuotationViewModel)
         }
         /** Button save quotation */

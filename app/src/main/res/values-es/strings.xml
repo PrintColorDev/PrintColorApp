@@ -66,4 +66,23 @@
     <string name="quotation_list_screen_tooltip_action_step6">Paso 6</string>
     <string name="quotation_list_screen_tooltip_title_step6">Encuesta</string>
     <string name="quotation_list_screen_tooltip_description_step6">Encuesta enviada al cliente, pendiente de su respuesta.</string>
+
+    //Quotation List BottomSheet details
+    <string name="quotation_list_bottom_sheet_details_title">Detalles de la cotización</string>
+    <string name="quotation_list_bottom_sheet_details_id">Cotización ID: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_client">Cliente: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_customer">Empresa: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_contact">Contacto: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_extra_data">Datos extra: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_is_bill_required">Facturación requerida: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_tax_regime">Regimen Fiscal: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_rfc">RFC: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_address">Dirección: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_zip_code">Codigo postal: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_state">Estado: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_municipality">Municipio: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_cfdi">CFDI: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_email">Correo: %1$s</string>
+    <string name="quotation_list_bottom_sheet_details_payment_method">Metodo de pago: %1$s</string>
+
 </resources>

@@ -62,8 +62,8 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         _uiState.update { it.copy(extraData = extraData.toString()) }
     }
 
-    fun isBillingRequired(isBillingEnabled: Boolean) {
-        _uiState.update { it.copy(isBillingRequired = isBillingEnabled) }
+    fun isBillingRequired(isBillEnabled: Boolean) {
+        _uiState.update { it.copy(isBillRequired = isBillEnabled) }
     }
 
     fun onTaxRegimeChanged(taxRegime: String) {
@@ -116,7 +116,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                     customerName = _uiState.value.customerName,
                     contact = _uiState.value.contact,
                     extraData = _uiState.value.extraData,
-                    isBillRequired = _uiState.value.isBillingRequired,
+                    isBillRequired = _uiState.value.isBillRequired,
                     taxRegime = _uiState.value.taxRegime,
                     rfc = _uiState.value.rfc,
                     address = _uiState.value.address,
@@ -147,7 +147,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                 customerName = "",
                 contact = "",
                 extraData = "",
-                isBillingRequired = false,
+                isBillRequired = false,
                 taxRegime = "",
                 rfc = "",
                 address = "",
@@ -166,7 +166,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         val customerName: String = "",
         val contact: String = "",
         val extraData: String = "",
-        val isBillingRequired: Boolean = false,
+        val isBillRequired: Boolean = false,
         val taxRegime: String = "",
         val rfc: String = "",
         val address: String = "",
@@ -180,7 +180,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         val error: String? = null
     ) {
         fun isValidQuotation(): Boolean =
-            if (!isBillingRequired) {
+            if (!isBillRequired) {
                 clientName.isNotBlank() && customerName.isNotBlank() && contact.length >= CONTACT_MAX_LENGTH && extraData.isNotBlank()
             } else {
                 taxRegime.length >= TAX_REGIME_MAX_LENGTH && rfc.length >= RFC_MAX_LENGTH && address.isNotBlank()

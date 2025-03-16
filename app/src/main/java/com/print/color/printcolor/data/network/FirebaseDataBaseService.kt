@@ -38,7 +38,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
             "customerName" to customerName,
             "contact" to contact,
             "extraData" to extraData,
-            "isBillRequired" to isBillRequired,
+            "billRequired" to isBillRequired,
             "taxRegime" to taxRegime,
             "rfc" to rfc,
             "address" to address,

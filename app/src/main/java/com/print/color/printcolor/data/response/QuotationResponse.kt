@@ -1,5 +1,7 @@
 package com.print.color.printcolor.data.response
 
+import android.util.Log
+import com.google.firebase.database.PropertyName
 import com.print.color.printcolor.domain.model.Quotation
 
 data class QuotationResponse(
@@ -8,7 +10,9 @@ data class QuotationResponse(
     val customerName: String = "",
     val contact: String = "",
     val extraData: String = "",
-    val isBillRequired: Boolean = false,
+    @get:PropertyName("isBillRequired")
+    @set:PropertyName("isBillRequired")
+    var isBillRequired: Boolean = false,
     val taxRegime: String = "",
     val rfc: String = "",
     val address: String = "",
@@ -21,9 +25,11 @@ data class QuotationResponse(
     val status: String = ""
 ) {
     fun toDomain(): Quotation {
+        Log.d("bill", isBillRequired.toString())
         return Quotation(
             id = id,
             clientName = clientName,
+            customerName = customerName,
             contact = contact,
             extraData = extraData,
             isBillRequired = isBillRequired,
@@ -39,5 +45,4 @@ data class QuotationResponse(
             status = status
         )
     }
-
 }
