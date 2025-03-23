@@ -82,4 +82,10 @@
     <string name="quotation_list_bottom_sheet_details_cfdi">CFDI: %1$s</string>
     <string name="quotation_list_bottom_sheet_details_email">email: %1$s</string>
     <string name="quotation_list_bottom_sheet_details_payment_method">Payment method: %1$s</string>
+
+    <string name="quotation_list_bottom_sheet_details_alert_dialog_title">Finish step</string>
+    <string name="quotation_list_bottom_sheet_details_alert_dialog_message">Are you sure you want to finish this step? Remember, you can return to this step at any time.</string>
+
+    <string name="quotation_list_bottom_sheet_details_text_step">Step %1$s</string>
+
 </resources>

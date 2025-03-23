@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import java.util.Date
 import javax.inject.Inject
 
 /** Quotation Screen Constants */
@@ -159,6 +160,10 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                 paymentMethod = ""
             )
         }
+    }
+
+    private fun generateProductStepsId(): String {
+        return Date().time.toString()
     }
 
     data class AddQuotationUIState(

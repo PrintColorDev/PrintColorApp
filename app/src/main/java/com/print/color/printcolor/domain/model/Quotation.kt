@@ -17,4 +17,5 @@ data class Quotation(
     val email: String,
     val paymentMethod: String,
     val status: String,
+    val quotationStepsId: String
 )

@@ -84,5 +84,9 @@
     <string name="quotation_list_bottom_sheet_details_cfdi">CFDI: %1$s</string>
     <string name="quotation_list_bottom_sheet_details_email">Correo: %1$s</string>
     <string name="quotation_list_bottom_sheet_details_payment_method">Metodo de pago: %1$s</string>
+    
+    <string name="quotation_list_bottom_sheet_details_alert_dialog_title">Terminar paso</string>
+    <string name="quotation_list_bottom_sheet_details_alert_dialog_message">¿Estas seguro de que quieres terminar este paso? Recuerda que puedes volver a este paso en cualquier momento.</string>
+    <string name="quotation_list_bottom_sheet_details_text_step">Paso %1$s</string>
 
 </resources>

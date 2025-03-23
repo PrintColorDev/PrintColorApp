@@ -1,9 +1,11 @@
 package com.print.color.printcolor.ui.quotationList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
 import com.print.color.printcolor.domain.model.Quotation
+import com.print.color.printcolor.domain.model.QuotationSteps
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,9 +37,30 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
             _uiState.update { it.copy(isLoading = false) }
         }
     }
+
+    fun getQuotationSteps(quotationStepsId: String) {
+        viewModelScope.launch {
+            //_uiState.update { it.copy(isLoading = true) }
+            val response = withContext(Dispatchers.IO) {
+                firebaseDataBaseService.getQuotationSteps(quotationStepsId)
+            }
+            _uiState.update { it.copy(quotationSteps = response) }
+        }
+    }
+
+    fun updateStep(quotationStepId: String?, stepKey: String, value: Boolean) {
+        viewModelScope.launch {
+            try {
+                firebaseDataBaseService.updateStep(quotationStepId, stepKey, value)
+            } catch (e: Exception) {
+                Log.e("ViewModel", "Error trying to update the step", e)
+            }
+        }
+    }
 }
 
 data class QuotationListUIState(
     val isLoading: Boolean = false,
-    val quotations: List<Quotation> = emptyList()
+    val quotations: List<Quotation> = emptyList(),
+    val quotationSteps: QuotationSteps? = null
 )

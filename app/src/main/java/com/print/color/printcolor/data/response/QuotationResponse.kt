@@ -22,10 +22,11 @@ data class QuotationResponse(
     val cfdi: String = "",
     val email: String = "",
     val paymentMethod: String = "",
-    val status: String = ""
+    val status: String = "",
+    val quotationStepsId: String = ""
 ) {
     fun toDomain(): Quotation {
-        Log.d("bill", isBillRequired.toString())
+        Log.d("quotationStepsId", quotationStepsId.toString())
         return Quotation(
             id = id,
             clientName = clientName,
@@ -42,7 +43,8 @@ data class QuotationResponse(
             cfdi = cfdi,
             email = email,
             paymentMethod = paymentMethod,
-            status = status
+            status = status,
+            quotationStepsId = quotationStepsId
         )
     }
 }

@@ -15,19 +15,40 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
+import com.print.color.printcolor.domain.model.QuotationSteps
 import com.print.color.printcolor.ui.components.ToolTip.PcSRichTooltip
 import com.print.color.printcolor.ui.components.ToolTip.model.ToolTipData
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import com.print.color.printcolor.domain.model.QuotationStep
+import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuotationListSteps(modifier: Modifier = Modifier) {
+fun QuotationListSteps(
+    modifier: Modifier = Modifier,
+    quotationStepList: List<QuotationStep> = emptyList(),
+    quotationSteps: QuotationSteps? = null,
+    quotationListViewModel: QuotationListViewModel
+) {
+
+    /** region variables */
+
+    var showAlertDialog by remember { mutableStateOf(false) }
+
+    /** endregion variables */
+
     PrintColorTheme {
         Card(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
@@ -45,91 +66,57 @@ fun QuotationListSteps(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Column(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    PcSStepImage(icon = R.drawable.ic_pcs_notes, contentDescription = "")
-                    PcSRichTooltip(
-                        modifier = modifier,
-                        data = ToolTipData(
-                            toolTipTitle = stringResource(R.string.quotation_list_screen_tooltip_title_step1),
-                            toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step1),
-                            toolTipActionText = stringResource(R.string.quotation_list_screen_tooltip_action_step1)
+                quotationStepList.forEachIndexed { index, quotationStep ->
+                    Column(
+                        modifier = Modifier,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        PcSStepImage(
+                            icon = quotationStep.quotationIcon,
+                            contentDescription = "",
+                            isCompleted = quotationStep.stepValue,
+                            onClick = { showAlertDialog = true }
                         )
-                    )
-                }
-                PcsStepDivider()
-                Column(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    PcSStepImage(icon = R.drawable.ic_pcs_success, contentDescription = "")
-                    PcSRichTooltip(
-                        data = ToolTipData(
-                            toolTipTitle = stringResource(R.string.quotation_list_screen_tooltip_title_step2),
-                            toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step2),
-                            toolTipActionText = stringResource(R.string.quotation_list_screen_tooltip_action_step2)
+                        PcSRichTooltip(
+                            modifier = modifier,
+                            data = ToolTipData(
+                                toolTipTitle = stringResource(
+                                    R.string.quotation_list_bottom_sheet_details_text_step,
+                                    quotationStep.stepValue
+                                ),
+                                toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step1),
+                                toolTipActionText = stringResource(R.string.quotation_list_bottom_sheet_details_text_step, index)
+                            )
                         )
-                    )
-                }
-                PcsStepDivider()
-                Column(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    PcSStepImage(icon = R.drawable.ic_pcs_design, contentDescription = "")
-                    PcSRichTooltip(
-                        data = ToolTipData(
-                            toolTipTitle = stringResource(R.string.quotation_list_screen_tooltip_title_step3),
-                            toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step3),
-                            toolTipActionText = stringResource(R.string.quotation_list_screen_tooltip_action_step3)
-                        )
-                    )
-                }
-                PcsStepDivider()
-                Column(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    PcSStepImage(icon = R.drawable.ic_pcs_print, contentDescription = "")
-                    PcSRichTooltip(
-                        data = ToolTipData(
-                            toolTipTitle = stringResource(R.string.quotation_list_screen_tooltip_title_step4),
-                            toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step4),
-                            toolTipActionText = stringResource(R.string.quotation_list_screen_tooltip_action_step4)
-                        )
-                    )
-                }
-                PcsStepDivider()
-                Column(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    PcSStepImage(icon = R.drawable.ic_pcs_delivery, contentDescription = "")
-                    PcSRichTooltip(
-                        data = ToolTipData(
-                            toolTipTitle = stringResource(R.string.quotation_list_screen_tooltip_title_step5),
-                            toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step5),
-                            toolTipActionText = stringResource(R.string.quotation_list_screen_tooltip_action_step5)
-                        )
-                    )
-                }
-                PcsStepDivider()
-                Column(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    PcSStepImage(icon = R.drawable.ic_pcs_survey, contentDescription = "")
-                    PcSRichTooltip(
-                        data = ToolTipData(
-                            toolTipTitle = stringResource(R.string.quotation_list_screen_tooltip_title_step6),
-                            toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step6),
-                            toolTipActionText = stringResource(R.string.quotation_list_screen_tooltip_action_step6)
-                        )
-                    )
+                    }
+                    //PcsStepDivider()
                 }
             }
+        }
+        if (showAlertDialog) {
+            PcSAlertDialog(
+                data = AlertDialogData(
+                    title = stringResource(R.string.quotation_list_bottom_sheet_details_alert_dialog_title),
+                    message = stringResource(R.string.quotation_list_bottom_sheet_details_alert_dialog_message),
+                    confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
+                    dismissButtonText = stringResource(R.string.alert_dialog_dismiss_button_text),
+                    onConfirm = {
+                        quotationListViewModel.updateStep(
+                            quotationStepId = quotationSteps?.id,
+                            stepKey = "step4",
+                            value = true
+                        )
+                        showAlertDialog = false
+                    },
+                    onDismiss = { showAlertDialog = false },
+                    dismissOnClickOutside = true,
+                    type = AlertDialogType.CONFIRMATION
+                ),
+                modifier = Modifier,
+                lottieAnimation = R.raw.pcs_success_anim,
+                autoPlayAnimation = true,
+                animationRepeatCount = 1,
+            )
         }
     }
 }

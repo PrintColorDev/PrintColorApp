@@ -103,10 +103,12 @@ fun PcsBottomSheetPreview(modifier: Modifier = Modifier) {
     var showBottomSheet by remember { mutableStateOf(true) }
     var selectedQuotation by remember { mutableStateOf<Quotation?>(null) }
 
+    //val
+
     PcsBottomSheet(
         modifier = modifier,
         sheetContent = {
-            BottomSheetContent(quotation = selectedQuotation)
+            //BottomSheetContent(quotation = selectedQuotation)
         },
         modalBottomSheetData = ModalBottomSheetData(title = "Quotation Details"),
         showBottomSheet = showBottomSheet,

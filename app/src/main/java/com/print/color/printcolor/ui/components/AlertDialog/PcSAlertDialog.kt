@@ -44,100 +44,104 @@ fun PcSAlertDialog(
 ) {
     when (data.type) {
         AlertDialogType.CONFIRMATION -> {
-            AlertDialog(
-                onDismissRequest = {
-                    if (data.dismissOnClickOutside) data.onDismiss()
-                },
-                title = {
-                    Text(
-                        text = data.title,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                text = {
-                    Text(
-                        text = data.message,
-                        fontSize = 16.sp
-                    )
-                },
-                confirmButton = {
-                    TextButton(onClick = data.onConfirm) {
+            PrintColorTheme {
+                AlertDialog(
+                    onDismissRequest = {
+                        if (data.dismissOnClickOutside) data.onDismiss()
+                    },
+                    title = {
                         Text(
-                            text = data.confirmButtonText,
-                            color = Color.Blue
+                            text = data.title,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
                         )
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = data.onDismiss) {
+                    },
+                    text = {
                         Text(
-                            text = data.dismissButtonText,
-                            color = Color.Gray
+                            text = data.message,
+                            fontSize = 16.sp
                         )
+                    },
+                    confirmButton = {
+                        TextButton(onClick = data.onConfirm) {
+                            Text(
+                                text = data.confirmButtonText,
+                                color = Color.Blue
+                            )
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = data.onDismiss) {
+                            Text(
+                                text = data.dismissButtonText,
+                                color = Color.Gray
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         }
 
         AlertDialogType.ANIMATION -> {
-            AlertDialog(
-                modifier = modifier.wrapContentWidth(),
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                onDismissRequest = {
-                    if (data.dismissOnClickOutside) data.onDismiss()
-                },
-                title = {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = data.title,
-                            fontSize = 20.sp
+            PrintColorTheme {
+                AlertDialog(
+                    modifier = modifier.wrapContentWidth(),
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    onDismissRequest = {
+                        if (data.dismissOnClickOutside) data.onDismiss()
+                    },
+                    title = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = data.title,
+                                fontSize = 20.sp
+                            )
+                        }
+                    },
+                    text = {
+                        // Animación Lottie
+                        val composition by rememberLottieComposition(
+                            LottieCompositionSpec.RawRes(
+                                lottieAnimation
+                            )
                         )
-                    }
-                },
-                text = {
-                    // Animación Lottie
-                    val composition by rememberLottieComposition(
-                        LottieCompositionSpec.RawRes(
-                            lottieAnimation
-                        )
-                    )
-                    val progress by animateLottieCompositionAsState(
-                        composition = composition,
-                        iterations = animationRepeatCount,
-                        isPlaying = autoPlayAnimation
-                    )
-
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        LottieAnimation(
+                        val progress by animateLottieCompositionAsState(
                             composition = composition,
-                            progress = progress,
+                            iterations = animationRepeatCount,
+                            isPlaying = autoPlayAnimation
+                        )
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            LottieAnimation(
+                                composition = composition,
+                                progress = progress,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .size(120.dp)
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        PcsButton(
+                            onClick = {
+                                data.onConfirm()
+                            },
+                            data = ButtonData(
+                                label = data.confirmButtonText,
+                                type = ButtonType.TEXT,
+                                contentDescription = "Content Description",
+                            ),
                             modifier = Modifier
-                                .padding(16.dp)
-                                .size(120.dp)
                         )
                     }
-                },
-                confirmButton = {
-                    PcsButton(
-                        onClick = {
-                            data.onConfirm()
-                        },
-                        data = ButtonData(
-                            label = data.confirmButtonText,
-                            type = ButtonType.TEXT,
-                            contentDescription = "Content Description",
-                        ),
-                        modifier = Modifier
-                    )
-                }
-            )
+                )
+            }
         }
     }
 

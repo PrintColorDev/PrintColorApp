@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,9 +36,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.animation.content.Content
 import com.print.color.printcolor.R
 import com.print.color.printcolor.domain.model.Quotation
+import com.print.color.printcolor.domain.model.QuotationStep
 import com.print.color.printcolor.ui.components.BottomSheet.PcsBottomSheet
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetData
 import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
@@ -47,6 +48,7 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.utils.getIconForStep
 import kotlin.collections.chunked
 import kotlin.collections.forEach
 
@@ -120,7 +122,7 @@ fun QuotationListScreen(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                 )
-                QuotationListSteps() // Quotation List Steps
+                QuotationListSteps(quotationListViewModel = quotationListViewModel) // Quotation List Steps
                 QuotationList(
                     uiState.isLoading,
                     uiState.quotations,
@@ -133,7 +135,10 @@ fun QuotationListScreen(
                     PcsBottomSheet(
                         modifier = modifier,
                         sheetContent = {
-                            BottomSheetContent(quotation = selectedQuotation)
+                            BottomSheetContent(
+                                quotation = selectedQuotation,
+                                quotationListViewModel = quotationListViewModel
+                            )
                         },
                         modalBottomSheetData = ModalBottomSheetData(title = "Quotation Details"),
                         showBottomSheet = showBottomSheet,
@@ -189,14 +194,38 @@ fun QuotationList(
 
 /** BottomSheet Content */
 @Composable
-fun BottomSheetContent(quotation: Quotation?) {
+fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationListViewModel) {
+    quotationListViewModel.getQuotationSteps(quotation?.quotationStepsId.orEmpty())
+
+    val uiState by quotationListViewModel.uiState.collectAsState()
+
+    LaunchedEffect(quotation?.quotationStepsId) {
+        quotation?.quotationStepsId?.let { quotationListViewModel.getQuotationSteps(it) }
+        Log.d("BottomSheetContent", "QuotationStepsId: ${quotation?.quotationStepsId}")
+    }
+
+    Log.d("BottomSheetContent", "QuotationSteps: ${uiState.quotationSteps}")
+
     PrintColorTheme {
         Column(modifier = Modifier.padding(16.dp)) {
             if (quotation?.isBillRequired == true)
                 ContentBillRequired(quotation = quotation)
             else
                 NonContentBillRequired(quotation = quotation)
-            QuotationListSteps()
+            val quotationStepList = uiState.quotationSteps?.steps?.map { step ->
+                QuotationStep(
+                    id = step.stepKey,
+                    stepKey = step.stepKey,
+                    stepValue = step.stepValue,
+                    quotationIcon = getIconForStep(step.stepKey)
+                )
+            } ?: emptyList()
+
+            QuotationListSteps(
+                quotationStepList = quotationStepList,
+                quotationSteps = uiState.quotationSteps,
+                quotationListViewModel = quotationListViewModel
+            )
             PcsButton(
                 onClick = {
                 },
@@ -213,10 +242,14 @@ fun BottomSheetContent(quotation: Quotation?) {
     }
 }
 
+
+
 @Composable
 fun ContentBillRequired(quotation: Quotation?) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(modifier = Modifier.weight(1f)) {
