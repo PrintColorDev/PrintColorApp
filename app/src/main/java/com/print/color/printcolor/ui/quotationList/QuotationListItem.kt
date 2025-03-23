@@ -19,12 +19,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.print.color.printcolor.R
 import com.print.color.printcolor.domain.model.Quotation
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
 @Composable
-fun RowScope.QuotationListItem(quotation: Quotation, onQuotationClick: () -> Unit = {}) {
+fun RowScope.QuotationListItem(
+    quotation: Quotation,
+    quotationIcon: Int,
+    onQuotationClick: () -> Unit = {}
+) {
     PrintColorTheme {
         Card(
             modifier = Modifier
@@ -54,7 +57,7 @@ fun RowScope.QuotationListItem(quotation: Quotation, onQuotationClick: () -> Uni
                     Text("Client: ${quotation.customerName}")
                 }
                 PcSStepImage(
-                    icon = R.drawable.ic_pcs_survey,
+                    icon = quotationIcon,
                     contentDescription = "",
                     modifier = Modifier.align(
                         Alignment.CenterVertically

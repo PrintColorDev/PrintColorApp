@@ -23,7 +23,8 @@ data class QuotationResponse(
     val email: String = "",
     val paymentMethod: String = "",
     val status: String = "",
-    val quotationStepsId: String = ""
+    val quotationStepsId: String = "",
+    val currentStep: String = ""
 ) {
     fun toDomain(): Quotation {
         Log.d("quotationStepsId", quotationStepsId.toString())
@@ -44,7 +45,8 @@ data class QuotationResponse(
             email = email,
             paymentMethod = paymentMethod,
             status = status,
-            quotationStepsId = quotationStepsId
+            quotationStepsId = quotationStepsId,
+            currentStep = currentStep
         )
     }
 }

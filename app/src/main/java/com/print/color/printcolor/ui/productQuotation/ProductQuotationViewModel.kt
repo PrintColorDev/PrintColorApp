@@ -126,7 +126,8 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                     municipality = _uiState.value.municipality,
                     cfdi = _uiState.value.cfdi,
                     email = _uiState.value.email,
-                    paymentMethod = _uiState.value.paymentMethod
+                    paymentMethod = _uiState.value.paymentMethod,
+                    currentStep = ""
                 )
             }
             if (result) {
@@ -160,10 +161,6 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                 paymentMethod = ""
             )
         }
-    }
-
-    private fun generateProductStepsId(): String {
-        return Date().time.toString()
     }
 
     data class AddQuotationUIState(

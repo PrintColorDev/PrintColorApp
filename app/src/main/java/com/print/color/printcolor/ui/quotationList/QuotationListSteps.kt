@@ -33,6 +33,8 @@ import com.print.color.printcolor.domain.model.QuotationStep
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP1_ID
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,11 +44,10 @@ fun QuotationListSteps(
     quotationSteps: QuotationSteps? = null,
     quotationListViewModel: QuotationListViewModel
 ) {
-
     /** region variables */
-
     var showAlertDialog by remember { mutableStateOf(false) }
-
+    var selectedStepKey by remember { mutableStateOf<String?>(null) }
+    var currentStepValue by remember { mutableStateOf<Boolean?>(null) }
     /** endregion variables */
 
     PrintColorTheme {
@@ -75,7 +76,11 @@ fun QuotationListSteps(
                             icon = quotationStep.quotationIcon,
                             contentDescription = "",
                             isCompleted = quotationStep.stepValue,
-                            onClick = { showAlertDialog = true }
+                            onClick = {
+                                selectedStepKey = quotationStep.stepKey
+                                //currentStepValue = quotationStep.stepValue
+                                showAlertDialog = true
+                            }
                         )
                         PcSRichTooltip(
                             modifier = modifier,
@@ -101,11 +106,13 @@ fun QuotationListSteps(
                     confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
                     dismissButtonText = stringResource(R.string.alert_dialog_dismiss_button_text),
                     onConfirm = {
-                        quotationListViewModel.updateStep(
-                            quotationStepId = quotationSteps?.id,
-                            stepKey = "step4",
-                            value = true
-                        )
+                        selectedStepKey?.let { stepKey ->
+                            quotationListViewModel.updateQuotationStep(
+                                quotationStepId = quotationSteps?.id,
+                                stepKey = stepKey,
+                                newValue = true
+                            )
+                        }
                         showAlertDialog = false
                     },
                     onDismiss = { showAlertDialog = false },

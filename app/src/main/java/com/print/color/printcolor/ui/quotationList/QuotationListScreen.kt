@@ -48,7 +48,10 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP1_ID
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY1
 import com.print.color.printcolor.utils.getIconForStep
+import com.print.color.printcolor.utils.getQuotationStepList
 import kotlin.collections.chunked
 import kotlin.collections.forEach
 
@@ -122,15 +125,21 @@ fun QuotationListScreen(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                 )
-                QuotationListSteps(quotationListViewModel = quotationListViewModel) // Quotation List Steps
+                /** Quotation List Steps */
+                QuotationListSteps(
+                    quotationListViewModel = quotationListViewModel,
+                    quotationStepList = getQuotationStepList()
+                )
+                /** Quotation List */
                 QuotationList(
                     uiState.isLoading,
                     uiState.quotations,
-                    searchBarText,
+                    quotationIcon = R.drawable.ic_pc_logo,
+                    searchBarText = searchBarText,
                     onQuotationClick = { quotation ->
                         selectedQuotation = quotation
                         showBottomSheet = true
-                    })// Quotation List
+                    })
                 if (showBottomSheet && selectedQuotation != null) {
                     PcsBottomSheet(
                         modifier = modifier,
@@ -156,6 +165,7 @@ fun QuotationList(
     isLoading: Boolean,
     quotations: List<Quotation>,
     searchBarText: String,
+    quotationIcon: Int,
     onQuotationClick: (Quotation) -> Unit
 ) {
     val filteredData = quotations.filter { it.id.contains(searchBarText, ignoreCase = true) }
@@ -178,6 +188,7 @@ fun QuotationList(
                     rowItems.forEach { quotation ->
                         QuotationListItem(
                             quotation = quotation,
+                            quotationIcon = quotationIcon,
                             onQuotationClick = {
                                 onQuotationClick(quotation)
                             }
@@ -241,7 +252,6 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
         }
     }
 }
-
 
 
 @Composable

@@ -7,29 +7,17 @@ import com.print.color.printcolor.data.response.QuotationStepsResponse
 import com.print.color.printcolor.domain.model.Quotation
 import com.print.color.printcolor.domain.model.QuotationStep
 import com.print.color.printcolor.domain.model.QuotationSteps
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
-import kotlin.coroutines.resume
-import com.print.color.printcolor.R
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP1_ID
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP2_ID
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP3_ID
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP4_ID
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP5_ID
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP6_ID
 import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY1
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY2
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY3
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY4
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY5
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY6
 import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_QUOTATION_ICON
 import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_QUOTATION_ID
 import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_QUOTATION_STEPS_MAPS
 import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_VALUE
 import com.print.color.printcolor.utils.generateUniqueId
+import com.print.color.printcolor.utils.getQuotationStepList
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+import kotlin.coroutines.resume
 
 
 class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore: FirebaseFirestore) {
@@ -56,52 +44,13 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         municipality: String,
         cfdi: String,
         email: String,
-        paymentMethod: String
+        paymentMethod: String,
+        currentStep: String
     ): Boolean {
         val id = generateUniqueId()
         val quotationStepsId = generateUniqueId()
 
-        /** Generate new steps */
-        val newSteps = listOf(
-            QuotationStep(
-                id = CONST_QUOTATION_STEP1_ID,
-                stepKey = CONST_QUOTATION_STEP_KEY1,
-                stepValue = false,
-                quotationIcon = R.drawable.ic_pcs_notes
-            ),
-            QuotationStep(
-                id = CONST_QUOTATION_STEP2_ID,
-                stepKey = CONST_QUOTATION_STEP_KEY2,
-                stepValue = false,
-                quotationIcon = R.drawable.ic_pcs_success
-            ),
-            QuotationStep(
-                id = CONST_QUOTATION_STEP3_ID,
-                stepKey = CONST_QUOTATION_STEP_KEY3,
-                stepValue = false,
-                quotationIcon = R.drawable.ic_pcs_design
-            ),
-            QuotationStep(
-                id = CONST_QUOTATION_STEP4_ID,
-                stepKey = CONST_QUOTATION_STEP_KEY4,
-                stepValue = false,
-                quotationIcon = R.drawable.ic_pcs_print
-            ),
-            QuotationStep(
-                id = CONST_QUOTATION_STEP5_ID,
-                stepKey = CONST_QUOTATION_STEP_KEY5,
-                stepValue = false,
-                quotationIcon = R.drawable.ic_pcs_delivery
-            ),
-            QuotationStep(
-                id = CONST_QUOTATION_STEP6_ID,
-                stepKey = CONST_QUOTATION_STEP_KEY6,
-                stepValue = false,
-                quotationIcon = R.drawable.ic_pcs_survey
-            )
-        )
-
-        val stepsSaved = newQuotationSteps(quotationStepsId, newSteps)
+        val stepsSaved = newQuotationSteps(quotationStepsId, getQuotationStepList())
         if (!stepsSaved) {
             Log.d("Firestore", "Error al crear los pasos de cotización")
             return false
@@ -123,7 +72,8 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
             "cfdi" to cfdi,
             "email" to email,
             "paymentMethod" to paymentMethod,
-            "quotationStepsId" to quotationStepsId
+            "quotationStepsId" to quotationStepsId,
+            "currentStep" to currentStep
         )
 
         return suspendCancellableCoroutine { continuation ->
@@ -170,15 +120,19 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
     /** Update Step */
     suspend fun updateStep(quotationStepId: String?, stepKey: String, value: Boolean) {
         try {
-            firebaseFireStore.collection("quotationSteps")
+            val updatePath = "steps.$stepKey.stepValue"
+
+            firebaseFireStore.collection(QUOTATION_STEPS_PATH)
                 .document(quotationStepId.toString())
-                .update(stepKey, value)
+                .update(updatePath, value)
                 .await()
+
             Log.d("Firebase", "Step $stepKey actualizado a $value")
         } catch (e: Exception) {
             Log.e("Firebase", "Error al actualizar el Step", e)
         }
     }
+
 
     /** Get all Quotation */
     suspend fun getAllProducts(): List<Quotation> {

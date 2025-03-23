@@ -48,15 +48,34 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
         }
     }
 
-    fun updateStep(quotationStepId: String?, stepKey: String, value: Boolean) {
+    fun updateQuotationStep(quotationStepId: String?, stepKey: String, newValue: Boolean) {
+
+        val correctStepKey = when (stepKey) {
+            "step_one" -> "step1"
+            "step_two" -> "step2"
+            "step_three" -> "step3"
+            "step_four" -> "step4"
+            "step_five" -> "step5"
+            "step_six" -> "step6"
+            else -> stepKey
+        }
+
         viewModelScope.launch {
-            try {
-                firebaseDataBaseService.updateStep(quotationStepId, stepKey, value)
-            } catch (e: Exception) {
-                Log.e("ViewModel", "Error trying to update the step", e)
+            withContext(Dispatchers.IO) {
+                firebaseDataBaseService.updateStep(quotationStepId, correctStepKey, newValue)
+            }
+            _uiState.update { currentState ->
+                currentState.copy(
+                    quotationSteps = currentState.quotationSteps?.copy(
+                        steps = currentState.quotationSteps?.steps?.map {
+                            if (it.stepKey == stepKey) it.copy(stepValue = newValue) else it
+                        } ?: emptyList()
+                    )
+                )
             }
         }
     }
+
 }
 
 data class QuotationListUIState(
