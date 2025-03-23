@@ -126,13 +126,34 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
                 .document(quotationStepId.toString())
                 .update(updatePath, value)
                 .await()
-
             Log.d("Firebase", "Step $stepKey actualizado a $value")
         } catch (e: Exception) {
             Log.e("Firebase", "Error al actualizar el Step", e)
         }
     }
 
+    suspend fun updateCurrentStep(quotationId: String, currentStep: String) {
+        try {
+            val correctStepKey = when (currentStep) {
+                "step1" -> "step_one"
+                "step2" -> "step_two"
+                "step3" -> "step_three"
+                "step4" -> "step_four"
+                "step5" -> "step_five"
+                "step6" -> "step_six"
+                else -> currentStep
+            }
+            //val updatePath = "$quotationId.currentStep"
+            firebaseFireStore.collection(QUOTATION_PATH)
+                .document(quotationId)
+                .update("currentStep", correctStepKey)
+                .await()
+            Log.d("FirebaseUpdateStep", "Step $correctStepKey actualizado a $correctStepKey")
+
+        } catch (e: Exception) {
+            Log.e("FirebaseUpdateStep", "Error al actualizar el Step", e)
+        }
+    }
 
     /** Get all Quotation */
     suspend fun getAllProducts(): List<Quotation> {

@@ -21,11 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.domain.model.Quotation
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.utils.getIconForStep
 
 @Composable
 fun RowScope.QuotationListItem(
     quotation: Quotation,
-    quotationIcon: Int,
     onQuotationClick: () -> Unit = {}
 ) {
     PrintColorTheme {
@@ -57,7 +57,7 @@ fun RowScope.QuotationListItem(
                     Text("Client: ${quotation.customerName}")
                 }
                 PcSStepImage(
-                    icon = quotationIcon,
+                    icon = getIconForStep(quotation.currentStep),
                     contentDescription = "",
                     modifier = Modifier.align(
                         Alignment.CenterVertically

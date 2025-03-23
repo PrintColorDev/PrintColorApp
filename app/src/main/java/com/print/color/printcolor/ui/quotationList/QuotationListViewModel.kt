@@ -1,6 +1,5 @@
 package com.print.color.printcolor.ui.quotationList
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
@@ -20,7 +19,8 @@ import javax.inject.Inject
 class QuotationListViewModel @Inject constructor(private val firebaseDataBaseService: FirebaseDataBaseService) :
     ViewModel() {
 
-    private var _uiState: MutableStateFlow<QuotationListUIState> = MutableStateFlow(QuotationListUIState())
+    private var _uiState: MutableStateFlow<QuotationListUIState> =
+        MutableStateFlow(QuotationListUIState())
     val uiState: StateFlow<QuotationListUIState> = _uiState.asStateFlow()
 
     init {
@@ -48,8 +48,8 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
         }
     }
 
+    /** Fun to update a stepValur in the stepList */
     fun updateQuotationStep(quotationStepId: String?, stepKey: String, newValue: Boolean) {
-
         val correctStepKey = when (stepKey) {
             "step_one" -> "step1"
             "step_two" -> "step2"
@@ -58,11 +58,15 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
             "step_five" -> "step5"
             "step_six" -> "step6"
             else -> stepKey
-        }
+        } //TODO update this logic in a utils fun
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 firebaseDataBaseService.updateStep(quotationStepId, correctStepKey, newValue)
+                firebaseDataBaseService.updateCurrentStep(
+                    quotationStepId.toString(),
+                    correctStepKey
+                )
             }
             _uiState.update { currentState ->
                 currentState.copy(
@@ -76,6 +80,19 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
         }
     }
 
+    /** Update current step validation */
+    fun updateQuotationStepValidation(stepKey: String): Boolean {
+        val steps = _uiState.value.quotationSteps?.steps ?: return false
+
+        val currentIndex = steps.indexOfFirst { it.stepKey == stepKey }
+        if (currentIndex == -1) return false
+
+        if (currentIndex == 0) return true
+
+        val previousStep = steps.getOrNull(currentIndex - 1) ?: return false
+
+        return previousStep.stepValue
+    }
 }
 
 data class QuotationListUIState(

@@ -1,5 +1,7 @@
 package com.print.color.printcolor.ui.quotationList
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,12 +31,11 @@ import com.print.color.printcolor.ui.components.ToolTip.model.ToolTipData
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import com.print.color.printcolor.domain.model.QuotationStep
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP1_ID
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +49,7 @@ fun QuotationListSteps(
     var showAlertDialog by remember { mutableStateOf(false) }
     var selectedStepKey by remember { mutableStateOf<String?>(null) }
     var currentStepValue by remember { mutableStateOf<Boolean?>(null) }
+    val context = LocalContext.current
     /** endregion variables */
 
     PrintColorTheme {
@@ -77,9 +79,24 @@ fun QuotationListSteps(
                             contentDescription = "",
                             isCompleted = quotationStep.stepValue,
                             onClick = {
-                                selectedStepKey = quotationStep.stepKey
+                                if (quotationListViewModel.updateQuotationStepValidation(
+                                        quotationStep.stepKey
+                                    )
+                                ) {
+                                    selectedStepKey = quotationStep.stepKey
+                                    showAlertDialog = true
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "No puedes actualizar este paso sin antes haber completado el paso anterior, revisa el flujo antes de continuar",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+
+                                //selectedStepKey = quotationStep.stepKey
                                 //currentStepValue = quotationStep.stepValue
-                                showAlertDialog = true
+                                //showAlertDialog = true
                             }
                         )
                         PcSRichTooltip(
@@ -90,7 +107,10 @@ fun QuotationListSteps(
                                     quotationStep.stepValue
                                 ),
                                 toolTipDescription = stringResource(R.string.quotation_list_screen_tooltip_description_step1),
-                                toolTipActionText = stringResource(R.string.quotation_list_bottom_sheet_details_text_step, index)
+                                toolTipActionText = stringResource(
+                                    R.string.quotation_list_bottom_sheet_details_text_step,
+                                    index
+                                )
                             )
                         )
                     }

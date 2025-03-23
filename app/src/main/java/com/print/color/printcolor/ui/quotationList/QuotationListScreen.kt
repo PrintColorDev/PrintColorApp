@@ -134,7 +134,6 @@ fun QuotationListScreen(
                 QuotationList(
                     uiState.isLoading,
                     uiState.quotations,
-                    quotationIcon = R.drawable.ic_pc_logo,
                     searchBarText = searchBarText,
                     onQuotationClick = { quotation ->
                         selectedQuotation = quotation
@@ -165,7 +164,6 @@ fun QuotationList(
     isLoading: Boolean,
     quotations: List<Quotation>,
     searchBarText: String,
-    quotationIcon: Int,
     onQuotationClick: (Quotation) -> Unit
 ) {
     val filteredData = quotations.filter { it.id.contains(searchBarText, ignoreCase = true) }
@@ -188,7 +186,6 @@ fun QuotationList(
                     rowItems.forEach { quotation ->
                         QuotationListItem(
                             quotation = quotation,
-                            quotationIcon = quotationIcon,
                             onQuotationClick = {
                                 onQuotationClick(quotation)
                             }

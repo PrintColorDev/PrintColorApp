@@ -127,7 +127,7 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                     cfdi = _uiState.value.cfdi,
                     email = _uiState.value.email,
                     paymentMethod = _uiState.value.paymentMethod,
-                    currentStep = ""
+                    currentStep = "step_one"
                 )
             }
             if (result) {
