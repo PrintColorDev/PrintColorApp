@@ -1,5 +1,6 @@
 package com.print.color.printcolor.ui.quotationList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
@@ -24,14 +25,16 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
     val uiState: StateFlow<QuotationListUIState> = _uiState.asStateFlow()
 
     init {
-        getAllProducts()
+       //firebaseDataBaseService.ensureIsDeletedExists()
+        getAllQuotations()
     }
 
-    private fun getAllProducts() {
+
+    private fun getAllQuotations() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val response = withContext(Dispatchers.IO) {
-                firebaseDataBaseService.getAllProducts()
+                firebaseDataBaseService.getAllQuotations()
             }
             _uiState.update { it.copy(quotations = response) }
             _uiState.update { it.copy(isLoading = false) }
@@ -93,6 +96,20 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
 
         return previousStep.stepValue
     }
+
+    /** Fun to delete a quotation */
+    fun deleteQuotation(quotationId: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                firebaseDataBaseService.deleteQuotation(quotationId)
+            }
+            /*_uiState.update { currentState ->
+                currentState.copy()
+
+            }*/
+        }
+    }
+
 }
 
 data class QuotationListUIState(

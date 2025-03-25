@@ -24,10 +24,12 @@ data class QuotationResponse(
     val paymentMethod: String = "",
     val status: String = "",
     val quotationStepsId: String = "",
-    val currentStep: String = ""
+    val currentStep: String = "",
+    var deleted: Boolean? = null
 ) {
     fun toDomain(): Quotation {
         Log.d("quotationStepsId", quotationStepsId.toString())
+        Log.d("isDeleted", deleted.toString())
         return Quotation(
             id = id,
             clientName = clientName,
@@ -46,7 +48,8 @@ data class QuotationResponse(
             paymentMethod = paymentMethod,
             status = status,
             quotationStepsId = quotationStepsId,
-            currentStep = currentStep
+            currentStep = currentStep,
+            deleted = deleted ?: false
         )
     }
 }

@@ -18,5 +18,6 @@ data class Quotation(
     val paymentMethod: String,
     val status: String,
     val quotationStepsId: String,
-    val currentStep: String
+    val currentStep: String,
+    val deleted: Boolean
 )

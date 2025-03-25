@@ -92,11 +92,6 @@ fun QuotationListSteps(
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-
-
-                                //selectedStepKey = quotationStep.stepKey
-                                //currentStepValue = quotationStep.stepValue
-                                //showAlertDialog = true
                             }
                         )
                         PcSRichTooltip(

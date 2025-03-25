@@ -89,4 +89,8 @@
     <string name="quotation_list_bottom_sheet_details_alert_dialog_message">¿Estas seguro de que quieres terminar este paso? Recuerda que puedes volver a este paso en cualquier momento.</string>
     <string name="quotation_list_bottom_sheet_details_text_step">Paso %1$s</string>
 
+    <string name="quotation_list_bottom_sheet_details_delete_alert_dialog_title">Borrar Cotización</string>
+    <string name="quotation_list_bottom_sheet_details_delete_alert_dialog_message">¿Estas seguro de que quieres borrar esta cotización?</string>
+
+
 </resources>

@@ -107,7 +107,6 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         _uiState.update { it.copy(isQuotationSaved = show) }
     }
 
-
     fun onAddQuotation(onSuccessQuotation: () -> Unit) {
         viewModelScope.launch {
             isQuotationSaved(true)
@@ -127,7 +126,8 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
                     cfdi = _uiState.value.cfdi,
                     email = _uiState.value.email,
                     paymentMethod = _uiState.value.paymentMethod,
-                    currentStep = "step_one"
+                    currentStep = "step_one",
+                    deleted = false
                 )
             }
             if (result) {

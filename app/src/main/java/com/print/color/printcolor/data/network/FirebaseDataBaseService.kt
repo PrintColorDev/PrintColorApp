@@ -2,6 +2,7 @@ package com.print.color.printcolor.data.network
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import com.print.color.printcolor.data.response.QuotationResponse
 import com.print.color.printcolor.data.response.QuotationStepsResponse
 import com.print.color.printcolor.domain.model.Quotation
@@ -45,7 +46,8 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         cfdi: String,
         email: String,
         paymentMethod: String,
-        currentStep: String
+        currentStep: String,
+        deleted: Boolean
     ): Boolean {
         val id = generateUniqueId()
         val quotationStepsId = generateUniqueId()
@@ -73,7 +75,8 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
             "email" to email,
             "paymentMethod" to paymentMethod,
             "quotationStepsId" to quotationStepsId,
-            "currentStep" to currentStep
+            "currentStep" to currentStep,
+            "deleted" to deleted
         )
 
         return suspendCancellableCoroutine { continuation ->
@@ -132,6 +135,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         }
     }
 
+    /** Fun to update current step */
     suspend fun updateCurrentStep(quotationId: String, currentStep: String) {
         try {
             val correctStepKey = when (currentStep) {
@@ -142,8 +146,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
                 "step5" -> "step_five"
                 "step6" -> "step_six"
                 else -> currentStep
-            }
-            //val updatePath = "$quotationId.currentStep"
+            }// TODO update this logic in a utils fun
             firebaseFireStore.collection(QUOTATION_PATH)
                 .document(quotationId)
                 .update("currentStep", correctStepKey)
@@ -156,10 +159,11 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
     }
 
     /** Get all Quotation */
-    suspend fun getAllProducts(): List<Quotation> {
-        return firebaseFireStore.collection(QUOTATION_PATH).get().await().map { quotation ->
-            quotation.toObject(QuotationResponse::class.java).toDomain()
-        }
+    suspend fun getAllQuotations(): List<Quotation> {
+        return firebaseFireStore.collection(QUOTATION_PATH).get().await()
+            .map { quotation ->
+                quotation.toObject(QuotationResponse::class.java).toDomain()
+            }
     }
 
     /** Get Quotation Steps */
@@ -177,6 +181,18 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         } catch (e: Exception) {
             Log.e("getQuotationStepsFailed", "Error obteniendo pasos de cotización", e)
             null
+        }
+    }
+
+    /** Fun to delete Quotation */
+    suspend fun deleteQuotation(quotationId: String) {
+        try {
+            firebaseFireStore.collection(QUOTATION_PATH)
+                .document(quotationId)
+                .update("deleted", true)
+                .await()
+        } catch (e: Exception) {
+            Log.e("deleteQuotationFailed", "Error al eliminar la cotización", e)
         }
     }
 }

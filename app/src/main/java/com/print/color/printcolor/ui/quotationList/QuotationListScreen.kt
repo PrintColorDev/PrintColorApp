@@ -39,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
 import com.print.color.printcolor.domain.model.Quotation
 import com.print.color.printcolor.domain.model.QuotationStep
+import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
 import com.print.color.printcolor.ui.components.BottomSheet.PcsBottomSheet
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetData
 import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
@@ -166,7 +169,9 @@ fun QuotationList(
     searchBarText: String,
     onQuotationClick: (Quotation) -> Unit
 ) {
-    val filteredData = quotations.filter { it.id.contains(searchBarText, ignoreCase = true) }
+    val filteredData = quotations
+        .filter { !it.deleted }
+        .filter { it.id.contains(searchBarText, ignoreCase = true) }
 
     if (isLoading) {
         Log.d("QuotationList", "Loading...")
@@ -206,6 +211,7 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
     quotationListViewModel.getQuotationSteps(quotation?.quotationStepsId.orEmpty())
 
     val uiState by quotationListViewModel.uiState.collectAsState()
+    var showDeleteAlertDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(quotation?.quotationStepsId) {
         quotation?.quotationStepsId?.let { quotationListViewModel.getQuotationSteps(it) }
@@ -236,6 +242,7 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
             )
             PcsButton(
                 onClick = {
+                    showDeleteAlertDialog = true
                 },
                 data = ButtonData(
                     label = "Delete Quotation",
@@ -245,6 +252,27 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            )
+        }
+        if (showDeleteAlertDialog) {
+            PcSAlertDialog(
+                data = AlertDialogData(
+                    title = stringResource(R.string.quotation_list_bottom_sheet_details_delete_alert_dialog_title),
+                    message = stringResource(R.string.quotation_list_bottom_sheet_details_delete_alert_dialog_message),
+                    confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
+                    dismissButtonText = stringResource(R.string.alert_dialog_dismiss_button_text),
+                    onConfirm = {
+                        quotationListViewModel.deleteQuotation(quotation?.id.orEmpty())
+                        showDeleteAlertDialog = false
+                    },
+                    onDismiss = { showDeleteAlertDialog = false },
+                    dismissOnClickOutside = true,
+                    type = AlertDialogType.CONFIRMATION
+                ),
+                modifier = Modifier,
+                lottieAnimation = R.raw.pcs_success_anim,
+                autoPlayAnimation = true,
+                animationRepeatCount = 1,
             )
         }
     }
