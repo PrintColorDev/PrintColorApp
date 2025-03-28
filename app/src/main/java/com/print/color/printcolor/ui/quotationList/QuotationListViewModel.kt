@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,20 +27,29 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
     val uiState: StateFlow<QuotationListUIState> = _uiState.asStateFlow()
 
     init {
-       //firebaseDataBaseService.ensureIsDeletedExists()
         getAllQuotations()
     }
 
-
     private fun getAllQuotations() {
         viewModelScope.launch {
+            firebaseDataBaseService.getAllQuotations()
+                .onStart { _uiState.update { it.copy(isLoading = true) } }
+                .catch { error ->
+                    Log.e("QuotationListViewModel", "Error al obtener cotizaciones", error)
+                    _uiState.update { it.copy(isLoading = false) }
+                }
+                .collect { quotations ->
+                    _uiState.update { it.copy(quotations = quotations, isLoading = false) }
+                }
+        }
+        /*viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val response = withContext(Dispatchers.IO) {
                 firebaseDataBaseService.getAllQuotations()
             }
             _uiState.update { it.copy(quotations = response) }
             _uiState.update { it.copy(isLoading = false) }
-        }
+        }*/
     }
 
     fun getQuotationSteps(quotationStepsId: String) {

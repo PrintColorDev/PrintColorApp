@@ -3,6 +3,7 @@ package com.print.color.printcolor.data.network
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
+import com.google.firebase.firestore.snapshots
 import com.print.color.printcolor.data.response.QuotationResponse
 import com.print.color.printcolor.data.response.QuotationStepsResponse
 import com.print.color.printcolor.domain.model.Quotation
@@ -15,6 +16,10 @@ import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_QUOTATION_STEPS_MAP
 import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_VALUE
 import com.print.color.printcolor.utils.generateUniqueId
 import com.print.color.printcolor.utils.getQuotationStepList
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -159,12 +164,30 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
     }
 
     /** Get all Quotation */
-    suspend fun getAllQuotations(): List<Quotation> {
+    fun getAllQuotations(): Flow<List<Quotation>> = callbackFlow {
+        val listener = firebaseFireStore.collection(QUOTATION_PATH)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val quotations = snapshot.documents.mapNotNull { document ->
+                        document.toObject(QuotationResponse::class.java)?.toDomain()
+                    }
+                    trySend(quotations).isSuccess
+                }
+            }
+
+        awaitClose { listener.remove() }
+    }
+    /*suspend fun getAllQuotations(): List<Quotation> {
         return firebaseFireStore.collection(QUOTATION_PATH).get().await()
             .map { quotation ->
                 quotation.toObject(QuotationResponse::class.java).toDomain()
             }
-    }
+    }*/
 
     /** Get Quotation Steps */
     suspend fun getQuotationSteps(quotationStepsId: String): QuotationSteps? {

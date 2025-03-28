@@ -51,8 +51,6 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 import com.print.color.printcolor.ui.theme.PrintColorTheme
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP1_ID
-import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY1
 import com.print.color.printcolor.utils.getIconForStep
 import com.print.color.printcolor.utils.getQuotationStepList
 import kotlin.collections.chunked
@@ -141,7 +139,7 @@ fun QuotationListScreen(
                     onQuotationClick = { quotation ->
                         selectedQuotation = quotation
                         showBottomSheet = true
-                    })
+                    })// uso mi lista aqui
                 if (showBottomSheet && selectedQuotation != null) {
                     PcsBottomSheet(
                         modifier = modifier,

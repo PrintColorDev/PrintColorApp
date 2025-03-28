@@ -109,7 +109,9 @@ fun QuotationListSteps(
                             )
                         )
                     }
-                    //PcsStepDivider()
+                    if (index < quotationStepList.size - 1) {
+                        PcsStepDivider()
+                    }
                 }
             }
         }
