@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,9 +29,9 @@ import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.R
 import androidx.compose.runtime.getValue
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData.AlertDialogType
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogDefaultVariants
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 
@@ -40,7 +41,6 @@ fun PcSAlertDialog(
     modifier: Modifier = Modifier,
     autoPlayAnimation: Boolean = true,
     animationRepeatCount: Int = LottieConstants.IterateForever,
-    lottieAnimation: Int,
 ) {
     when (data.type) {
         AlertDialogType.CONFIRMATION -> {
@@ -103,28 +103,30 @@ fun PcSAlertDialog(
                     },
                     text = {
                         // Animación Lottie
-                        val composition by rememberLottieComposition(
-                            LottieCompositionSpec.RawRes(
-                                lottieAnimation
+                        data.lottieAnimation?.let {
+                            val composition by rememberLottieComposition(
+                                LottieCompositionSpec.RawRes(
+                                    data.lottieAnimation
+                                )
                             )
-                        )
-                        val progress by animateLottieCompositionAsState(
-                            composition = composition,
-                            iterations = animationRepeatCount,
-                            isPlaying = autoPlayAnimation
-                        )
-
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            LottieAnimation(
+                            val progress by animateLottieCompositionAsState(
                                 composition = composition,
-                                progress = progress,
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .size(120.dp)
+                                iterations = animationRepeatCount,
+                                isPlaying = autoPlayAnimation
                             )
+
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                LottieAnimation(
+                                    composition = composition,
+                                    progress = progress,
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .size(120.dp)
+                                )
+                            }
                         }
                     },
                     confirmButton = {
@@ -149,11 +151,12 @@ fun PcSAlertDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun PcSAlertDialogPreview(modifier: Modifier = Modifier) {
+fun PcSAlertDialogPreview() {
     PrintColorTheme {
         var showDialog = remember { mutableStateOf(true) }
+        var showDialogAnimation = remember { mutableStateOf(true) }
 
-        val data = AlertDialogData(
+        val dataSample1 = AlertDialogDefaultVariants.alertDialogDefault(
             title = "Alert Dialog Title",
             message = "This is an alert dialog message",
             confirmButtonText = "OK",
@@ -164,13 +167,39 @@ fun PcSAlertDialogPreview(modifier: Modifier = Modifier) {
             dismissOnClickOutside = true
         )
 
-        if (showDialog.value) {
-            Column {
+        val dataSample2 = AlertDialogDefaultVariants.alertDialogAnimation(
+            title = "Alert Dialog Title",
+            message = "This is an alert dialog message",
+            confirmButtonText = "OK",
+            dismissButtonText = "Cancel",
+            onConfirm = {},
+            onDismiss = {},
+            type = AlertDialogType.CONFIRMATION,
+            dismissOnClickOutside = true,
+            lottieAnimation = R.raw.pcs_success_anim
+        )
+
+        Column {
+            Button(onClick = { showDialog.value = true }) {
+                Text(text = "Show Dialog")
+            }
+            Button(onClick = { showDialog.value = true }) {
+                Text(text = "Show Dialog Animation")
+            }
+
+            if (showDialog.value) {
                 PcSAlertDialog(
-                    data = data,
+                    data = dataSample1,
                     autoPlayAnimation = true,
                     animationRepeatCount = 1,
-                    lottieAnimation = R.raw.pcs_success_anim
+                )
+            }
+
+            if (showDialogAnimation.value) {
+                PcSAlertDialog(
+                    data = dataSample2,
+                    autoPlayAnimation = true,
+                    animationRepeatCount = 1,
                 )
             }
         }

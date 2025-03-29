@@ -41,10 +41,9 @@ import com.print.color.printcolor.domain.model.Quotation
 import com.print.color.printcolor.domain.model.QuotationStep
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData.AlertDialogType
 import com.print.color.printcolor.ui.components.BottomSheet.PcsBottomSheet
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetData
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
@@ -267,10 +266,10 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
                     },
                     onDismiss = { showDeleteAlertDialog = false },
                     dismissOnClickOutside = true,
-                    type = AlertDialogType.CONFIRMATION
+                    type = AlertDialogType.CONFIRMATION,
+                    lottieAnimation = R.raw.pcs_success_anim,
                 ),
                 modifier = Modifier,
-                lottieAnimation = R.raw.pcs_success_anim,
                 autoPlayAnimation = true,
                 animationRepeatCount = 1,
             )

@@ -32,9 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.OUTLINED
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData.AlertDialogType
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogDefaultVariants
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
@@ -195,7 +194,7 @@ fun QuotationScreen(
         )
         if (showDialog) {
             PcSAlertDialog(
-                data = AlertDialogData(
+                data = AlertDialogDefaultVariants.alertDialogAnimation(
                     title = stringResource(R.string.quotation_screen_alert_dialog_title),
                     message = "",
                     confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
@@ -203,8 +202,9 @@ fun QuotationScreen(
                     onConfirm = { showDialog = false },
                     dismissOnClickOutside = false,
                     type = AlertDialogType.ANIMATION,
-                    onDismiss = {}),
-                lottieAnimation = R.raw.pcs_success_anim,
+                    onDismiss = {},
+                    lottieAnimation = R.raw.pcs_success_anim,
+                ),
                 autoPlayAnimation = true,
                 animationRepeatCount = 1
             )

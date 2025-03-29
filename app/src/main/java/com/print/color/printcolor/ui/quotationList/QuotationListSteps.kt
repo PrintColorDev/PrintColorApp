@@ -35,7 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.print.color.printcolor.domain.model.QuotationStep
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
+import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData.AlertDialogType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -134,10 +134,10 @@ fun QuotationListSteps(
                     },
                     onDismiss = { showAlertDialog = false },
                     dismissOnClickOutside = true,
-                    type = AlertDialogType.CONFIRMATION
+                    type = AlertDialogType.CONFIRMATION,
+                    lottieAnimation = R.raw.pcs_success_anim,
                 ),
                 modifier = Modifier,
-                lottieAnimation = R.raw.pcs_success_anim,
                 autoPlayAnimation = true,
                 animationRepeatCount = 1,
             )
