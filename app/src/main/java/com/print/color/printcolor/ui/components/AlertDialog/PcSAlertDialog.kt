@@ -27,12 +27,12 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.R
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
-import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
-import com.print.color.printcolor.ui.components.ButtonTheme.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 
 @Composable
 fun PcSAlertDialog(
@@ -132,7 +132,7 @@ fun PcSAlertDialog(
                             onClick = {
                                 data.onConfirm()
                             },
-                            data = ButtonData(
+                            data = ButtonThemeDefaultVariants.buttonDefaultData(
                                 label = data.confirmButtonText,
                                 type = ButtonType.TEXT,
                                 contentDescription = "Content Description",

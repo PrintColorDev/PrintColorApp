@@ -44,9 +44,10 @@ import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogDat
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
 import com.print.color.printcolor.ui.components.BottomSheet.PcsBottomSheet
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetData
-import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
-import com.print.color.printcolor.ui.components.ButtonTheme.ButtonType
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
@@ -242,10 +243,11 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
                 onClick = {
                     showDeleteAlertDialog = true
                 },
-                data = ButtonData(
+                data = ButtonThemeDefaultVariants.buttonDataWithIcon(
                     label = "Delete Quotation",
-                    type = ButtonType.OUTLINED,
+                    type = ButtonType.TONAL,
                     contentDescription = "Content Description",
+                    icon = painterResource(R.drawable.ic_pcs_delete)
                 ),
                 modifier = Modifier
                     .fillMaxWidth()

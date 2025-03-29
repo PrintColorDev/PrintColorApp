@@ -33,13 +33,16 @@ import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogType
-import com.print.color.printcolor.ui.components.ButtonTheme.ButtonData
-import com.print.color.printcolor.ui.components.ButtonTheme.ButtonType
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.OUTLINED
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 
 @Composable
@@ -100,7 +103,7 @@ fun QuotationScreen(
         /** TextField Customer Name*/
         PcsTextField(
             data = TextFieldData(
-                textFieldType = OUTLINED,
+                textFieldType = TextFieldType.OUTLINED,
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_company_name),
                 keyboardType = KeyboardType.Text,
@@ -114,7 +117,7 @@ fun QuotationScreen(
         /** TextField Client Name*/
         PcsTextField(
             data = TextFieldData(
-                textFieldType = OUTLINED,
+                textFieldType = TextFieldType.OUTLINED,
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_client_name),
                 keyboardType = KeyboardType.Text,
@@ -128,7 +131,7 @@ fun QuotationScreen(
         /** TextField Contact */
         PcsTextField(
             data = TextFieldData(
-                textFieldType = OUTLINED,
+                textFieldType = TextFieldType.OUTLINED,
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_contact),
                 keyboardType = KeyboardType.Phone,
@@ -144,7 +147,7 @@ fun QuotationScreen(
         /** TextField Extra Data */
         PcsTextField(
             data = TextFieldData(
-                textFieldType = OUTLINED,
+                textFieldType = TextFieldType.OUTLINED,
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_extra_data),
                 keyboardType = KeyboardType.Text,
@@ -182,7 +185,7 @@ fun QuotationScreen(
                     showDialog = true
                 }
             },
-            data = ButtonData(
+            data = ButtonThemeDefaultVariants.buttonDefaultData(
                 label = stringResource(R.string.quotation_screen_save_quotation),
                 type = ButtonType.OUTLINED,
                 contentDescription = "Content Description",
