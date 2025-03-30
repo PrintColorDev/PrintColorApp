@@ -1,6 +1,9 @@
 package com.print.color.printcolor.ui.components.ButtonTheme
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +22,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
@@ -119,6 +123,9 @@ fun PcsButton(
 @Preview(showBackground = true)
 @Composable
 fun PcsButtonPreview() {
+    //PrintColorTheme {
+    val indication = LocalIndication.current
+    val interactionSource = remember { MutableInteractionSource() }
     PrintColorTheme {
         Column(modifier = Modifier.fillMaxSize()) {
             /** region Button without icon */
@@ -127,7 +134,11 @@ fun PcsButtonPreview() {
                 type = ELEVATED,
                 contentDescription = "Content Description"
             )
-            PcsButton(onClick = {}, data = buttonElevatedData, modifier = Modifier)
+            PcsButton(
+                onClick = {}, data = buttonElevatedData, modifier = Modifier.indication(
+                    indication = indication, interactionSource = interactionSource
+                )
+            )
 
             val buttonOutlinedData = ButtonThemeDefaultVariants.buttonDefaultData(
                 label = "Outlined",
@@ -188,7 +199,7 @@ fun PcsButtonPreview() {
                 contentDescription = "Content Description",
                 icon = painterResource(R.drawable.ic_pc_logo),
 
-            )
+                )
             PcsButton(onClick = {}, data = buttonFilledDataWithIcon, modifier = Modifier)
 
             val buttonTonalDataWithIcon = ButtonThemeDefaultVariants.buttonDataWithIcon(
@@ -198,7 +209,7 @@ fun PcsButtonPreview() {
                 icon = painterResource(R.drawable.ic_pc_logo),
             )
             PcsButton(onClick = {}, data = buttonTonalDataWithIcon, modifier = Modifier)
-
         }
+        //}
     }
 }
