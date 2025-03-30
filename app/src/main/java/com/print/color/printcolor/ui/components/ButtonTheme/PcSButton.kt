@@ -123,7 +123,6 @@ fun PcsButton(
 @Preview(showBackground = true)
 @Composable
 fun PcsButtonPreview() {
-    //PrintColorTheme {
     val indication = LocalIndication.current
     val interactionSource = remember { MutableInteractionSource() }
     PrintColorTheme {
@@ -210,6 +209,5 @@ fun PcsButtonPreview() {
             )
             PcsButton(onClick = {}, data = buttonTonalDataWithIcon, modifier = Modifier)
         }
-        //}
     }
 }
