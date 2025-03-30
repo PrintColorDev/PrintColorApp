@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
+import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
 @Composable
@@ -55,7 +56,7 @@ fun PcSSwitch(modifier: Modifier = Modifier, data: SwitchData) {
 fun PcSSwitchPreview(modifier: Modifier = Modifier) {
     var switchValue by remember { mutableStateOf(false) }
     val switchData =
-        SwitchData(
+        SwitchDefaultVariants.switchDefault(
             switchString = "Switch State: $switchValue",
             isChecked = switchValue,
             onCheckedChange = { switchValue = it },

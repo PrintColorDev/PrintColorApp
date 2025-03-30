@@ -26,7 +26,7 @@ data class ChipData(
 }
 
 /**
- * Object that contains the default variants of the button.
+ * Object that contains the default variants of the ChipData.
  * */
 object ChipsDefaultVariants {
     fun chipAssist(

@@ -13,3 +13,19 @@ data class SwitchData(
     val onCheckedChange: (Boolean) -> Unit,
     val contentDescription: String
 )
+
+/**
+ * Object that contains the default variants of the Switch.
+ * */
+object SwitchDefaultVariants {
+    fun switchDefault(
+        switchString: String,
+        isChecked: Boolean,
+        onCheckedChange: (Boolean) -> Unit,
+        contentDescription: String) = SwitchData(
+            switchString = switchString,
+            isChecked = isChecked,
+            onCheckedChange = onCheckedChange,
+            contentDescription = contentDescription
+        )
+}

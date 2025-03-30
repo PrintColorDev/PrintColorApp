@@ -31,18 +31,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData.AlertDialogType
 import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogDefaultVariants
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
+import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchDefaultVariants
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
 
 @Composable
 fun QuotationScreen(
@@ -70,7 +69,7 @@ fun QuotationScreen(
 
     /** Switch Value */
     val switchData =
-        SwitchData(
+        SwitchDefaultVariants.switchDefault(
             switchString = stringResource(R.string.quotation_screen_switch_label),
             isChecked = uiState.isBillRequired,
             onCheckedChange = { productQuotationViewModel.isBillingRequired(it) },
