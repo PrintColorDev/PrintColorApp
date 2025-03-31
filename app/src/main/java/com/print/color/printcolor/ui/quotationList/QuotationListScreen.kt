@@ -3,6 +3,7 @@ package com.print.color.printcolor.ui.quotationList
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -59,8 +59,10 @@ import com.print.color.printcolor.ui.components.ChipsTheme.rememberCheckState
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY6
 import com.print.color.printcolor.utils.getIconForStep
 import com.print.color.printcolor.utils.getQuotationStepList
+import com.print.color.printcolor.utils.getStringResource
 import kotlin.collections.chunked
 import kotlin.collections.forEach
 
@@ -90,6 +92,8 @@ fun QuotationListScreen(
     var selectedChipIndex by remember { mutableStateOf<Int?>(null) }
 
     val context = LocalContext.current
+
+    var filteredQuotations by remember { mutableStateOf(uiState.quotations) }
 
     PrintColorTheme {
         Scaffold { contentPading ->
@@ -144,12 +148,18 @@ fun QuotationListScreen(
                         .align(Alignment.CenterHorizontally),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    getChipFilterList(checkState.value).forEachIndexed { index, chipData ->
+                    getChipFilterList(
+                        isSelected = checkState.value,
+                    ).forEachIndexed { index, chipData ->
                         PcSChip(
                             data = chipData,
                             onClick = {
                                 selectedChipIndex = index
-                                handleChipClick(context, chipData.text)
+                                filteredQuotations = handleChipClick(
+                                    context = context,
+                                    chipText = chipData.text,
+                                    quotations = uiState.quotations
+                                )
                             },
                             isSelected = selectedChipIndex == index
                         )
@@ -167,13 +177,13 @@ fun QuotationListScreen(
                 )
                 /** Quotation List */
                 QuotationList(
-                    uiState.isLoading,
-                    uiState.quotations,
+                    isLoading = uiState.isLoading,
+                    quotations = filteredQuotations,
                     searchBarText = searchBarText,
                     onQuotationClick = { quotation ->
                         selectedQuotation = quotation
                         showBottomSheet = true
-                    })// uso mi lista aqui
+                    })
                 if (showBottomSheet && selectedQuotation != null) {
                     PcsBottomSheet(
                         modifier = modifier,
@@ -202,7 +212,6 @@ fun QuotationList(
     onQuotationClick: (Quotation) -> Unit
 ) {
     val filteredData = quotations
-        .filter { !it.deleted }
         .filter { it.id.contains(searchBarText, ignoreCase = true) }
 
     if (isLoading) {
@@ -313,10 +322,13 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
 
 /** Private fun to get chipFilter list. */
 @Composable
-private fun getChipFilterList(isSelected: Boolean): List<ChipData> {
+private fun getChipFilterList(
+    isSelected: Boolean
+): List<ChipData> {
 
     val context = LocalContext.current
-    val filterList = context.resources.getStringArray(R.array.quotation_list_screen_chip_filter_list)
+    val filterList =
+        context.resources.getStringArray(R.array.quotation_list_screen_chip_filter_list)
 
     return filterList.map { filterName ->
         ChipsDefaultVariants.chipFilter(
@@ -330,26 +342,77 @@ private fun getChipFilterList(isSelected: Boolean): List<ChipData> {
 }
 
 /** Private fun to handle chip click. */
-private fun handleChipClick(context: Context, chipText: String) {
-    when (chipText) {
-        "Deleted" -> {
+private fun handleChipClick(
+    context: Context, chipText: String,
+    quotations: List<Quotation>
+): List<Quotation> {
+
+    val normalizedText = chipText.trim().lowercase()
+    Log.d("ChipFilter", "Received chipText: '$chipText' | Normalized: '$normalizedText'")
+    Log.d("deletedQuotations", quotations.toString())
+    val filteredData = when (normalizedText) {
+        getStringResource(
+            context,
+            R.string.quotation_list_screen_chip_filter_deleted
+        ).lowercase() -> {
             Toast.makeText(context, "Showing deleted items", Toast.LENGTH_SHORT).show()
+            quotations.filter { it.deleted }
         }
-        "Completed" -> {
+
+        getStringResource(
+            context,
+            R.string.quotation_list_screen_chip_filter_completed
+        ).lowercase() -> {
             Toast.makeText(context, "Showing completed items", Toast.LENGTH_SHORT).show()
+            quotations.filter { it.currentStep == CONST_QUOTATION_STEP_KEY6 }
         }
-        "By Date" -> {
+
+        getStringResource(
+            context,
+            R.string.quotation_list_screen_chip_filter_by_date
+        ).lowercase() -> {
             Toast.makeText(context, "Filtering by date", Toast.LENGTH_SHORT).show()
+            //quotations.sortedBy { it.date }
+            emptyList()
         }
-        "By Status" -> {
+
+        getStringResource(
+            context,
+            R.string.quotation_list_screen_chip_filter_by_status
+        ).lowercase() -> {
             Toast.makeText(context, "Filtering by status", Toast.LENGTH_SHORT).show()
+            quotations.sortedBy { it.status }
         }
-        "Created By" -> {
+
+        getStringResource(
+            context,
+            R.string.quotation_list_screen_chip_filter_created_by
+        ).lowercase() -> {
             Toast.makeText(context, "Filtering by creator", Toast.LENGTH_SHORT).show()
+            quotations.filter { it.deleted }
         }
-        else -> Toast.makeText(context, "Unknown filter", Toast.LENGTH_SHORT).show()
+
+        getStringResource(context, R.string.quotation_list_screen_chip_filter_all).lowercase() -> {
+            Toast.makeText(context, "Filtering all", Toast.LENGTH_SHORT).show()
+            quotations
+        }
+
+        getStringResource(
+            context,
+            R.string.quotation_list_screen_chip_filter_current
+        ).lowercase() -> {
+            Toast.makeText(context, "Filtering current", Toast.LENGTH_SHORT).show()
+            quotations.filter { !it.deleted }
+        }
+
+        else -> {
+            Toast.makeText(context, "Unknown filter", Toast.LENGTH_SHORT).show()
+            emptyList()
+        }
     }
+    return filteredData
 }
+
 
 /** region Content Bill Required */
 @Composable

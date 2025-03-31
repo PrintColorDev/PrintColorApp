@@ -69,12 +69,22 @@
     <string name="quotation_list_screen_tooltip_description_step6">Encuesta enviada al cliente, pendiente de su respuesta.</string>
 
     <string-array name="quotation_list_screen_chip_filter_list">
-        <item>Deleted</item>
-        <item>Completed</item>
-        <item>By Date</item>
-        <item>By Status</item>
-        <item>Created By</item>
+        <item>Actuales</item>
+        <item>Todas</item>
+        <item>Eliminadas</item>
+        <item>Completas</item>
+        <item>Por Fecha</item>
+        <item>Por Estatus</item>
+        <item>Creado por</item>
     </string-array>
+
+    <string name="quotation_list_screen_chip_filter_deleted">eliminadas</string>
+    <string name="quotation_list_screen_chip_filter_completed">completas</string>
+    <string name="quotation_list_screen_chip_filter_by_date">por fecha</string>
+    <string name="quotation_list_screen_chip_filter_by_status">por estatus</string>
+    <string name="quotation_list_screen_chip_filter_created_by">creado por</string>
+    <string name="quotation_list_screen_chip_filter_all">Todas</string>
+    <string name="quotation_list_screen_chip_filter_current">Actuales</string>
 
     //Quotation List BottomSheet details
     <string name="quotation_list_bottom_sheet_details_title">Detalles de la cotización</string>

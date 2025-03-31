@@ -66,12 +66,23 @@
     <string name="quotation_list_screen_tooltip_description_step6">Survey sent to the client, awaiting response.</string>
 
     <string-array name="quotation_list_screen_chip_filter_list">
+        <item>Current</item>
+        <item>All</item>
         <item>Deleted</item>
         <item>Completed</item>
         <item>By Date</item>
         <item>By Status</item>
         <item>Created By</item>
     </string-array>
+
+    <string name="quotation_list_screen_chip_filter_deleted">deleted</string>
+    <string name="quotation_list_screen_chip_filter_completed">completed</string>
+    <string name="quotation_list_screen_chip_filter_by_date">by date</string>
+    <string name="quotation_list_screen_chip_filter_by_status">by status</string>
+    <string name="quotation_list_screen_chip_filter_created_by">created by</string>
+    <string name="quotation_list_screen_chip_filter_all">all</string>
+    <string name="quotation_list_screen_chip_filter_current">current</string>
+
 
     //Quotation List BottomSheet details
     <string name="quotation_list_bottom_sheet_details_title">Details</string>

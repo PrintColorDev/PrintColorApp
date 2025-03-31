@@ -157,7 +157,6 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
                 .update("currentStep", correctStepKey)
                 .await()
             Log.d("FirebaseUpdateStep", "Step $correctStepKey actualizado a $correctStepKey")
-
         } catch (e: Exception) {
             Log.e("FirebaseUpdateStep", "Error al actualizar el Step", e)
         }
@@ -182,12 +181,6 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
 
         awaitClose { listener.remove() }
     }
-    /*suspend fun getAllQuotations(): List<Quotation> {
-        return firebaseFireStore.collection(QUOTATION_PATH).get().await()
-            .map { quotation ->
-                quotation.toObject(QuotationResponse::class.java).toDomain()
-            }
-    }*/
 
     /** Get Quotation Steps */
     suspend fun getQuotationSteps(quotationStepsId: String): QuotationSteps? {
@@ -219,3 +212,5 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
         }
     }
 }
+
+/** region filter chip functions. */
