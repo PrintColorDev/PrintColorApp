@@ -1,9 +1,6 @@
 package com.print.color.printcolor.ui.components.TextFieldTheme
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -33,19 +29,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.FILLED
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED_LIST
-import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.R
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData.TextFieldType.FILLED
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData.TextFieldType.OUTLINED
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData.TextFieldType.OUTLINED_LIST
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
+import com.print.color.printcolor.ui.theme.PrintColorTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,7 +120,7 @@ fun PcsTextField(
                             unfocusedBorderColor = MaterialTheme.colorScheme.scrim,
                         )
                     )
-                    if (data.isTextCountRequred) {
+                    if (data.isTextCountRequired) {
                         Text(
                             text = "${value.length} / $maxLength",
                             modifier = Modifier.align(Alignment.End),
@@ -203,23 +198,20 @@ private fun maxLength(text: String, maxLength: Int): String {
 @Composable
 fun PcsTextFieldPreview(modifier: Modifier = Modifier) {
     var myPassword by remember { mutableStateOf("") }
-    val textFieldData = TextFieldData(
-        textFieldType = OUTLINED,
+    val textFieldData = TextFieldDefaultVariants.textFieldOutlined(
         label = "Label",
         placeHolder = "Placeholder",
         keyboardType = KeyboardType.Text,
         leadingIcon = painterResource(R.drawable.ic_pcs_verified)
     )
-    val textFieldData1 = TextFieldData(
-        textFieldType = FILLED,
+    val textFieldData1 = TextFieldDefaultVariants.textFieldFilled(
         label = "Label",
         placeHolder = "Placeholder",
         keyboardType = KeyboardType.Text,
         leadingIcon = painterResource(R.drawable.ic_pcs_verified)
     )
 
-    val textFieldData2 = TextFieldData(
-        textFieldType = OUTLINED_LIST,
+    val textFieldData2 = TextFieldDefaultVariants.textFieldOutlinedList(
         label = "Label",
         placeHolder = "Placeholder",
         keyboardType = KeyboardType.Text,

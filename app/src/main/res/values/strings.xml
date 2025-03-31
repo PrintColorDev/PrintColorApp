@@ -65,6 +65,14 @@
     <string name="quotation_list_screen_tooltip_title_step6">Survey</string>
     <string name="quotation_list_screen_tooltip_description_step6">Survey sent to the client, awaiting response.</string>
 
+    <string-array name="quotation_list_screen_chip_filter_list">
+        <item>Deleted</item>
+        <item>Completed</item>
+        <item>By Date</item>
+        <item>By Status</item>
+        <item>Created By</item>
+    </string-array>
+
     //Quotation List BottomSheet details
     <string name="quotation_list_bottom_sheet_details_title">Details</string>
     <string name="quotation_list_bottom_sheet_details_id">Quotation ID: %1$s</string>

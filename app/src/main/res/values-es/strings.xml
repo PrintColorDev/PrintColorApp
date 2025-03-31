@@ -34,6 +34,7 @@
     <string name="quotation_screen_billing_cfdi">CFDI</string>
     <string name="quotation_screen_billing_email">Correo Electrónico</string>
     <string name="quotation_screen_billing_payment_method">Seleccione la forma de pago</string>
+
     <string-array name="quotation_screen_billing_payment_method_list">
         <item>Transferencia Bancaria</item>
         <item>Efectivo</item>
@@ -66,6 +67,14 @@
     <string name="quotation_list_screen_tooltip_action_step6">Paso 6</string>
     <string name="quotation_list_screen_tooltip_title_step6">Encuesta</string>
     <string name="quotation_list_screen_tooltip_description_step6">Encuesta enviada al cliente, pendiente de su respuesta.</string>
+
+    <string-array name="quotation_list_screen_chip_filter_list">
+        <item>Deleted</item>
+        <item>Completed</item>
+        <item>By Date</item>
+        <item>By Status</item>
+        <item>Created By</item>
+    </string-array>
 
     //Quotation List BottomSheet details
     <string name="quotation_list_bottom_sheet_details_title">Detalles de la cotización</string>

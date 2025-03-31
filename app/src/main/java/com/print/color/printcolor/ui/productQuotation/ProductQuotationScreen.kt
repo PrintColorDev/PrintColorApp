@@ -37,11 +37,11 @@ import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
-import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchDefaultVariants
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData.TextFieldType
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 
 @Composable
 fun QuotationScreen(
@@ -100,8 +100,7 @@ fun QuotationScreen(
         /** Quotation Fields */
         /** TextField Customer Name*/
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = TextFieldType.OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_company_name),
                 keyboardType = KeyboardType.Text,
@@ -114,8 +113,7 @@ fun QuotationScreen(
         )
         /** TextField Client Name*/
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = TextFieldType.OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_client_name),
                 keyboardType = KeyboardType.Text,
@@ -128,13 +126,12 @@ fun QuotationScreen(
         )
         /** TextField Contact */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = TextFieldType.OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_contact),
                 keyboardType = KeyboardType.Phone,
                 leadingIcon = painterResource(R.drawable.ic_pcs_phone),
-                isTextCountRequred = true
+                isTextCountRequired = true
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onContactChanged(it) },
@@ -144,8 +141,7 @@ fun QuotationScreen(
         )
         /** TextField Extra Data */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = TextFieldType.OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "",
                 placeHolder = stringResource(R.string.quotation_screen_extra_data),
                 keyboardType = KeyboardType.Text,

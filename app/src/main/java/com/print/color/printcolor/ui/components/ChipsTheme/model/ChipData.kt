@@ -15,7 +15,7 @@ data class ChipData(
     val isSelected: Boolean?,
     val icon: Painter?,
     val contentDescription: String,
-    val type: ChipType
+    val type: ChipType,
 ) {
     enum class ChipType{
         ASSIST_CHIP,
@@ -58,13 +58,12 @@ object ChipsDefaultVariants {
 
     fun chipInput(
         text: String,
-        isSelected: Boolean,
         icon: Painter,
         contentDescription: String,
         type: ChipType
     ) = ChipData(
         text = text,
-        isSelected = isSelected,
+        isSelected = null,
         icon = icon,
         contentDescription = contentDescription,
         type = type
@@ -72,12 +71,11 @@ object ChipsDefaultVariants {
 
     fun chipSuggestion(
         text: String,
-        isSelected: Boolean,
         contentDescription: String,
         type: ChipType
     ) = ChipData(
         text = text,
-        isSelected = isSelected,
+        isSelected = null,
         icon = null,
         contentDescription = contentDescription,
         type = type

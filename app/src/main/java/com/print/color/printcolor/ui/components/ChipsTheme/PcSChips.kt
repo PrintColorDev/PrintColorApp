@@ -14,6 +14,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -27,10 +28,18 @@ import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipData
 import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipsDefaultVariants
 
-//@Composable
+@Composable
+fun rememberCheckState(default: Boolean = false): MutableState<Boolean> =
+    remember { mutableStateOf(default) }
+
 //TODO complete this component
 @Composable
-fun PcSChip(modifier: Modifier = Modifier, data: ChipData, onClick: () -> Unit) {
+fun PcSChip(
+    modifier: Modifier = Modifier,
+    data: ChipData,
+    onClick: () -> Unit,
+    isSelected: Boolean = false
+) {
     when (data.type) {
         ChipData.ChipType.ASSIST_CHIP -> {
             AssistChip(
@@ -51,21 +60,19 @@ fun PcSChip(modifier: Modifier = Modifier, data: ChipData, onClick: () -> Unit) 
         }
 
         ChipData.ChipType.FILTER_CHIP -> {
-            var selected by remember { mutableStateOf(false) }
-
             FilterChip(
                 modifier = Modifier.then(modifier),
                 onClick = {
-                    selected = !selected
+                    onClick()
                 },
                 label = {
                     Text(data.text)
                 },
-                selected = selected,
+                selected = isSelected,
                 leadingIcon = {
                     data.icon?.let {
                         AnimatedVisibility(
-                            visible = selected,
+                            visible = isSelected,
                             enter = fadeIn() + scaleIn(),
                             exit = fadeOut() + scaleOut()
                         ) {
@@ -96,7 +103,7 @@ fun PcSChip(modifier: Modifier = Modifier, data: ChipData, onClick: () -> Unit) 
 
 @Preview(showBackground = true)
 @Composable
-fun PcSChipPreview(modifier: Modifier = Modifier) {
+fun PcSChipPreview() {
     val chipAssistData = ChipsDefaultVariants.chipAssist(
         text = "Assist Chip",
         icon = painterResource(R.drawable.ic_pcs_search),
@@ -116,11 +123,51 @@ fun PcSChipPreview(modifier: Modifier = Modifier) {
         text = "Suggestion Chip",
         contentDescription = "Filter Chip",
         type = ChipData.ChipType.SUGGESTION_CHIP,
-        isSelected = true
     )
     Column {
         PcSChip(data = chipAssistData, onClick = {})
         PcSChip(data = chipFilterData, onClick = {})
         PcSChip(data = chipSuggestionData, onClick = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PcSChipFilterListPreview() {
+    var selectedChipIndex by remember { mutableStateOf<Int?>(null) }
+    val checkState: MutableState<Boolean> = rememberCheckState()
+
+    val chips = listOf(
+        ChipsDefaultVariants.chipFilter(
+            text = "Chip 1",
+            icon = painterResource(R.drawable.ic_pcs_check),
+            contentDescription = "Filter Chip 1",
+            type = ChipData.ChipType.FILTER_CHIP,
+            isSelected = checkState.value
+        ),
+        ChipsDefaultVariants.chipFilter(
+            text = "Chip 2",
+            icon = painterResource(R.drawable.ic_pcs_check),
+            contentDescription = "Filter Chip 2",
+            type = ChipData.ChipType.FILTER_CHIP,
+            isSelected = checkState.value
+        ),
+        ChipsDefaultVariants.chipFilter(
+            text = "Chip 3",
+            icon = painterResource(R.drawable.ic_pcs_check),
+            contentDescription = "Filter Chip 3",
+            type = ChipData.ChipType.FILTER_CHIP,
+            isSelected = checkState.value
+        )
+    )
+
+    Column {
+        chips.forEachIndexed { index, chipData ->
+            PcSChip(
+                data = chipData,
+                isSelected = selectedChipIndex == index,
+                onClick = { selectedChipIndex = if (selectedChipIndex == index) null else index }
+            )
+        }
     }
 }

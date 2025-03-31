@@ -3,13 +3,6 @@ package com.print.color.printcolor.ui.productQuotation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,9 +15,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED_LIST
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData.TextFieldType.OUTLINED
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData.TextFieldType.OUTLINED_LIST
 import com.print.color.printcolor.R
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 
 
 @Composable
@@ -48,13 +42,12 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
     ) {
         /** TextField Tax Regime */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_tax_regime),
                 keyboardType = KeyboardType.Number,
                 leadingIcon = painterResource(R.drawable.ic_pcs_account_balance),
-                isTextCountRequred = true
+                isTextCountRequired = true
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onTaxRegimeChanged(it) },
@@ -64,13 +57,12 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField RFC */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_rfc),
                 keyboardType = KeyboardType.Text,
                 leadingIcon = painterResource(R.drawable.ic_pcs_verified),
-                isTextCountRequred = true
+                isTextCountRequired = true
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onRFCChanged(it) },
@@ -80,8 +72,7 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField Address */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_address),
                 keyboardType = KeyboardType.Text,
@@ -97,13 +88,12 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField Zip Code */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_zip_code),
                 keyboardType = KeyboardType.Number,
                 leadingIcon = painterResource(R.drawable.ic_pcs_home_pin),
-                isTextCountRequred = true
+                isTextCountRequired = true
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onZipCodeChanged(it) },
@@ -113,8 +103,7 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField State */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_state),
                 keyboardType = KeyboardType.Text,
@@ -127,13 +116,12 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField CFDI */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_cfdi),
                 keyboardType = KeyboardType.Text,
                 leadingIcon = painterResource(R.drawable.ic_pcs_receipt),
-                isTextCountRequred = true
+                isTextCountRequired = true
             ),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { productQuotationViewModel.onCFDIChanged(it) },
@@ -143,8 +131,7 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField Payment Method */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED_LIST,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_payment_method),
                 keyboardType = KeyboardType.Text,
@@ -157,8 +144,7 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField Municipality */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_municipality),
                 keyboardType = KeyboardType.Text,
@@ -172,8 +158,7 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
 
         /** TextField Email */
         PcsTextField(
-            data = TextFieldData(
-                textFieldType = OUTLINED,
+            data = TextFieldDefaultVariants.textFieldOutlined(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_email),
                 keyboardType = KeyboardType.Email,

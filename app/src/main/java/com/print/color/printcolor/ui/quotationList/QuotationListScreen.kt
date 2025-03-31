@@ -1,6 +1,8 @@
 package com.print.color.printcolor.ui.quotationList
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +34,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,9 +52,12 @@ import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomShe
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
+import com.print.color.printcolor.ui.components.ChipsTheme.PcSChip
+import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipData
+import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipsDefaultVariants
+import com.print.color.printcolor.ui.components.ChipsTheme.rememberCheckState
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldType.OUTLINED
+import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.utils.getIconForStep
 import com.print.color.printcolor.utils.getQuotationStepList
@@ -68,11 +76,20 @@ fun QuotationListScreen(
     quotationListViewModel: QuotationListViewModel,
     modifier: Modifier = Modifier
 ) {
+    /** ViewModel call's */
     val uiState by quotationListViewModel.uiState.collectAsState()
+
+    //TODO refac to internal variable
     var searchBarText by remember { mutableStateOf("") }
 
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedQuotation by remember { mutableStateOf<Quotation?>(null) }
+
+    /** Val to handle the check state of the chip list. */
+    val checkState: MutableState<Boolean> = rememberCheckState()
+    var selectedChipIndex by remember { mutableStateOf<Int?>(null) }
+
+    val context = LocalContext.current
 
     PrintColorTheme {
         Scaffold { contentPading ->
@@ -92,8 +109,7 @@ fun QuotationListScreen(
                         modifier = Modifier.weight(1f)
                     ) {
                         PcsTextField(
-                            data = TextFieldData(
-                                textFieldType = OUTLINED,
+                            data = TextFieldDefaultVariants.textFieldOutlined(
                                 label = "",
                                 placeHolder = stringResource(R.string.quotation_list_screen_search_bar),
                                 keyboardType = KeyboardType.Text,
@@ -118,6 +134,24 @@ fun QuotationListScreen(
                             painter = painterResource(R.drawable.ic_pcs_filter),
                             contentDescription = "Filter",
                             tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                        .align(Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    getChipFilterList(checkState.value).forEachIndexed { index, chipData ->
+                        PcSChip(
+                            data = chipData,
+                            onClick = {
+                                selectedChipIndex = index
+                                handleChipClick(context, chipData.text)
+                            },
+                            isSelected = selectedChipIndex == index
                         )
                     }
                 }
@@ -159,7 +193,7 @@ fun QuotationListScreen(
     }
 }
 
-/** Quotation List */
+/** region Quotation List */
 @Composable
 fun QuotationList(
     isLoading: Boolean,
@@ -203,7 +237,7 @@ fun QuotationList(
     }
 }
 
-/** BottomSheet Content */
+/** region BottomSheet Content */
 @Composable
 fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationListViewModel) {
     quotationListViewModel.getQuotationSteps(quotation?.quotationStepsId.orEmpty())
@@ -277,7 +311,47 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
     }
 }
 
+/** Private fun to get chipFilter list. */
+@Composable
+private fun getChipFilterList(isSelected: Boolean): List<ChipData> {
 
+    val context = LocalContext.current
+    val filterList = context.resources.getStringArray(R.array.quotation_list_screen_chip_filter_list)
+
+    return filterList.map { filterName ->
+        ChipsDefaultVariants.chipFilter(
+            text = filterName,
+            icon = painterResource(R.drawable.ic_pcs_check),
+            contentDescription = "Filter Chip: $filterName",
+            type = ChipData.ChipType.FILTER_CHIP,
+            isSelected = isSelected
+        )
+    }
+}
+
+/** Private fun to handle chip click. */
+private fun handleChipClick(context: Context, chipText: String) {
+    when (chipText) {
+        "Deleted" -> {
+            Toast.makeText(context, "Showing deleted items", Toast.LENGTH_SHORT).show()
+        }
+        "Completed" -> {
+            Toast.makeText(context, "Showing completed items", Toast.LENGTH_SHORT).show()
+        }
+        "By Date" -> {
+            Toast.makeText(context, "Filtering by date", Toast.LENGTH_SHORT).show()
+        }
+        "By Status" -> {
+            Toast.makeText(context, "Filtering by status", Toast.LENGTH_SHORT).show()
+        }
+        "Created By" -> {
+            Toast.makeText(context, "Filtering by creator", Toast.LENGTH_SHORT).show()
+        }
+        else -> Toast.makeText(context, "Unknown filter", Toast.LENGTH_SHORT).show()
+    }
+}
+
+/** region Content Bill Required */
 @Composable
 fun ContentBillRequired(quotation: Quotation?) {
     Row(
@@ -383,6 +457,7 @@ fun ContentBillRequired(quotation: Quotation?) {
     }
 }
 
+/** region Content Non Bill Required */
 @Composable
 fun NonContentBillRequired(quotation: Quotation?) {
     Text(
