@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,11 +21,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
-import com.print.color.printcolor.domain.model.Quotation
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetData
-import com.print.color.printcolor.ui.components.IconClickButton.model.IconClickButtonDefaultVariants
+import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetThemeDefaultVariants
 import com.print.color.printcolor.ui.components.IconClickButton.PcsIconClickButton
+import com.print.color.printcolor.ui.components.IconClickButton.model.IconClickButtonDefaultVariants
 
+/** region principal component*/
+/**
+ * @param modifier: The modifier to apply to the ModalBottomSheet.
+ * @param sheetContent: The content of the ModalBottomSheet.
+ * @param modalBottomSheetData: The data to be displayed in the ModalBottomSheet.
+ * @param showBottomSheet: The state of the ModalBottomSheet.
+ * @param onDismiss: The callback to be invoked when the ModalBottomSheet is dismissed.
+ * */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PcsBottomSheet(
@@ -37,7 +44,6 @@ fun PcsBottomSheet(
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -68,25 +74,23 @@ fun PcsBottomSheet(
         }
     }
 }
+/** endregion principal component*/
 
 
+/** region component preview*/
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun PcsBottomSheetPreview(modifier: Modifier = Modifier) {
-
     var showBottomSheet by remember { mutableStateOf(true) }
-    var selectedQuotation by remember { mutableStateOf<Quotation?>(null) }
-
-    //val
 
     PcsBottomSheet(
         modifier = modifier,
         sheetContent = {
-            //BottomSheetContent(quotation = selectedQuotation)
         },
-        modalBottomSheetData = ModalBottomSheetData(title = "Quotation Details"),
+        modalBottomSheetData = ModalBottomSheetThemeDefaultVariants.modalBottomSheetData(title = "Quotation Details"),
         showBottomSheet = showBottomSheet,
         onDismiss = { showBottomSheet = false }
     )
 }
+/** endregion component preview*/

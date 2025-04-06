@@ -25,6 +25,14 @@ import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
+//@Composable fun switchRememberState(default: Boolean = false): State<Boolean> = remember { mutableStateOf(default) }
+
+/** region principal component*/
+
+/**
+ * @param modifier: The modifier to be applied to the switch.
+ * @param data: The data to be displayed in the switch.
+ * */
 @Composable
 fun PcSSwitch(modifier: Modifier = Modifier, data: SwitchData) {
     Row(
@@ -50,7 +58,9 @@ fun PcSSwitch(modifier: Modifier = Modifier, data: SwitchData) {
             })
     }
 }
+/** endregion principal component*/
 
+/** region component preview*/
 @Preview(showBackground = true)
 @Composable
 fun PcSSwitchPreview(modifier: Modifier = Modifier) {
@@ -60,8 +70,10 @@ fun PcSSwitchPreview(modifier: Modifier = Modifier) {
             switchString = "Switch State: $switchValue",
             isChecked = switchValue,
             onCheckedChange = { switchValue = it },
-            contentDescription = "Switch $switchValue")
+            contentDescription = "Switch $switchValue"
+        )
     PrintColorTheme {
         PcSSwitch(data = switchData, modifier = modifier)
     }
 }
+/** endregion component preview*/

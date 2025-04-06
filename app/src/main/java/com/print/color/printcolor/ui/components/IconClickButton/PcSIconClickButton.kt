@@ -1,7 +1,6 @@
 package com.print.color.printcolor.ui.components.IconClickButton
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,7 +24,13 @@ import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.IconClickButton.model.IconClickButtonData
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.utils.showToast
 
+/** region principal component */
+/**
+ * @param modifier: The modifier to be applied to the button.
+ * @param data: The data to be displayed in the button.
+ * @param onClick: The action to be performed when the button is clicked.*/
 @Composable
 fun PcsIconClickButton(
     modifier: Modifier = Modifier,
@@ -49,28 +54,33 @@ fun PcsIconClickButton(
         Surface(
             modifier = Modifier.align(alignment = Alignment.Center)
         ) {
-            Image(
-                modifier = Modifier.size(32.dp),
-                painter = data.icon,
-                contentDescription = null,
-                contentScale = ContentScale.Inside,
-                colorFilter = ColorFilter.tint(LocalContentColor.current)
-            )
+            data.icon?.let {
+                Image(
+                    modifier = Modifier.size(32.dp),
+                    painter = it,
+                    contentDescription = null,
+                    contentScale = ContentScale.Inside,
+                    colorFilter = ColorFilter.tint(LocalContentColor.current)
+                )
+            }
         }
     }
 }
+/** endregion principal component */
 
+/** region preview component */
 @Preview(showBackground = true)
 @Composable
 fun PcsIconClickButtonPreview() {
     PrintColorTheme {
         val context: Context = LocalContext.current
         val data = IconClickButtonData(
-            icon = painterResource(R.drawable.ic_pcs_close),
-            contentDescription = "",
+            icon = painterResource(R.drawable.ic_pc_logo),
+            contentDescription = "Some test content description",
         )
         PcsIconClickButton(
             data = data,
-            onClick = { Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show() })
+            onClick = { showToast(context, "Button click") })
     }
 }
+/** endregion preview component */

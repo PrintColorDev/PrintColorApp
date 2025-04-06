@@ -6,9 +6,8 @@ import androidx.compose.ui.graphics.painter.Painter
  * @param icon: The icon to be displayed in the button.
  * @param contentDescription: The content description of the icon.
  * */
-
 data class IconClickButtonData(
-    val icon: Painter,
+    val icon: Painter?,
     val contentDescription: String,
 )
 
