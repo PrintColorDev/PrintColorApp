@@ -58,7 +58,7 @@ fun PcsIconClickButton(
                 Image(
                     modifier = Modifier.size(32.dp),
                     painter = it,
-                    contentDescription = null,
+                    contentDescription = data.contentDescription,
                     contentScale = ContentScale.Inside,
                     colorFilter = ColorFilter.tint(LocalContentColor.current)
                 )
