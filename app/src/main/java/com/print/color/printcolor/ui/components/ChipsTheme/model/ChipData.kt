@@ -14,6 +14,7 @@ data class ChipData(
     val text: String,
     val isSelected: Boolean?,
     val icon: Painter?,
+    val inputIcon: Painter?,
     val contentDescription: String,
     val type: ChipType,
 ) {
@@ -38,6 +39,7 @@ object ChipsDefaultVariants {
         text = text,
         isSelected = null,
         icon = icon,
+        inputIcon = null,
         contentDescription = contentDescription,
         type = type
     )
@@ -52,6 +54,7 @@ object ChipsDefaultVariants {
         text = text,
         isSelected = isSelected,
         icon = icon,
+        inputIcon = null,
         contentDescription = contentDescription,
         type = type
     )
@@ -59,12 +62,14 @@ object ChipsDefaultVariants {
     fun chipInput(
         text: String,
         icon: Painter,
+        inputIcon: Painter,
         contentDescription: String,
         type: ChipType
     ) = ChipData(
         text = text,
         isSelected = null,
         icon = icon,
+        inputIcon = inputIcon,
         contentDescription = contentDescription,
         type = type
     )
@@ -77,6 +82,7 @@ object ChipsDefaultVariants {
         text = text,
         isSelected = null,
         icon = null,
+        inputIcon = null,
         contentDescription = contentDescription,
         type = type
     )

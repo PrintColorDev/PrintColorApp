@@ -1,5 +1,6 @@
 package com.print.color.printcolor.ui.components.ChipsTheme
 
+import android.R.attr.text
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,9 +9,13 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +37,12 @@ import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipsDefaultVar
 fun rememberCheckState(default: Boolean = false): MutableState<Boolean> =
     remember { mutableStateOf(default) }
 
+/** region principal component */
+/**
+ * @param modifier: The modifier to be applied to the chip.
+ * @param data: The data to be displayed in the chip.
+ * @param onClick: The action to be performed when the chip is clicked.
+ * @param isSelected: The state of the chip.*/
 //TODO complete this component
 @Composable
 fun PcSChip(
@@ -89,7 +100,34 @@ fun PcSChip(
         }
 
         ChipData.ChipType.INPUT_CHIP -> {
-            // TODO: Add input chip
+            var enabled by remember { mutableStateOf(true) }
+            if (!enabled) return
+            InputChip(
+                onClick = {
+                    onClick()
+                    enabled = !enabled
+                },
+                label = { Text(data.text) },
+                selected = enabled,
+                avatar = {
+                    data.icon?.let {
+                        Image(
+                            painter = it,
+                            contentDescription = data.contentDescription,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                },
+                trailingIcon = {
+                    data.inputIcon?.let {
+                        Image(
+                            painter = it,
+                            contentDescription = data.contentDescription,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                },
+            )
         }
 
         ChipData.ChipType.SUGGESTION_CHIP -> {
@@ -100,7 +138,10 @@ fun PcSChip(
         }
     }
 }
+/** endregion principal component */
 
+
+/** region component preview */
 @Preview(showBackground = true)
 @Composable
 fun PcSChipPreview() {
@@ -124,10 +165,19 @@ fun PcSChipPreview() {
         contentDescription = "Filter Chip",
         type = ChipData.ChipType.SUGGESTION_CHIP,
     )
+
+    val chipInputData = ChipsDefaultVariants.chipInput(
+        text = "Suggestion Chip",
+        contentDescription = "Input Chip",
+        type = ChipData.ChipType.INPUT_CHIP,
+        inputIcon = painterResource(R.drawable.ic_pcs_client),
+        icon = painterResource(R.drawable.ic_pcs_close),
+    )
     Column {
         PcSChip(data = chipAssistData, onClick = {})
         PcSChip(data = chipFilterData, onClick = {})
         PcSChip(data = chipSuggestionData, onClick = {})
+        PcSChip(data = chipInputData, onClick = {})
     }
 }
 
@@ -171,3 +221,4 @@ fun PcSChipFilterListPreview() {
         }
     }
 }
+/** endregion component preview */
