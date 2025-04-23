@@ -97,3 +97,16 @@ fun getCorrectStepDescriptionByStepKey(context: Context, stepKey: String) = when
 
     else -> stepKey
 }
+
+/** Fun to get the correct stepKey based on firebase key */
+fun stepKeyToDbKey(stepKey: String): String {
+    return when (stepKey) {
+        CONST_QUOTATION_STEP_KEY1 -> CONST_QUOTATION_STEP1_ID
+        CONST_QUOTATION_STEP_KEY2 -> CONST_QUOTATION_STEP2_ID
+        CONST_QUOTATION_STEP_KEY3 -> CONST_QUOTATION_STEP3_ID
+        CONST_QUOTATION_STEP_KEY4 -> CONST_QUOTATION_STEP4_ID
+        CONST_QUOTATION_STEP_KEY5 -> CONST_QUOTATION_STEP5_ID
+        CONST_QUOTATION_STEP_KEY6 -> CONST_QUOTATION_STEP6_ID
+        else -> stepKey
+    }
+}

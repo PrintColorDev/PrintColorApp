@@ -1,11 +1,17 @@
 package com.print.color.printcolor.ui.quotationList
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
 import com.print.color.printcolor.domain.model.Quotation
 import com.print.color.printcolor.domain.model.QuotationSteps
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY1
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY2
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY3
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY4
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY5
+import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY6
+import com.print.color.printcolor.utils.stepKeyToDbKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -40,12 +46,12 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
         }
     }
 
+    /** Fun to get all quotations */
     private fun getAllQuotations() {
         viewModelScope.launch {
             firebaseDataBaseService.getAllQuotations()
                 .onStart { _uiState.update { it.copy(isLoading = true) } }
                 .catch { error ->
-                    Log.e("QuotationListViewModel", "Error al obtener cotizaciones", error)
                     _uiState.update { it.copy(isLoading = false) }
                 }
                 .collect { quotations ->
@@ -66,19 +72,9 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
 
     /** Fun to update a stepValur in the stepList */
     fun updateQuotationStep(quotationStepId: String?, stepKey: String, newValue: Boolean) {
-        val correctStepKey = when (stepKey) {
-            "step_one" -> "step1"
-            "step_two" -> "step2"
-            "step_three" -> "step3"
-            "step_four" -> "step4"
-            "step_five" -> "step5"
-            "step_six" -> "step6"
-            else -> stepKey
-        } //TODO update this logic in a utils fun
-
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                firebaseDataBaseService.updateStep(quotationStepId, correctStepKey, newValue)
+                firebaseDataBaseService.updateStep(quotationStepId, stepKeyToDbKey(stepKey = stepKey), newValue)
 
                 val newCurrentStepKey = if (!newValue) {
                     val steps = _uiState.value.quotationSteps?.steps ?: emptyList()
@@ -92,7 +88,7 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
                             stepKeyToDbKey(lastCompleted.stepKey)
                         }
                 } else {
-                    correctStepKey
+                    stepKeyToDbKey(stepKey = stepKey)
                 }
 
                 newCurrentStepKey?.let {
@@ -118,25 +114,13 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
 
     private fun stepIndexOrder(stepKey: String): Int {
         return when (stepKey) {
-            "step_one" -> 1
-            "step_two" -> 2
-            "step_three" -> 3
-            "step_four" -> 4
-            "step_five" -> 5
-            "step_six" -> 6
+            CONST_QUOTATION_STEP_KEY1 -> 1
+            CONST_QUOTATION_STEP_KEY2 -> 2
+            CONST_QUOTATION_STEP_KEY3 -> 3
+            CONST_QUOTATION_STEP_KEY4 -> 4
+            CONST_QUOTATION_STEP_KEY5 -> 5
+            CONST_QUOTATION_STEP_KEY6 -> 6
             else -> 0
-        }
-    }
-
-    private fun stepKeyToDbKey(stepKey: String): String {
-        return when (stepKey) {
-            "step_one" -> "step1"
-            "step_two" -> "step2"
-            "step_three" -> "step3"
-            "step_four" -> "step4"
-            "step_five" -> "step5"
-            "step_six" -> "step6"
-            else -> stepKey
         }
     }
 
@@ -152,7 +136,7 @@ class QuotationListViewModel @Inject constructor(private val firebaseDataBaseSer
         // If it is already completed and you want to uncheck, validate the next step
         if (selectedStep.stepValue) {
             val nextStep = steps.getOrNull(currentIndex + 1)
-            return nextStep?.stepValue != true // Si el siguiente ya está completo, no se puede retroceder
+            return nextStep?.stepValue != true // Next Step validation
         } else {
             // Trying to move forward
             if (currentIndex == 0) return true
