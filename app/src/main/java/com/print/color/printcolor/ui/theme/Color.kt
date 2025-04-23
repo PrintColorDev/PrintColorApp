@@ -2,7 +2,23 @@ package com.print.color.printcolor.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val primaryLight = Color(0xFF8C4A60)
+val Black = Color(0xFF000000)
+val Pink = Color(0xFFE91E63)
+val LightBlue = Color(0xFF03A9F4)
+val Yellow = Color(0xFFFFC107)
+val White = Color(0xFFFFFFFF)
+val Green = Color(0xFF8BC34A)
+
+// Extended colors for more flexibility
+val DarkGray = Color(0xFF333333)
+val LightGray = Color(0xFFEEEEEE)
+val DarkPink = Color(0xFFC2185B)
+val LightPink = Color(0xFFF8BBD0)
+val DarkLightBlue = Color(0xFF0288D1)
+val LightLightBlue = Color(0xFFB3E5FC)
+val DarkYellow = Color(0xFFFFA000)
+val LightYellow = Color(0xFFFFF9C4)
+/*val primaryLight = Color(0xFF8C4A60)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFFFD9E2)
 val onPrimaryContainerLight = Color(0xFF3A071D)
@@ -216,7 +232,7 @@ val surfaceContainerLowestDarkHighContrast = Color(0xFF140C0E)
 val surfaceContainerLowDarkHighContrast = Color(0xFF22191C)
 val surfaceContainerDarkHighContrast = Color(0xFF261D20)
 val surfaceContainerHighDarkHighContrast = Color(0xFF31282A)
-val surfaceContainerHighestDarkHighContrast = Color(0xFF3C3235)
+val surfaceContainerHighestDarkHighContrast = Color(0xFF3C3235)*/
 /*
 *
 * Colors

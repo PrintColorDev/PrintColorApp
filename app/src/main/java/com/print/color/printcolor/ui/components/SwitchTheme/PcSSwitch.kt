@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -23,8 +22,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchData
+import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
+//@Composable fun switchRememberState(default: Boolean = false): State<Boolean> = remember { mutableStateOf(default) }
+
+/** region principal component*/
+
+/**
+ * @param modifier: The modifier to be applied to the switch.
+ * @param data: The data to be displayed in the switch.
+ * */
 @Composable
 fun PcSSwitch(modifier: Modifier = Modifier, data: SwitchData) {
     Row(
@@ -50,18 +58,22 @@ fun PcSSwitch(modifier: Modifier = Modifier, data: SwitchData) {
             })
     }
 }
+/** endregion principal component*/
 
+/** region component preview*/
 @Preview(showBackground = true)
 @Composable
 fun PcSSwitchPreview(modifier: Modifier = Modifier) {
     var switchValue by remember { mutableStateOf(false) }
     val switchData =
-        SwitchData(
+        SwitchDefaultVariants.switchDefault(
             switchString = "Switch State: $switchValue",
             isChecked = switchValue,
             onCheckedChange = { switchValue = it },
-            contentDescription = "Switch $switchValue")
+            contentDescription = "Switch $switchValue"
+        )
     PrintColorTheme {
         PcSSwitch(data = switchData, modifier = modifier)
     }
 }
+/** endregion component preview*/

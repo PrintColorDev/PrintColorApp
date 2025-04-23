@@ -1,23 +1,67 @@
 package com.print.color.printcolor.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 
-private val lightScheme = lightColorScheme(
+val lightScheme = lightColorScheme(
+    primary = Pink,
+    onPrimary = White,
+    primaryContainer = LightPink,
+    onPrimaryContainer = Black,
+    secondary = LightBlue,
+    onSecondary = White,
+    secondaryContainer = LightLightBlue,
+    onSecondaryContainer = Black,
+    tertiary = Yellow,
+    onTertiary = Black,
+    tertiaryContainer = LightYellow,
+    onTertiaryContainer = Black,
+    background = White,
+    onBackground = Black,
+    surface = White,
+    onSurface = Black,
+    surfaceVariant = LightGray,
+    onSurfaceVariant = Black,
+    outline = DarkGray,
+    inverseSurface = Black,
+    inverseOnSurface = White,
+    inversePrimary = DarkPink,
+    surfaceTint = Green
+)
+
+val darkScheme = darkColorScheme(
+    primary = Pink,
+    onPrimary = Black,
+    primaryContainer = DarkPink,
+    onPrimaryContainer = White,
+    secondary = LightBlue,
+    onSecondary = Black,
+    secondaryContainer = DarkLightBlue,
+    onSecondaryContainer = White,
+    tertiary = Yellow,
+    onTertiary = Black,
+    tertiaryContainer = DarkYellow,
+    onTertiaryContainer = White,
+    background = Black,
+    onBackground = White,
+    surface = Black,
+    onSurface = White,
+    surfaceVariant = DarkGray,
+    onSurfaceVariant = White,
+    outline = LightGray,
+    inverseSurface = White,
+    inverseOnSurface = Black,
+    inversePrimary = LightPink,
+    surfaceTint = Green
+
+)
+
+/*private val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
     primaryContainer = primaryContainerLight,
@@ -244,7 +288,7 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainer = surfaceContainerDarkHighContrast,
     surfaceContainerHigh = surfaceContainerHighDarkHighContrast,
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
-)
+)*/
 
 @Immutable
 data class ColorFamily(

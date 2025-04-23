@@ -1,5 +1,7 @@
 package com.print.color.printcolor.ui.components.NavigationRail.model
 
+import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -12,8 +14,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 data class NavigationRailData(
     val title: String,
-    val unselectedIcon: ImageVector,
-    val selectedIcon: ImageVector,
+    val unselectedIcon: Painter,
+    val selectedIcon: Painter,
     val hasNews: Boolean,
     val badgeCount: Int? = null
 )

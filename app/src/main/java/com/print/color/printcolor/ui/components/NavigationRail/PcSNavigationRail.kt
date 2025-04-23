@@ -10,12 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.FloatingActionButton
@@ -39,8 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,80 +46,108 @@ import androidx.navigation.compose.rememberNavController
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
 import com.print.color.printcolor.ui.components.NavigationRail.model.Routes
 import com.print.color.printcolor.ui.home.HomeScreen
+import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.productQuotation.QuotationScreen
 import com.print.color.printcolor.ui.profile.ProfileScreen
+import com.print.color.printcolor.ui.quotationList.QuotationListScreen
+import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.settings.SettingsScreen
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.R
 
+@Composable
+fun NavigationGraph(
+    navController: NavHostController,
+    productQuotationViewModel: ProductQuotationViewModel,
+    quotationListViewModel: QuotationListViewModel
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Routes.Quotation.route,
+        //modifier = Modifier.weight(1f)
+    ) {
+        composable(Routes.Profile.route) { ProfileScreen() }
+        composable(Routes.Quotation.route) {
+            QuotationScreen(
+                productQuotationViewModel = productQuotationViewModel,
+                onAddQuotationSave = {}
+            )
+        }
+        composable(Routes.Settings.route) { SettingsScreen() }
+        composable(Routes.Home.route) { HomeScreen() }
+        composable(Routes.Quotations.route) {
+            QuotationListScreen(quotationListViewModel = quotationListViewModel)
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun PcSNavigationRail() {
-    val items = listOf(
-        NavigationRailData(
-            title = "Home",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-            hasNews = false,
-        ),
-        NavigationRailData(
-            title = "Settings",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-            hasNews = false,
-        )
-    )
-
+fun shouldShowNavigationRail(): Boolean {
     val context = LocalContext.current
-    val navController = rememberNavController()
     val windowClass = calculateWindowSizeClass(context as Activity)
-    val showNavigationRail =
-        windowClass.widthSizeClass != WindowWidthSizeClass.Compact
-    var selectedItemIndex by rememberSaveable {
-        mutableIntStateOf(0)
-    }
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize()
-        ) { paddingValues ->
+    return windowClass.widthSizeClass != WindowWidthSizeClass.Compact
+}
+
+@Composable
+fun PcSNavigationRail(
+    productQuotationViewModel: ProductQuotationViewModel,
+    quotationListViewModel: QuotationListViewModel,
+    navigationRailList: List<NavigationRailData>
+) {
+    val navController = rememberNavController()
+    val showNavigationRail = shouldShowNavigationRail()
+    var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
+
+    val homeOption = stringResource(R.string.navigation_rail_home)
+    val settingsOption = stringResource(R.string.navigation_rail_settings)
+    val quotationsOption = stringResource(R.string.navigation_rail_quotations)
+    val profileOption = stringResource(R.string.navigation_rail_profile)
+
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
             Row(Modifier.padding(paddingValues)) {
                 if (showNavigationRail) {
                     PcSNavigationSideBar(
-                        items = items,
+                        items = navigationRailList,
                         selectedItemIndex = selectedItemIndex,
                         onNavigate = { index ->
                             selectedItemIndex = index
-                            when (items[index].title) {
-                                "Profile" -> navController.navigate(Routes.Profile.route)
-                                "Home" -> navController.navigate(Routes.Home.route)
-                            }
+                            navigateToRoute(
+                                navController,
+                                navigationRailList[index].title,
+                                homeOption,
+                                settingsOption,
+                                quotationsOption,
+                                profileOption
+                            )
                         },
                         navController = navController
                     )
                 }
-                NavHost(
+                NavigationGraph(
                     navController = navController,
-                    startDestination = Routes.Quotation.route,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    composable(Routes.Profile.route) {
-                        ProfileScreen()
-                    }
-                    composable(Routes.Quotation.route) {
-                        QuotationScreen()
-                    }
-                    composable(Routes.Settings.route) {
-                        SettingsScreen()
-                    }
-                    composable(Routes.Home.route) {
-                        HomeScreen()
-                    }
-                }
+                    productQuotationViewModel = productQuotationViewModel,
+                    quotationListViewModel = quotationListViewModel
+                )
             }
         }
+    }
+}
+
+private fun navigateToRoute(
+    navController: NavController,
+    route: String,
+    homeOption: String,
+    settingsOption: String,
+    quotationsOption: String,
+    profileOption: String
+) {
+    when (route) {
+        profileOption -> navController.navigate(Routes.Profile.route)
+        homeOption -> navController.navigate(Routes.Home.route)
+        settingsOption -> navController.navigate(Routes.Settings.route)
+        quotationsOption -> navController.navigate(Routes.Quotations.route)
     }
 }
 
@@ -138,7 +164,7 @@ fun PcSNavigationSideBar(
                 navController.navigate(Routes.Profile.route)
             }) {
                 Icon(
-                    imageVector = Icons.Default.AccountCircle,
+                    imageVector = Icons.Default.Face,
                     contentDescription = "Profile"
                 )
             }
@@ -149,7 +175,7 @@ fun PcSNavigationSideBar(
                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    painter = painterResource(R.drawable.ic_pcs_add),
                     contentDescription = "Add Quotation"
                 )
             }
@@ -200,7 +226,7 @@ fun NavigationIcon(
         }
     ) {
         Icon(
-            imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
+            painter = if (selected) item.selectedIcon else item.unselectedIcon,
             contentDescription = item.title
         )
     }
@@ -210,6 +236,6 @@ fun NavigationIcon(
 @Composable
 fun PcSNavigationRailPreview() {
     PrintColorTheme {
-        PcSNavigationRail()
+        //PcSNavigationRail()
     }
 }
