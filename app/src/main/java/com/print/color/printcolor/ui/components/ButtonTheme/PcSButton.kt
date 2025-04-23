@@ -41,9 +41,9 @@ import com.print.color.printcolor.R
 
 @Composable
 fun PcsButton(
+    modifier: Modifier = Modifier,
     isVisible: Boolean = false,
     data: ButtonData,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     shape: Shape = MaterialTheme.shapes.medium,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,

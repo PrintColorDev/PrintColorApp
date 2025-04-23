@@ -2,6 +2,16 @@
 <resources>
     <string name="app_name">PrintColor</string>
 
+    //Lorem ipsum strings
+    <string name="lorem_very_short">Lorem ipsum dolor sit amet.</string>
+    <string name="lorem_short">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</string>
+    <string name="lorem_medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</string>
+    <string name="lorem_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</string>
+    <string name="lorem_very_long">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam luctus tincidunt eros, in tincidunt massa laoreet non. Suspendisse potenti. Aliquam erat volutpat. Integer vehicula dolor et urna sagittis, in dapibus nisi aliquam. Curabitur ac odio vitae lorem fringilla luctus. Duis sit amet eros sit amet sapien ultricies commodo.&#10;&#10;
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+    </string>
+
     //Navigation Rail Strings
     <string name="navigation_rail_profile">Perfil</string>
     <string name="navigation_rail_quotations">Cotizaciónes</string>
@@ -104,12 +114,24 @@
     <string name="quotation_list_bottom_sheet_details_email">Correo: %1$s</string>
     <string name="quotation_list_bottom_sheet_details_payment_method">Metodo de pago: %1$s</string>
     
-    <string name="quotation_list_bottom_sheet_details_alert_dialog_title">Terminar paso</string>
-    <string name="quotation_list_bottom_sheet_details_alert_dialog_message">¿Estas seguro de que quieres terminar este paso? Recuerda que puedes volver a este paso en cualquier momento.</string>
+    <string name="quotation_list_bottom_sheet_details_alert_dialog_title">Actualizar paso</string>
+    <string name="quotation_list_bottom_sheet_details_alert_dialog_message">¿Estas seguro de que quieres actualizar este paso? Recuerda que siempre puedes volver a este paso en cualquier momento.</string>
     <string name="quotation_list_bottom_sheet_details_text_step">Paso %1$s</string>
 
     <string name="quotation_list_bottom_sheet_details_delete_alert_dialog_title">Borrar Cotización</string>
     <string name="quotation_list_bottom_sheet_details_delete_alert_dialog_message">¿Estas seguro de que quieres borrar esta cotización?</string>
+    <string name="quotation_list_bottom_sheet_details_delete_quotation_button">Eliminar cotización</string>
+    <string name="quotation_list_bottom_sheet_details_bill_details_text">Detalles de facturación</string>
+
+    // List Item strings
+    <string name="quotation_item_list_completed_annotation">Cotización Completada</string>
+    <string name="quotation_item_list_deleted_annotation">Contización Eliminada</string>
+    <string name="quotation_item_list_step_validation_toast">No puedes actualizar este paso en este orden, asegúrate de hacerlo en el orden correcto.</string>
+    <string name="quotation_item_list_annotation_id_text">ID: %1$s</string>
+    <string name="quotation_item_list_annotation_customer_name_text">Nombre del cliente: %1$s</string>
+    <string name="quotation_item_list_annotation_client_text">Cliente: %1$s</string>
+    <string name="quotation_item_list_annotation_extra_data_text">Datos Extra: %1$s</string>
+    <string name="quotation_item_list_annotation_created_date_text">Fecha de creación: %1$s</string>
 
 
 </resources>

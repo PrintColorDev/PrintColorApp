@@ -42,9 +42,9 @@ fun PcSAlertDialog(
     autoPlayAnimation: Boolean = true,
     animationRepeatCount: Int = LottieConstants.IterateForever,
 ) {
-    when (data.type) {
-        AlertDialogType.CONFIRMATION -> {
-            PrintColorTheme {
+    PrintColorTheme {
+        when (data.type) {
+            AlertDialogType.CONFIRMATION -> {
                 AlertDialog(
                     onDismissRequest = {
                         if (data.dismissOnClickOutside) data.onDismiss()
@@ -66,7 +66,6 @@ fun PcSAlertDialog(
                         TextButton(onClick = data.onConfirm) {
                             Text(
                                 text = data.confirmButtonText,
-                                color = Color.Blue
                             )
                         }
                     },
@@ -74,16 +73,13 @@ fun PcSAlertDialog(
                         TextButton(onClick = data.onDismiss) {
                             Text(
                                 text = data.dismissButtonText,
-                                color = Color.Gray
                             )
                         }
                     }
                 )
             }
-        }
 
-        AlertDialogType.ANIMATION -> {
-            PrintColorTheme {
+            AlertDialogType.ANIMATION -> {
                 AlertDialog(
                     modifier = modifier.wrapContentWidth(),
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -102,7 +98,7 @@ fun PcSAlertDialog(
                         }
                     },
                     text = {
-                        // Animación Lottie
+                        // Lottie Animation
                         data.lottieAnimation?.let {
                             val composition by rememberLottieComposition(
                                 LottieCompositionSpec.RawRes(
@@ -143,18 +139,18 @@ fun PcSAlertDialog(
                         )
                     }
                 )
+
             }
         }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PcSAlertDialogPreview() {
     PrintColorTheme {
-        var showDialog = remember { mutableStateOf(true) }
-        var showDialogAnimation = remember { mutableStateOf(true) }
+        var showDialog = remember { mutableStateOf(false) }
+        var showDialogAnimation = remember { mutableStateOf(false) }
 
         val dataSample1 = AlertDialogDefaultVariants.alertDialogDefault(
             title = "Alert Dialog Title",

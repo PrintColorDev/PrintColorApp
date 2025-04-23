@@ -131,7 +131,7 @@ fun BillingScreenFields(productQuotationViewModel: ProductQuotationViewModel) {
         )
         /** TextField Payment Method */
         PcsTextField(
-            data = TextFieldDefaultVariants.textFieldOutlined(
+            data = TextFieldDefaultVariants.textFieldOutlinedList(
                 label = "Label",
                 placeHolder = stringResource(R.string.quotation_screen_billing_payment_method),
                 keyboardType = KeyboardType.Text,

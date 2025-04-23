@@ -3,28 +3,24 @@ package com.print.color.printcolor.ui.quotationList
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -43,15 +39,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
 import com.print.color.printcolor.domain.model.Quotation
-import com.print.color.printcolor.domain.model.QuotationStep
-import com.print.color.printcolor.ui.components.AlertDialog.PcSAlertDialog
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData
-import com.print.color.printcolor.ui.components.AlertDialog.model.AlertDialogData.AlertDialogType
 import com.print.color.printcolor.ui.components.BottomSheet.PcsBottomSheet
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetData
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
-import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 import com.print.color.printcolor.ui.components.ChipsTheme.PcSChip
 import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipData
 import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipsDefaultVariants
@@ -60,7 +49,6 @@ import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.utils.CONST_QUOTATION_STEP_KEY6
-import com.print.color.printcolor.utils.getIconForStep
 import com.print.color.printcolor.utils.getQuotationStepList
 import com.print.color.printcolor.utils.getStringResource
 import kotlin.collections.chunked
@@ -87,13 +75,40 @@ fun QuotationListScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedQuotation by remember { mutableStateOf<Quotation?>(null) }
 
+    val context = LocalContext.current
+
     /** Val to handle the check state of the chip list. */
     val checkState: MutableState<Boolean> = rememberCheckState()
     var selectedChipIndex by remember { mutableStateOf<Int?>(null) }
 
-    val context = LocalContext.current
+    val chipList = getChipFilterList(isSelected = checkState.value)
+    val defaultChipIndex = chipList.indexOfFirst {
+        it.text == getStringResource(context, R.string.quotation_list_screen_chip_filter_current)
+    }
 
-    var filteredQuotations by remember { mutableStateOf(uiState.quotations) }
+    /** Val to handle the state of the chips selections to current every time that the screens was launched*/
+    var filteredQuotations by remember { mutableStateOf<List<Quotation>>(emptyList()) }
+
+    LaunchedEffect(uiState.quotations, selectedChipIndex) {
+        val selectedText = chipList.getOrNull(selectedChipIndex ?: defaultChipIndex)?.text.orEmpty()
+        filteredQuotations = handleChipClick(
+            context = context,
+            chipText = selectedText,
+            quotations = uiState.quotations
+        )
+    }
+
+    /** LauncherEffect to handle the chip current state selection */
+    LaunchedEffect(uiState.quotations) {
+        if (selectedChipIndex == null && defaultChipIndex != -1) {
+            selectedChipIndex = defaultChipIndex
+            filteredQuotations = handleChipClick(
+                context = context,
+                chipText = chipList[defaultChipIndex].text,
+                quotations = uiState.quotations
+            )
+        }
+    }
 
     PrintColorTheme {
         Scaffold { contentPading ->
@@ -102,45 +117,18 @@ fun QuotationListScreen(
                     .padding(all = 16.dp)
                     .fillMaxSize()
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(IntrinsicSize.Min),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        PcsTextField(
-                            data = TextFieldDefaultVariants.textFieldOutlined(
-                                label = "",
-                                placeHolder = stringResource(R.string.quotation_list_screen_search_bar),
-                                keyboardType = KeyboardType.Text,
-                                leadingIcon = painterResource(R.drawable.ic_pcs_search)
-                            ),
-                            modifier = Modifier.fillMaxWidth(),
-                            onValueChange = { searchBarText = it },
-                            value = searchBarText,
-                            imeAction = ImeAction.Search
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    IconButton(
-                        onClick = {},
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .align(Alignment.CenterVertically)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_pcs_filter),
-                            contentDescription = "Filter",
-                            tint = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
-                }
+                PcsTextField(
+                    data = TextFieldDefaultVariants.textFieldOutlined(
+                        label = "",
+                        placeHolder = stringResource(R.string.quotation_list_screen_search_bar),
+                        keyboardType = KeyboardType.Text,
+                        leadingIcon = painterResource(R.drawable.ic_pcs_search)
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    onValueChange = { searchBarText = it },
+                    value = searchBarText,
+                    imeAction = ImeAction.Search
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -148,9 +136,7 @@ fun QuotationListScreen(
                         .align(Alignment.CenterHorizontally),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    getChipFilterList(
-                        isSelected = checkState.value,
-                    ).forEachIndexed { index, chipData ->
+                    chipList.forEachIndexed { index, chipData ->
                         PcSChip(
                             data = chipData,
                             onClick = {
@@ -183,7 +169,12 @@ fun QuotationListScreen(
                     onQuotationClick = { quotation ->
                         selectedQuotation = quotation
                         showBottomSheet = true
-                    })
+                    }, isRefreshing = uiState.isLoading,
+                    onRefresh = {
+                        Log.d("onRefresh", "onRefresh")
+                        quotationListViewModel.getQuotations()
+                    }
+                )
                 if (showBottomSheet && selectedQuotation != null) {
                     PcsBottomSheet(
                         modifier = modifier,
@@ -204,17 +195,35 @@ fun QuotationListScreen(
 }
 
 /** region Quotation List */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuotationList(
     isLoading: Boolean,
     quotations: List<Quotation>,
     searchBarText: String,
-    onQuotationClick: (Quotation) -> Unit
+    onQuotationClick: (Quotation) -> Unit,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit
 ) {
+    val pullRefreshState = rememberPullToRefreshState()
     val filteredData = quotations
         .filter { it.id.contains(searchBarText, ignoreCase = true) }
-
-    if (isLoading) {
+    /*PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = { onRefresh() },
+        modifier = Modifier,
+        state = pullRefreshState,
+        indicator = {
+            Indicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                isRefreshing = isRefreshing,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                state = pullRefreshState
+            )
+        }
+    ) {*/
+    if (isLoading && quotations.isEmpty()) {
         Log.d("QuotationList", "Loading...")
         CircularProgressIndicator()
     } else {
@@ -244,6 +253,7 @@ fun QuotationList(
             }
         }
     }
+    //}
 }
 
 /** region BottomSheet Content */
@@ -263,58 +273,9 @@ fun BottomSheetContent(quotation: Quotation?, quotationListViewModel: QuotationL
 
     PrintColorTheme {
         Column(modifier = Modifier.padding(16.dp)) {
-            if (quotation?.isBillRequired == true)
-                ContentBillRequired(quotation = quotation)
-            else
-                NonContentBillRequired(quotation = quotation)
-            val quotationStepList = uiState.quotationSteps?.steps?.map { step ->
-                QuotationStep(
-                    id = step.stepKey,
-                    stepKey = step.stepKey,
-                    stepValue = step.stepValue,
-                    quotationIcon = getIconForStep(step.stepKey)
-                )
-            } ?: emptyList()
-
-            QuotationListSteps(
-                quotationStepList = quotationStepList,
-                quotationSteps = uiState.quotationSteps,
+            QuotationDetailsContent(
+                quotation = quotation,
                 quotationListViewModel = quotationListViewModel
-            )
-            PcsButton(
-                onClick = {
-                    showDeleteAlertDialog = true
-                },
-                data = ButtonThemeDefaultVariants.buttonDataWithIcon(
-                    label = "Delete Quotation",
-                    type = ButtonType.TONAL,
-                    contentDescription = "Content Description",
-                    icon = painterResource(R.drawable.ic_pcs_delete)
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-            )
-        }
-        if (showDeleteAlertDialog) {
-            PcSAlertDialog(
-                data = AlertDialogData(
-                    title = stringResource(R.string.quotation_list_bottom_sheet_details_delete_alert_dialog_title),
-                    message = stringResource(R.string.quotation_list_bottom_sheet_details_delete_alert_dialog_message),
-                    confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
-                    dismissButtonText = stringResource(R.string.alert_dialog_dismiss_button_text),
-                    onConfirm = {
-                        quotationListViewModel.deleteQuotation(quotation?.id.orEmpty())
-                        showDeleteAlertDialog = false
-                    },
-                    onDismiss = { showDeleteAlertDialog = false },
-                    dismissOnClickOutside = true,
-                    type = AlertDialogType.CONFIRMATION,
-                    lottieAnimation = R.raw.pcs_success_anim,
-                ),
-                modifier = Modifier,
-                autoPlayAnimation = true,
-                animationRepeatCount = 1,
             )
         }
     }
@@ -355,7 +316,6 @@ private fun handleChipClick(
             context,
             R.string.quotation_list_screen_chip_filter_deleted
         ).lowercase() -> {
-            Toast.makeText(context, "Showing deleted items", Toast.LENGTH_SHORT).show()
             quotations.filter { it.deleted }
         }
 
@@ -363,7 +323,6 @@ private fun handleChipClick(
             context,
             R.string.quotation_list_screen_chip_filter_completed
         ).lowercase() -> {
-            Toast.makeText(context, "Showing completed items", Toast.LENGTH_SHORT).show()
             quotations.filter { it.currentStep == CONST_QUOTATION_STEP_KEY6 }
         }
 
@@ -371,8 +330,6 @@ private fun handleChipClick(
             context,
             R.string.quotation_list_screen_chip_filter_by_date
         ).lowercase() -> {
-            Toast.makeText(context, "Filtering by date", Toast.LENGTH_SHORT).show()
-            //quotations.sortedBy { it.date }
             emptyList()
         }
 
@@ -380,7 +337,6 @@ private fun handleChipClick(
             context,
             R.string.quotation_list_screen_chip_filter_by_status
         ).lowercase() -> {
-            Toast.makeText(context, "Filtering by status", Toast.LENGTH_SHORT).show()
             quotations.sortedBy { it.status }
         }
 
@@ -388,12 +344,13 @@ private fun handleChipClick(
             context,
             R.string.quotation_list_screen_chip_filter_created_by
         ).lowercase() -> {
-            Toast.makeText(context, "Filtering by creator", Toast.LENGTH_SHORT).show()
             quotations.filter { it.deleted }
         }
 
-        getStringResource(context, R.string.quotation_list_screen_chip_filter_all).lowercase() -> {
-            Toast.makeText(context, "Filtering all", Toast.LENGTH_SHORT).show()
+        getStringResource(
+            context,
+            R.string.quotation_list_screen_chip_filter_all
+        ).lowercase() -> {
             quotations
         }
 
@@ -401,156 +358,12 @@ private fun handleChipClick(
             context,
             R.string.quotation_list_screen_chip_filter_current
         ).lowercase() -> {
-            Toast.makeText(context, "Filtering current", Toast.LENGTH_SHORT).show()
-            quotations.filter { !it.deleted }
+            quotations.filter { !it.deleted && it.currentStep != CONST_QUOTATION_STEP_KEY6 }
         }
 
         else -> {
-            Toast.makeText(context, "Unknown filter", Toast.LENGTH_SHORT).show()
             emptyList()
         }
     }
     return filteredData
-}
-
-
-/** region Content Bill Required */
-@Composable
-fun ContentBillRequired(quotation: Quotation?) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_id,
-                    quotation?.id.orEmpty(),
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_client,
-                    quotation?.clientName.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_customer,
-                    quotation?.customerName.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_is_bill_required,
-                    quotation?.isBillRequired ?: false
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_tax_regime,
-                    quotation?.taxRegime.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_rfc,
-                    quotation?.rfc.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_address,
-                    quotation?.address.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_zip_code,
-                    quotation?.zipCode.orEmpty()
-                )
-            )
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_state,
-                    quotation?.state.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_municipality,
-                    quotation?.municipality.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_cfdi,
-                    quotation?.cfdi.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_email,
-                    quotation?.email.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_payment_method,
-                    quotation?.paymentMethod.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_contact,
-                    quotation?.contact.orEmpty()
-                )
-            )
-            Text(
-                text = stringResource(
-                    R.string.quotation_list_bottom_sheet_details_extra_data,
-                    quotation?.extraData.orEmpty()
-                )
-            )
-        }
-    }
-}
-
-/** region Content Non Bill Required */
-@Composable
-fun NonContentBillRequired(quotation: Quotation?) {
-    Text(
-        text = stringResource(
-            R.string.quotation_list_bottom_sheet_details_id,
-            quotation?.id.orEmpty()
-        )
-    )
-    Text(
-        text = stringResource(
-            R.string.quotation_list_bottom_sheet_details_client,
-            quotation?.clientName.orEmpty()
-        )
-    )
-    Text(
-        text = stringResource(
-            R.string.quotation_list_bottom_sheet_details_customer,
-            quotation?.customerName.orEmpty()
-        )
-    )
-    Text(
-        text = stringResource(
-            R.string.quotation_list_bottom_sheet_details_contact,
-            quotation?.contact.orEmpty()
-        )
-    )
-    Text(
-        text = stringResource(
-            R.string.quotation_list_bottom_sheet_details_extra_data,
-            quotation?.extraData.orEmpty()
-        )
-    )
 }

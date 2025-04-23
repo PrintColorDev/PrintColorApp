@@ -39,7 +39,7 @@ fun PcSStepImage(
             modifier = modifier
                 .size(60.dp)
                 .clip(CircleShape)
-                .background(if (isCompleted == true) MaterialTheme.colorScheme.surfaceTint else MaterialTheme.colorScheme.onPrimary)
+                .background(if (isCompleted == true) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.onPrimary)
                 .border(
                     BorderStroke(
                         1.dp,

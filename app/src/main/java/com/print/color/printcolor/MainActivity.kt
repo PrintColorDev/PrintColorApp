@@ -45,12 +45,7 @@ class MainActivity : ComponentActivity() {
                         productQuotationViewModel = addProductViewModel,
                         quotationListViewModel = quotationViewModel,
                         navigationRailList = navigationRailItems,
-                    ) /*{
-
-                        addProductViewModel.uiState.collect {
-
-                        }
-                    }*/
+                    )
                 }
             }
         }

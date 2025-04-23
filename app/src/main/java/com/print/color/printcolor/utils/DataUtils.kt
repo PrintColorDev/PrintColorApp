@@ -1,5 +1,6 @@
 package com.print.color.printcolor.utils
 
+import android.content.Context
 import com.print.color.printcolor.R
 import com.print.color.printcolor.domain.model.QuotationStep
 import java.util.Date
@@ -13,7 +14,7 @@ fun generateUniqueId(): String {
 fun getIconForStep(stepKey: String): Int {
     return when (stepKey) {
         CONST_QUOTATION_STEP_KEY1 -> R.drawable.ic_pcs_notes
-        CONST_QUOTATION_STEP_KEY2 -> R.drawable.ic_pcs_success
+        CONST_QUOTATION_STEP_KEY2 -> R.drawable.ic_pcs_confirm
         CONST_QUOTATION_STEP_KEY3 -> R.drawable.ic_pcs_design
         CONST_QUOTATION_STEP_KEY4 -> R.drawable.ic_pcs_print
         CONST_QUOTATION_STEP_KEY5 -> R.drawable.ic_pcs_delivery
@@ -34,7 +35,7 @@ fun getQuotationStepList(): List<QuotationStep> = listOf(
         id = CONST_QUOTATION_STEP2_ID,
         stepKey = CONST_QUOTATION_STEP_KEY2,
         stepValue = false,
-        quotationIcon = R.drawable.ic_pcs_success
+        quotationIcon = R.drawable.ic_pcs_confirm
     ),
     QuotationStep(
         id = CONST_QUOTATION_STEP3_ID,
@@ -61,3 +62,38 @@ fun getQuotationStepList(): List<QuotationStep> = listOf(
         quotationIcon = R.drawable.ic_pcs_survey
     )
 )
+
+/** Fun to handle the step description. */
+fun getCorrectStepDescriptionByStepKey(context: Context, stepKey: String) = when (stepKey) {
+    CONST_QUOTATION_STEP_KEY1 -> getStringResource(
+        context = context,
+        stringResId = R.string.quotation_list_screen_tooltip_description_step1
+    )
+
+    CONST_QUOTATION_STEP_KEY2 -> getStringResource(
+        context = context,
+        stringResId = R.string.quotation_list_screen_tooltip_description_step2
+    )
+
+    CONST_QUOTATION_STEP_KEY3 -> getStringResource(
+        context = context,
+        stringResId = R.string.quotation_list_screen_tooltip_description_step3
+    )
+
+    CONST_QUOTATION_STEP_KEY4 -> getStringResource(
+        context = context,
+        stringResId = R.string.quotation_list_screen_tooltip_description_step4
+    )
+
+    CONST_QUOTATION_STEP_KEY5 -> getStringResource(
+        context = context,
+        stringResId = R.string.quotation_list_screen_tooltip_description_step5
+    )
+
+    CONST_QUOTATION_STEP_KEY6 -> getStringResource(
+        context = context,
+        stringResId = R.string.quotation_list_screen_tooltip_description_step6
+    )
+
+    else -> stepKey
+}

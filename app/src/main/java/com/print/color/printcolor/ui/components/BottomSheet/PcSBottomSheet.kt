@@ -1,11 +1,15 @@
 package com.print.color.printcolor.ui.components.BottomSheet
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -18,13 +22,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetData
 import com.print.color.printcolor.ui.components.BottomSheet.model.ModalBottomSheetThemeDefaultVariants
 import com.print.color.printcolor.ui.components.IconClickButton.PcsIconClickButton
 import com.print.color.printcolor.ui.components.IconClickButton.model.IconClickButtonDefaultVariants
+import com.print.color.printcolor.ui.theme.fontFamily
 
 /** region principal component*/
 /**
@@ -49,26 +57,41 @@ fun PcsBottomSheet(
         ModalBottomSheet(
             onDismissRequest = { onDismiss() },
             modifier = Modifier.then(modifier.fillMaxWidth()),
-            sheetState = sheetState
+            sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
-            Column(Modifier) {
+            Column(modifier = Modifier.padding(all = 16.dp)) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(all = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = modalBottomSheetData.title,
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                        style = MaterialTheme.typography.titleLarge
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier.size(width = 80.dp, height = 60.dp),
+                            painter = painterResource(R.drawable.ic_pc_logo),
+                            contentDescription = "Logo"
+                        )
+                        Text(
+                            text = modalBottomSheetData.title,
+                            modifier = Modifier.padding(start = 8.dp),
+                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = fontFamily
+                        )
+                    }
                     PcsIconClickButton(
                         data = IconClickButtonDefaultVariants.iconClickButtonDefault(
                             icon = painterResource(R.drawable.ic_pcs_close),
                             contentDescription = "Close Bottom Sheet"
                         ), onClick = { onDismiss() })
                 }
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth()
+                )
                 sheetContent()
             }
         }
