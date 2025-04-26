@@ -39,8 +39,6 @@ import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDef
 import com.print.color.printcolor.ui.components.SwitchTheme.PcSSwitch
 import com.print.color.printcolor.ui.components.SwitchTheme.model.SwitchDefaultVariants
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData
-import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldData.TextFieldType
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 
 @Composable

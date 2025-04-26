@@ -114,6 +114,8 @@ fun PcsTextField(
                         trailingIcon = trailingIcon,
                         leadingIcon = leadingIcon,
                         colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
                             unfocusedTextColor = MaterialTheme.colorScheme.error,
                             focusedTextColor = MaterialTheme.colorScheme.scrim,
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
@@ -196,7 +198,7 @@ private fun maxLength(text: String, maxLength: Int): String {
 
 @Preview(showBackground = true)
 @Composable
-fun PcsTextFieldPreview(modifier: Modifier = Modifier) {
+private fun PcsTextFieldPreview(modifier: Modifier = Modifier) {
     var myPassword by remember { mutableStateOf("") }
     val textFieldData = TextFieldDefaultVariants.textFieldOutlined(
         label = "Label",

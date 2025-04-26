@@ -24,20 +24,21 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.OUTLINED
+import com.print.color.printcolor.R
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.ELEVATED
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.FILLED
+import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.OUTLINED
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.TEXT
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType.TONAL
-import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
-import com.print.color.printcolor.R
 
 @Composable
 fun PcsButton(
@@ -54,12 +55,18 @@ fun PcsButton(
                     painter = it,
                     contentDescription = data.contentDescription,
                     modifier = Modifier.size(18.dp),
-                    colorFilter = ColorFilter.tint(LocalContentColor.current)
+                    //colorFilter = ColorFilter.tint(LocalContentColor.current)
+                    colorFilter = if (data.type == OUTLINED) ColorFilter.tint(MaterialTheme.colorScheme.primary) else ColorFilter.tint(
+                        LocalContentColor.current
+                    )
                 )
             }
 
             if (!isVisible) {
-                Text(text = data.label)
+                Text(
+                    text = data.label,
+                    color = if (data.type == OUTLINED) Color.Black else LocalContentColor.current
+                )
             }
 
             if (isVisible) {
@@ -85,6 +92,7 @@ fun PcsButton(
         OUTLINED -> {
             OutlinedButton(
                 onClick = { onClick() },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onPrimary),
                 enabled = data.isEnabled,
                 modifier = modifier,
                 content = content,
