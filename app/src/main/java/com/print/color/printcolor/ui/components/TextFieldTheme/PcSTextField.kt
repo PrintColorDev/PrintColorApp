@@ -57,20 +57,23 @@ fun PcsTextField(
     imeAction: ImeAction = ImeAction.None,
     options: List<String> = emptyList(),
 ) {
-    /** Password */
+    /** Password Val's */
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    val trailingPasswordIcon: @Composable (() -> Unit) = {
-        val image = if (passwordVisible) {
-            painterResource(id = R.drawable.ic_pcs_visibility)
-        } else {
-            painterResource(id = R.drawable.ic_pcs_visibility_off)
-        }
-    }
-
-    val icon = if (passwordVisible)
+    val passwordIcon = if (passwordVisible)
         painterResource(id = R.drawable.ic_pcs_visibility)
     else
         painterResource(id = R.drawable.ic_pcs_visibility_off)
+
+    val trailingPasswordIcon: @Composable (() -> Unit) = {
+        IconButton(onClick = {
+            passwordVisible = !passwordVisible
+        }) {
+            Icon(
+                painter = passwordIcon,
+                contentDescription = "Visibility Icon"
+            )
+        }
+    }
 
     val trailingIcon: @Composable (() -> Unit) = {
         if (value.isNotEmpty()) {
@@ -83,6 +86,7 @@ fun PcsTextField(
             }
         }
     }
+
     val leadingIcon: @Composable (() -> Unit)? = if (data.leadingIcon != null) {
         {
             Icon(
@@ -94,8 +98,6 @@ fun PcsTextField(
     } else {
         null
     }
-
-
 
     PrintColorTheme {
         when (data.textFieldType) {
@@ -170,16 +172,7 @@ fun PcsTextField(
                             imeAction = imeAction
                         ),
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        trailingIcon = {
-                            IconButton(onClick = {
-                                passwordVisible = !passwordVisible
-                            }) {
-                                Icon(
-                                    painter = icon,
-                                    contentDescription = "Visibility Icon"
-                                )
-                            }
-                        },
+                        trailingIcon = trailingPasswordIcon,
                         leadingIcon = leadingIcon,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
