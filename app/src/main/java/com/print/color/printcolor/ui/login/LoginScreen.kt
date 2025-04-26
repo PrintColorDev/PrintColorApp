@@ -22,6 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -47,9 +49,12 @@ import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.ui.theme.White
 import com.print.color.printcolor.utils.PcsStepDivider
 
-@Preview(showBackground = true)
+const val MAX_PASSWORD_LENGTH = 6
+
+//@Preview(showBackground = true)
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(modifier: Modifier = Modifier,
+                loginScreenViewModel: LoginScreenViewModel) {
     Row(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier
@@ -65,7 +70,9 @@ fun LoginScreen(modifier: Modifier = Modifier) {
                 .fillMaxSize()
         ) {
             FieldsLoginContent(
-                modifier = Modifier
+                modifier = Modifier,
+                loginScreenViewModel = loginScreenViewModel,
+                onLogin = {}
             )
         }
     }
@@ -123,14 +130,25 @@ private fun CarouselLoginContent(modifier: Modifier = Modifier) {
 }
 
 
-@Preview(
+/*@Preview(
     showBackground = true,
     showSystemUi = true,
     device = "spec:width=1280dp,height=800dp,dpi=240",
     locale = "es"
-)
+)*/
 @Composable
-private fun FieldsLoginContent(modifier: Modifier = Modifier) {
+private fun FieldsLoginContent(
+    loginScreenViewModel: LoginScreenViewModel,
+    onLogin: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    val uiState by loginScreenViewModel.uiState.collectAsState()
+    val isButtonEnabled = uiState.isValidLogin()
+
+    var userNameValue = uiState.userName
+    var passwordValue = uiState.password
+
     PrintColorTheme {
         Box(
             modifier = Modifier
@@ -171,21 +189,26 @@ private fun FieldsLoginContent(modifier: Modifier = Modifier) {
                                 leadingIcon = painterResource(R.drawable.ic_pcs_client)
                             ),
                             modifier = Modifier.fillMaxWidth(),
-                            onValueChange = { },
-                            value = "",
+                            onValueChange = {
+                                loginScreenViewModel.onUserNameChanged(it)
+                            },
+                            value = userNameValue,
                             imeAction = ImeAction.Next
                         )
 
                         PcsTextField(
-                            data = TextFieldDefaultVariants.textFieldOutlined(
+                            maxLength = MAX_PASSWORD_LENGTH,
+                            data = TextFieldDefaultVariants.textFieldOutlinedPassword(
                                 label = "",
                                 placeHolder = "Password",
                                 keyboardType = KeyboardType.NumberPassword,
                                 leadingIcon = painterResource(R.drawable.ic_pcs_pin)
                             ),
                             modifier = Modifier.fillMaxWidth(),
-                            onValueChange = { },
-                            value = "",
+                            onValueChange = {
+                                loginScreenViewModel.onPasswordChanged(it)
+                            },
+                            value = passwordValue,
                             imeAction = ImeAction.Next
                         )
                         Text(
@@ -198,14 +221,17 @@ private fun FieldsLoginContent(modifier: Modifier = Modifier) {
                                 label = "Login",
                                 type = ButtonType.OUTLINED,
                                 contentDescription = "Content Description",
-                                icon = painterResource(R.drawable.ic_pcs_login)
+                                icon = painterResource(R.drawable.ic_pcs_login),
+                                isEnabled = isButtonEnabled
                             ),
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
 
                         PcsStepDivider(modifier = Modifier.fillMaxWidth())
                         PcsButton(
-                            onClick = {},
+                            onClick = {
+                                onLogin()
+                            },
                             data = ButtonThemeDefaultVariants.buttonDefaultData(
                                 label = "Create Account",
                                 type = ButtonType.FILLED,
@@ -264,8 +290,16 @@ fun ExtraSmoothWavyDiagonalBackground(modifier: Modifier = Modifier) {
 
         // Círculos decorativos con imperfecciones
         drawCircle(color = LightPink, radius = 60f, center = Offset(width * 0.2f, height * 0.85f))
-        drawCircle(color = LightYellow, radius = 45f, center = Offset(width * 0.65f, height * 0.52f))
-        drawCircle(color = LightLightBlue, radius = 35f, center = Offset(width * 0.52f, height * 0.35f))
+        drawCircle(
+            color = LightYellow,
+            radius = 45f,
+            center = Offset(width * 0.65f, height * 0.52f)
+        )
+        drawCircle(
+            color = LightLightBlue,
+            radius = 35f,
+            center = Offset(width * 0.52f, height * 0.35f)
+        )
     }
 }
 

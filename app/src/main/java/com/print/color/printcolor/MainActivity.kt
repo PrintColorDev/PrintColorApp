@@ -7,12 +7,12 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.print.color.printcolor.ui.components.NavigationRail.PcSNavigationRail
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
+import com.print.color.printcolor.ui.login.LoginScreen
+import com.print.color.printcolor.ui.login.LoginScreenViewModel
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.theme.PrintColorTheme
@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
     /** View Model Call's */
     val addProductViewModel: ProductQuotationViewModel by viewModels()
     val quotationViewModel: QuotationListViewModel by viewModels()
+    val loginViewModel: LoginScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +42,12 @@ class MainActivity : ComponentActivity() {
             val navigationRailItems = rememberNavigationRailItems()
             PrintColorTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    PcSNavigationRail(
+                    LoginScreen(loginScreenViewModel = loginViewModel)
+                    /*PcSNavigationRail(
                         productQuotationViewModel = addProductViewModel,
                         quotationListViewModel = quotationViewModel,
                         navigationRailList = navigationRailItems,
-                    )
+                    )*/
                 }
             }
         }

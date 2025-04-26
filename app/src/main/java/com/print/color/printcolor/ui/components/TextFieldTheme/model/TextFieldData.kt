@@ -23,6 +23,7 @@ data class TextFieldData(
     enum class TextFieldType {
         FILLED,
         OUTLINED,
+        OUTLINED_PASSWORD,
         OUTLINED_LIST
     }
 }
@@ -72,6 +73,20 @@ object TextFieldDefaultVariants {
         keyboardType = keyboardType,
         leadingIcon = leadingIcon,
         isTextCountRequired = isTextCountRequired
+    )
+    fun textFieldOutlinedPassword(
+        label: String,
+        placeHolder: String,
+        keyboardType: KeyboardType,
+        leadingIcon: Painter?,
+        isTextCountRequired: Boolean = false
+    ) = TextFieldData(
+        textFieldType = TextFieldData.TextFieldType.OUTLINED_PASSWORD,
+        label = label,
+        placeHolder = placeHolder,
+        keyboardType = keyboardType,
+        leadingIcon = leadingIcon,
+        isTextCountRequired = isTextCountRequired,
     )
 }
 
