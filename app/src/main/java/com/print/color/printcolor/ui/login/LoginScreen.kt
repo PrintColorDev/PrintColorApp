@@ -146,8 +146,8 @@ private fun FieldsLoginContent(
     val uiState by loginScreenViewModel.uiState.collectAsState()
     val isButtonEnabled = uiState.isValidLogin()
 
-    var userNameValue = uiState.userName
-    var passwordValue = uiState.password
+    val userNameValue = uiState.userName
+    val passwordValue = uiState.password
 
     PrintColorTheme {
         Box(
