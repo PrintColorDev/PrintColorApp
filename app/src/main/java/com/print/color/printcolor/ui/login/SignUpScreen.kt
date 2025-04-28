@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,7 +52,7 @@ private fun ColumnScope.TopAppBarContent() {
             colorFilter = ColorFilter.tint(LocalContentColor.current),
             modifier = Modifier,
             painter = painterResource(R.drawable.ic_pcs_arrow_back),
-            contentDescription = "Logo"
+            contentDescription = "back button"
         )
         Image(
             modifier = Modifier.size(width = 90.dp, height = 70.dp),
@@ -59,7 +60,7 @@ private fun ColumnScope.TopAppBarContent() {
             contentDescription = "Logo"
         )
         Text(
-            text = "Sign Up",
+            text = stringResource(R.string.login_screen_create_account_title_text),
             style = MaterialTheme.typography.titleLarge,
         )
     }
@@ -136,7 +137,7 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                 onValueChange = {
                     signUpViewModel.onUserDateChanged(it)
                 },
-                value = phoneNumberValue,
+                value = userDateValue,
                 imeAction = ImeAction.Next
             )
 

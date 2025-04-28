@@ -42,10 +42,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
 import com.print.color.printcolor.ui.components.NavigationRail.model.Routes
 import com.print.color.printcolor.ui.home.HomeScreen
+import com.print.color.printcolor.ui.login.LoginScreen
+import com.print.color.printcolor.ui.login.LoginScreenViewModel
+import com.print.color.printcolor.ui.login.SignUpScreen
+import com.print.color.printcolor.ui.login.SignUpViewModel
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.productQuotation.QuotationScreen
 import com.print.color.printcolor.ui.profile.ProfileScreen
@@ -53,17 +59,18 @@ import com.print.color.printcolor.ui.quotationList.QuotationListScreen
 import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.settings.SettingsScreen
 import com.print.color.printcolor.ui.theme.PrintColorTheme
-import com.print.color.printcolor.R
 
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
     productQuotationViewModel: ProductQuotationViewModel,
-    quotationListViewModel: QuotationListViewModel
+    quotationListViewModel: QuotationListViewModel,
+    loginScreenViewModel: LoginScreenViewModel,
+    signUpViewModel: SignUpViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = Routes.Quotation.route,
+        startDestination = Routes.Login.route,
         //modifier = Modifier.weight(1f)
     ) {
         composable(Routes.Profile.route) { ProfileScreen() }
@@ -77,6 +84,17 @@ fun NavigationGraph(
         composable(Routes.Home.route) { HomeScreen() }
         composable(Routes.Quotations.route) {
             QuotationListScreen(quotationListViewModel = quotationListViewModel)
+        }
+        composable(Routes.SignUp.route) { SignUpScreen(signUpViewModel = signUpViewModel) }
+        composable(Routes.Login.route) {
+            LoginScreen(
+                loginScreenViewModel = loginScreenViewModel,
+                onLogin = {
+                    navController.navigate(Routes.Home.route)
+                },
+                onSignUp = {
+                    navController.navigate(Routes.SignUp.route)
+                })
         }
     }
 }
@@ -93,10 +111,16 @@ fun shouldShowNavigationRail(): Boolean {
 fun PcSNavigationRail(
     productQuotationViewModel: ProductQuotationViewModel,
     quotationListViewModel: QuotationListViewModel,
+    loginScreenViewModel: LoginScreenViewModel,
+    signUpViewModel: SignUpViewModel,
     navigationRailList: List<NavigationRailData>
 ) {
     val navController = rememberNavController()
-    val showNavigationRail = shouldShowNavigationRail()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination?.route
+
+    val showNavigationRail =
+        shouldShowNavigationRail() && currentDestination != Routes.Login.route&& currentDestination != Routes.SignUp.route
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
 
     val homeOption = stringResource(R.string.navigation_rail_home)
@@ -104,36 +128,41 @@ fun PcSNavigationRail(
     val quotationsOption = stringResource(R.string.navigation_rail_quotations)
     val profileOption = stringResource(R.string.navigation_rail_profile)
 
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-            Row(Modifier.padding(paddingValues)) {
-                if (showNavigationRail) {
-                    PcSNavigationSideBar(
-                        items = navigationRailList,
-                        selectedItemIndex = selectedItemIndex,
-                        onNavigate = { index ->
-                            selectedItemIndex = index
-                            navigateToRoute(
-                                navController,
-                                navigationRailList[index].title,
-                                homeOption,
-                                settingsOption,
-                                quotationsOption,
-                                profileOption
-                            )
-                        },
-                        navController = navController
+    PrintColorTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
+                Row(Modifier.padding(paddingValues)) {
+                    if (showNavigationRail) {
+                        PcSNavigationSideBar(
+                            items = navigationRailList,
+                            selectedItemIndex = selectedItemIndex,
+                            onNavigate = { index ->
+                                selectedItemIndex = index
+                                navigateToRoute(
+                                    navController,
+                                    navigationRailList[index].title,
+                                    homeOption,
+                                    settingsOption,
+                                    quotationsOption,
+                                    profileOption
+                                )
+                            },
+                            navController = navController
+                        )
+                    }
+                    NavigationGraph(
+                        navController = navController,
+                        productQuotationViewModel = productQuotationViewModel,
+                        quotationListViewModel = quotationListViewModel,
+                        loginScreenViewModel = loginScreenViewModel,
+                        signUpViewModel = signUpViewModel
                     )
                 }
-                NavigationGraph(
-                    navController = navController,
-                    productQuotationViewModel = productQuotationViewModel,
-                    quotationListViewModel = quotationListViewModel
-                )
             }
         }
     }
 }
+
 
 private fun navigateToRoute(
     navController: NavController,

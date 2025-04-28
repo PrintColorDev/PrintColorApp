@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,8 +54,12 @@ const val MAX_PASSWORD_LENGTH = 6
 
 //@Preview(showBackground = true)
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier,
-                loginScreenViewModel: LoginScreenViewModel) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    loginScreenViewModel: LoginScreenViewModel,
+    onLogin: () -> Unit,
+    onSignUp: () -> Unit
+) {
     Row(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier
@@ -72,7 +77,8 @@ fun LoginScreen(modifier: Modifier = Modifier,
             FieldsLoginContent(
                 modifier = Modifier,
                 loginScreenViewModel = loginScreenViewModel,
-                onLogin = {}
+                onLogin = { onLogin() },
+                onSignUp = { onSignUp() }
             )
         }
     }
@@ -80,7 +86,7 @@ fun LoginScreen(modifier: Modifier = Modifier,
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CarouselLoginContent(modifier: Modifier = Modifier) {
+private fun CarouselLoginContent() {
     PrintColorTheme {
         val carouselState = rememberCarouselState { 3 }
 
@@ -122,7 +128,7 @@ private fun CarouselLoginContent(modifier: Modifier = Modifier) {
                 Text(
                     modifier = Modifier.padding(all = 24.dp),
                     style = MaterialTheme.typography.titleLarge,
-                    text = "Soluciones personalizadas y vanguardistas, satisfaciendo necesidades con resultados excepcionales en impresión y servicios variados."
+                    text = stringResource(R.string.login_screen_slogan_text)
                 )
             }
         }
@@ -140,6 +146,7 @@ private fun CarouselLoginContent(modifier: Modifier = Modifier) {
 private fun FieldsLoginContent(
     loginScreenViewModel: LoginScreenViewModel,
     onLogin: () -> Unit,
+    onSignUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -162,7 +169,7 @@ private fun FieldsLoginContent(
                 Text(
                     modifier = Modifier.padding(bottom = 16.dp),
                     style = MaterialTheme.typography.titleLarge,
-                    text = "Welcome Back!"
+                    text = stringResource(R.string.login_screen_welcome_text)
                 )
                 Card(
                     modifier = Modifier
@@ -184,7 +191,7 @@ private fun FieldsLoginContent(
                         PcsTextField(
                             data = TextFieldDefaultVariants.textFieldOutlined(
                                 label = "",
-                                placeHolder = "User Name",
+                                placeHolder = stringResource(R.string.login_screen_user_name_text_field),
                                 keyboardType = KeyboardType.Text,
                                 leadingIcon = painterResource(R.drawable.ic_pcs_client)
                             ),
@@ -200,7 +207,7 @@ private fun FieldsLoginContent(
                             maxLength = MAX_PASSWORD_LENGTH,
                             data = TextFieldDefaultVariants.textFieldOutlinedPassword(
                                 label = "",
-                                placeHolder = "Password",
+                                placeHolder = stringResource(R.string.login_screen_pin_text_field),
                                 keyboardType = KeyboardType.NumberPassword,
                                 leadingIcon = painterResource(R.drawable.ic_pcs_pin)
                             ),
@@ -213,12 +220,12 @@ private fun FieldsLoginContent(
                         )
                         Text(
                             modifier = Modifier.align(Alignment.End),
-                            text = "Forgot Password?"
+                            text = stringResource(R.string.login_screen_forgot_pin_text)
                         )
                         PcsButton(
-                            onClick = {},
+                            onClick = { onLogin() },
                             data = ButtonThemeDefaultVariants.buttonDataWithIcon(
-                                label = "Login",
+                                label = stringResource(R.string.login_screen_login_button_text),
                                 type = ButtonType.OUTLINED,
                                 contentDescription = "Content Description",
                                 icon = painterResource(R.drawable.ic_pcs_login),
@@ -229,11 +236,9 @@ private fun FieldsLoginContent(
 
                         PcsStepDivider(modifier = Modifier.fillMaxWidth())
                         PcsButton(
-                            onClick = {
-                                onLogin()
-                            },
+                            onClick = { onSignUp() },
                             data = ButtonThemeDefaultVariants.buttonDefaultData(
-                                label = "Create Account",
+                                label = stringResource(R.string.login_screen_create_account_button_text),
                                 type = ButtonType.FILLED,
                                 contentDescription = "Content Description",
                             ),

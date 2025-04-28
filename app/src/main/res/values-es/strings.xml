@@ -18,6 +18,8 @@
     <string name="navigation_rail_quotation">Cotización</string>
     <string name="navigation_rail_settings">Configuración</string>
     <string name="navigation_rail_home">Inicio</string>
+    <string name="navigation_rail_login">Login</string>
+    <string name="navigation_rail_sign_up">Sign Up</string>
 
     //Alert Dialog Strings
     <string name="alert_dialog_confirm_button_text">Confirmar</string>
@@ -133,5 +135,14 @@
     <string name="quotation_item_list_annotation_extra_data_text">Datos Extra: %1$s</string>
     <string name="quotation_item_list_annotation_created_date_text">Fecha de creación: %1$s</string>
 
+    // Login Screen Strings
+    <string name="login_screen_welcome_text">¡Bienvenido de nuevo!</string>
+    <string name="login_screen_create_account_title_text">Comencemos a crear tu perfil!</string>
+    <string name="login_screen_slogan_text">Soluciones personalizadas y vanguardistas, satisfaciendo necesidades con resultados excepcionales en impresión y servicios variados.</string>
+    <string name="login_screen_user_name_text_field">Usuario</string>
+    <string name="login_screen_pin_text_field">PIN</string>
+    <string name="login_screen_forgot_pin_text">¿Olvitaste tu PIN?</string>
+    <string name="login_screen_login_button_text">Iniciar sesión</string>
+    <string name="login_screen_create_account_button_text">Crear cuenta</string>
 
 </resources>

@@ -15,4 +15,7 @@ sealed class Routes(val route: String) {
     object Settings : Routes(R.string.navigation_rail_settings.toString())
     object Home : Routes(R.string.navigation_rail_home.toString())
     object Quotations : Routes(R.string.navigation_rail_quotations.toString())
+    object Login : Routes(R.string.navigation_rail_login.toString())
+    object SignUp : Routes(R.string.navigation_rail_sign_up.toString())
+
 }

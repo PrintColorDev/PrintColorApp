@@ -10,9 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.print.color.printcolor.ui.components.NavigationRail.PcSNavigationRail
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
-import com.print.color.printcolor.ui.login.LoginScreen
 import com.print.color.printcolor.ui.login.LoginScreenViewModel
+import com.print.color.printcolor.ui.login.SignUpViewModel
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.theme.PrintColorTheme
@@ -34,20 +35,25 @@ class MainActivity : ComponentActivity() {
     val addProductViewModel: ProductQuotationViewModel by viewModels()
     val quotationViewModel: QuotationListViewModel by viewModels()
     val loginViewModel: LoginScreenViewModel by viewModels()
+    val signUpViewModel: SignUpViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             val navigationRailItems = rememberNavigationRailItems()
+
             PrintColorTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    LoginScreen(loginScreenViewModel = loginViewModel)
-                    /*PcSNavigationRail(
+
+                    //LoginScreen(loginScreenViewModel = loginViewModel, onLogin = {})
+                    PcSNavigationRail(
                         productQuotationViewModel = addProductViewModel,
                         quotationListViewModel = quotationViewModel,
+                        loginScreenViewModel = loginViewModel,
+                        signUpViewModel = signUpViewModel,
                         navigationRailList = navigationRailItems,
-                    )*/
+                    )
                 }
             }
         }

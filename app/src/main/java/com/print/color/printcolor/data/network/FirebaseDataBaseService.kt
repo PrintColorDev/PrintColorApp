@@ -2,8 +2,6 @@ package com.print.color.printcolor.data.network
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
-import com.google.firebase.firestore.snapshots
 import com.print.color.printcolor.data.response.QuotationResponse
 import com.print.color.printcolor.data.response.QuotationStepsResponse
 import com.print.color.printcolor.domain.model.Quotation
@@ -19,7 +17,6 @@ import com.print.color.printcolor.utils.getQuotationStepList
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -32,6 +29,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
     companion object {
         const val QUOTATION_PATH = "quotations"
         const val QUOTATION_STEPS_PATH = "quotationSteps"
+        const val NEW_USER = "users"
     }
     /** endregion Firebase path's*/
 
@@ -211,6 +209,13 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
             Log.e("deleteQuotationFailed", "Error al eliminar la cotización", e)
         }
     }
+
+    /** region SignUp functions*/
+
+    suspend fun createNewUser() {
+
+    }
+    /** endregion SignUp functions*/
 }
 
 /** region filter chip functions. */
