@@ -1,7 +1,9 @@
 package com.print.color.printcolor.ui.productQuotation
 
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
@@ -12,9 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import java.util.Date
 import javax.inject.Inject
 
 /** Quotation Screen Constants */
@@ -103,9 +102,9 @@ class ProductQuotationViewModel @Inject constructor(val firebaseDataBaseService:
         _uiState.update { it.copy(paymentMethod = paymentMethod.toString()) }
     }
 
-    private fun isQuotationSaved(show: Boolean) {
-        _uiState.update { it.copy(isQuotationSaved = show) }
-    }
+        private fun isQuotationSaved(show: Boolean) {
+            _uiState.update { it.copy(isQuotationSaved = show) }
+        }
 
     fun onAddQuotation(onSuccessQuotation: () -> Unit) {
         viewModelScope.launch {

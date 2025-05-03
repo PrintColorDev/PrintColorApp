@@ -1,6 +1,5 @@
 package com.print.color.printcolor.ui.components.ChipsTheme
 
-import android.R.attr.text
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -9,28 +8,25 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.InputChip
-import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipData
 import com.print.color.printcolor.R
+import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipData
 import com.print.color.printcolor.ui.components.ChipsTheme.model.ChipsDefaultVariants
 
 @Composable

@@ -29,7 +29,7 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
     companion object {
         const val QUOTATION_PATH = "quotations"
         const val QUOTATION_STEPS_PATH = "quotationSteps"
-        const val NEW_USER = "users"
+        const val NEW_USER_PATH = "users"
     }
     /** endregion Firebase path's*/
 
@@ -212,8 +212,37 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
 
     /** region SignUp functions*/
 
-    suspend fun createNewUser() {
+    suspend fun createNewUser(
+        firstName: String,
+        lastName: String,
+        phoneNumber: String,
+        userDate: String,
+        pin: String,
+        userName: String,
+    ): Boolean {
+        val id = generateUniqueId()
 
+        val user = hashMapOf(
+            "userId" to id,
+            "firstName" to firstName,
+            "lastName" to lastName,
+            "phoneNumber" to phoneNumber,
+            "userDate" to userDate,
+            "pin" to pin,
+            "userName" to userName
+        )
+
+        return suspendCancellableCoroutine { continuation ->
+            firebaseFireStore.collection(NEW_USER_PATH)
+                .document(id)
+                .set(user)
+                .addOnSuccessListener {
+                    continuation.resume(true)
+                }.addOnFailureListener {
+                    //Log.e("Firestore", "Error al crear la cotización", it)
+                    continuation.resume(false)
+                }
+        }
     }
     /** endregion SignUp functions*/
 }
