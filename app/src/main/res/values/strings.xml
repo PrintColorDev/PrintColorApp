@@ -144,4 +144,8 @@
     <string name="login_screen_login_button_text">Login</string>
     <string name="login_screen_create_account_button_text">Create Account</string>
 
+    // DatePicker Strings
+    <string name="date_picker_hint_text">Select Date</string>
+    <string name="date_picker_place_holder_text">MM/DD/YYYY</string>
+
 </resources>

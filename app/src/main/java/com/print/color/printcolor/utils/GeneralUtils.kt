@@ -3,6 +3,9 @@ package com.print.color.printcolor.utils
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // Helper function to get string resource from Context
 fun getStringResource(context: Context, @StringRes stringResId: Int): String {
@@ -25,4 +28,10 @@ fun formatPhoneNumber(number: String): String {
     val end = digits.substring(6, 10)
 
     return "$lada $middle $end"
+}
+
+// Helper function to convert millis to date
+fun convertMillisToDate(millis: Long): String {
+    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    return formatter.format(Date(millis))
 }
