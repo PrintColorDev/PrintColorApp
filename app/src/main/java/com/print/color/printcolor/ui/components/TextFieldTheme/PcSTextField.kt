@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenuItem
@@ -79,9 +78,9 @@ fun PcsTextField(
         if (value.isNotEmpty()) {
             IconButton(onClick = { onValueChange("") }) {
                 Icon(
-                    imageVector = Icons.Filled.Close,
+                    painter = painterResource(id = R.drawable.ic_pcs_cancel),
                     contentDescription = "Clear",
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(24.dp)
                 )
             }
         }
@@ -92,7 +91,7 @@ fun PcsTextField(
             Icon(
                 painter = data.leadingIcon,
                 contentDescription = "Leading Icon",
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
     } else {
@@ -127,9 +126,12 @@ fun PcsTextField(
                         value = value,
                         onValueChange = { onValueChange(maxLength(it, maxLength)) },
                         modifier = modifier,
-                        placeholder = {
+                        label = {
                             Text(text = data.placeHolder)
                         },
+                        /*placeholder = {
+                            Text(text = data.placeHolder)
+                        },*/
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = data.keyboardType,

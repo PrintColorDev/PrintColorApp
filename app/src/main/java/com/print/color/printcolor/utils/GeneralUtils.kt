@@ -31,7 +31,8 @@ fun formatPhoneNumber(number: String): String {
 }
 
 // Helper function to convert millis to date
-fun convertMillisToDate(millis: Long): String {
+fun convertMillisToDate(millis: Long?): String {
+    if (millis == null || millis == 0L) return ""
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return formatter.format(Date(millis))
 }

@@ -168,7 +168,7 @@ fun PcsButtonPreview() {
             PcsButton(onClick = {}, data = buttonFilledData, modifier = Modifier)
 
             val buttonTonalData = ButtonThemeDefaultVariants.buttonDefaultData(
-                label = "Label",
+                label = "Tonal",
                 type = TONAL,
                 contentDescription = "Content Description"
             )

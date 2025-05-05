@@ -4,13 +4,14 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -23,7 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import com.print.color.printcolor.utils.convertMillisToDate
@@ -44,6 +47,15 @@ fun PcSDatePicker(
     modifier: Modifier = Modifier,
     selectedDate: MutableState<Long?>
 ) {
+
+    val leadingIcon: @Composable (() -> Unit) = {
+        Icon(
+            painter = painterResource(R.drawable.ic_pcs_calendar),
+            contentDescription = "Leading Icon",
+            modifier = Modifier.size(24.dp)
+        )
+    }
+
     var showModal by remember { mutableStateOf(false) }
 
     PrintColorTheme {
@@ -52,9 +64,7 @@ fun PcSDatePicker(
             onValueChange = { },
             label = { Text(text = stringResource(R.string.date_picker_hint_text)) },
             placeholder = { Text(text = stringResource(R.string.date_picker_place_holder_text)) },
-            trailingIcon = {
-                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.date_picker_hint_text))
-            },
+            leadingIcon = leadingIcon,
             modifier = modifier
                 .fillMaxWidth()
                 .pointerInput(Unit) { //Use Unit as a key to prevent recomposition
@@ -68,7 +78,15 @@ fun PcSDatePicker(
                             showModal = true
                         }
                     }
-                }
+                },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.error,
+                focusedTextColor = MaterialTheme.colorScheme.scrim,
+                focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.scrim,
+            )
         )
 
         if (showModal) {

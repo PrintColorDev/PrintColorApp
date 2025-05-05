@@ -149,5 +149,15 @@
     <string name="date_picker_hint_text">Selecciona una fecha</string>
     <string name="date_picker_place_holder_text">MM/DD/YYYY</string>
 
+    // SignUp Strings
+    <string name="sign_up_screen_title_text">Unete a nosotros!</string>
+    <string name="sign_up_screen_text_field_first_name">Nombre(s)</string>
+    <string name="sign_up_screen_text_field_last_name">Apellido(s)</string>
+    <string name="sign_up_screen_text_field_phone_number">Número</string>
+    <string name="sign_up_screen_text_field_pin_confirmation">Confirmación de PIN</string>
+    <string name="sign_up_screen_text_pin_validation">El PIN no coincide!</string>
+    <string name="sign_up_screen_text_sig_up_btn">Registrarme</string>
+    <string name="sign_up_screen_alert_dialog_title_text">Usuario registrado con éxito!</string>
+
 
 </resources>

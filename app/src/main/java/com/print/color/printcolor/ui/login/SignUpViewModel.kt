@@ -3,6 +3,7 @@ package com.print.color.printcolor.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
+import com.print.color.printcolor.utils.convertMillisToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,8 +36,8 @@ class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseD
         _uiState.update { it.copy(phoneNumber = phoneNumber.toString()) }
     }
 
-    fun onUserDateChanged(userDate: String) {
-        _uiState.update { it.copy(userDate = userDate.toString()) }
+    fun onUserDateChanged(userDate: Long?) {
+        _uiState.update { it.copy(userDate = userDate) }
     }
 
     fun onPINChanged(pin: String) {
@@ -59,9 +60,9 @@ class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseD
                     firstName = _uiState.value.firstName,
                     lastName = _uiState.value.lastName,
                     phoneNumber = _uiState.value.phoneNumber,
-                    userDate = _uiState.value.userDate,
+                    userDate = _uiState.value.userDate.toString(),
                     pin = _uiState.value.pin,
-                    userName = _uiState.value.firstName
+                    userName = _uiState.value.createUserName()
                 )
             }
             if (result) {
@@ -82,7 +83,7 @@ class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseD
                 firstName = "",
                 lastName = "",
                 phoneNumber = "",
-                userDate = "",
+                userDate = 0,
                 pin = "",
                 pinConfirmation = ""
             )
@@ -93,9 +94,10 @@ class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseD
         val firstName: String = "",
         val lastName: String = "",
         val phoneNumber: String = "",
-        val userDate: String = "",
+        val userDate: Long? = 0,
         val pin: String = "",
         val pinConfirmation: String = "",
+        var userName: String = "",
         val isUserSaved: Boolean = false,
         val error: String? = null
     ) {
@@ -104,7 +106,17 @@ class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseD
 
         fun isValidFields(): Boolean =
             firstName.isNotBlank() && lastName.isNotBlank() && phoneNumber.length >= CONTACT_MAX_LENGTH
-                    && userDate.isNotBlank() && isValidPIN()
-    }
+                    && userDate.toString().isNotBlank() && isValidPIN()
 
+        fun createUserName(): String {
+            if (firstName.isBlank() || userDate == null || userDate == 0L) return ""
+
+            val date = convertMillisToDate(userDate)
+            val cleanedDate = date.replace(Regex("[^\\d]"), "")
+            val name = firstName.trim().split(" ").firstOrNull() ?: "User"
+            val userName = "$name.PC.$cleanedDate"
+            this.userName = userName
+            return userName
+        }
+    }
 }

@@ -85,7 +85,11 @@ fun NavigationGraph(
         composable(Routes.Quotations.route) {
             QuotationListScreen(quotationListViewModel = quotationListViewModel)
         }
-        composable(Routes.SignUp.route) { SignUpScreen(signUpViewModel = signUpViewModel) }
+        composable(Routes.SignUp.route) {
+            SignUpScreen(
+                signUpViewModel = signUpViewModel,
+                onBackClick = { navController.popBackStack() })
+        }
         composable(Routes.Login.route) {
             LoginScreen(
                 loginScreenViewModel = loginScreenViewModel,
@@ -120,7 +124,7 @@ fun PcSNavigationRail(
     val currentDestination = navBackStackEntry?.destination?.route
 
     val showNavigationRail =
-        shouldShowNavigationRail() && currentDestination != Routes.Login.route&& currentDestination != Routes.SignUp.route
+        shouldShowNavigationRail() && currentDestination != Routes.Login.route && currentDestination != Routes.SignUp.route
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
 
     val homeOption = stringResource(R.string.navigation_rail_home)

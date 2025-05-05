@@ -148,4 +148,15 @@
     <string name="date_picker_hint_text">Select Date</string>
     <string name="date_picker_place_holder_text">MM/DD/YYYY</string>
 
+    // SignUp Strings
+    <string name="sign_up_screen_title_text">Join Us!</string>
+    <string name="sign_up_screen_text_field_first_name">First Name</string>
+    <string name="sign_up_screen_text_field_last_name">Last Name</string>
+    <string name="sign_up_screen_text_field_phone_number">Phone Number</string>
+    <string name="sign_up_screen_text_field_pin_confirmation">PIN Confirmation</string>
+    <string name="sign_up_screen_text_pin_validation">PIN are not the same!</string>
+    <string name="sign_up_screen_text_sig_up_btn">Register me</string>
+    <string name="sign_up_screen_alert_dialog_title_text">User created successfully!</string>
+
+
 </resources>

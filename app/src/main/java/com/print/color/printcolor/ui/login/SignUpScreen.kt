@@ -6,18 +6,24 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,18 +56,20 @@ const val MAX_PIN_LENGTH = 6
 const val MAX_PHONE_LENGTH = 10
 
 @Composable
-fun SignUpScreen(signUpViewModel: SignUpViewModel) {
-    Box {
+fun SignUpScreen(signUpViewModel: SignUpViewModel, onBackClick: () -> Unit) {
+    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.surfaceVariant)) {
         //ExtraSmoothWavyDiagonalBackground()
-        Column(modifier = Modifier.padding(all = 16.dp)) {
-            TopAppBarContent()
+        Column(
+            modifier = Modifier.padding(all = 16.dp)
+        ) {
+            TopAppBarContent(onBackClick = onBackClick)
             TextFieldsContent(signUpViewModel = signUpViewModel)
         }
     }
 }
 
 @Composable
-private fun ColumnScope.TopAppBarContent() {
+private fun ColumnScope.TopAppBarContent(onBackClick: () -> Unit) {
     Row(
         modifier = Modifier
             .align(Alignment.Start)
@@ -71,7 +79,7 @@ private fun ColumnScope.TopAppBarContent() {
     ) {
         Image(
             colorFilter = ColorFilter.tint(LocalContentColor.current),
-            modifier = Modifier,
+            modifier = Modifier.clickable { onBackClick() },
             painter = painterResource(R.drawable.ic_pcs_arrow_back),
             contentDescription = "back button"
         )
@@ -81,7 +89,7 @@ private fun ColumnScope.TopAppBarContent() {
             contentDescription = "Logo"
         )
         Text(
-            text = stringResource(R.string.login_screen_create_account_title_text),
+            text = stringResource(R.string.sign_up_screen_title_text),
             style = MaterialTheme.typography.titleLarge,
         )
     }
@@ -96,21 +104,26 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
     val firstNameValue = uiState.firstName
     val lastNameValue = uiState.lastName
     val phoneNumberValue = uiState.phoneNumber
-    val userDateValue = uiState.userDate
     val pinValue = uiState.pin
     val pinConfirmationValue = uiState.pinConfirmation
+    val userNameValue = uiState.userName
 
     var showDialog by remember { mutableStateOf(false) }
 
+    var selectedDate: MutableState<Long?> = rememberSelectedDate()
+
     PrintColorTheme {
         Column(
-            modifier = Modifier.padding(horizontal = 60.dp, vertical = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 60.dp, vertical = 24.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             PcsTextField(
                 data = TextFieldDefaultVariants.textFieldOutlined(
                     label = "",
-                    placeHolder = "First Name",
+                    placeHolder = stringResource(R.string.sign_up_screen_text_field_first_name),
                     keyboardType = KeyboardType.Text,
                     leadingIcon = painterResource(R.drawable.ic_pcs_client)
                 ),
@@ -124,9 +137,9 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
             PcsTextField(
                 data = TextFieldDefaultVariants.textFieldOutlined(
                     label = "",
-                    placeHolder = "Last Name",
+                    placeHolder = stringResource(R.string.sign_up_screen_text_field_last_name),
                     keyboardType = KeyboardType.Text,
-                    leadingIcon = painterResource(R.drawable.ic_pcs_client)
+                    leadingIcon = null
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = {
@@ -140,7 +153,7 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                 maxLength = MAX_PHONE_LENGTH,
                 data = TextFieldDefaultVariants.textFieldOutlined(
                     label = "",
-                    placeHolder = "Phone number",
+                    placeHolder = stringResource(R.string.sign_up_screen_text_field_phone_number),
                     keyboardType = KeyboardType.Number,
                     leadingIcon = painterResource(R.drawable.ic_pcs_phone),
                     isTextCountRequired = true
@@ -153,15 +166,18 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                 imeAction = ImeAction.Next
             )
 
-            var selectedDate: MutableState<Long?> = rememberSelectedDate()
             PcSDatePicker(selectedDate = selectedDate)
-            signUpViewModel.onUserDateChanged(selectedDate.value.toString())
+            LaunchedEffect(selectedDate.value) {
+                selectedDate.value?.let {
+                    signUpViewModel.onUserDateChanged(it)
+                }
+            }
 
             PcsTextField(
                 maxLength = MAX_PIN_LENGTH,
                 data = TextFieldDefaultVariants.textFieldOutlined(
                     label = "",
-                    placeHolder = "PIN",
+                    placeHolder = stringResource(R.string.login_screen_pin_text_field),
                     keyboardType = KeyboardType.Text,
                     leadingIcon = painterResource(R.drawable.ic_pcs_pin),
                     isTextCountRequired = true
@@ -178,7 +194,7 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                 maxLength = MAX_PIN_LENGTH,
                 data = TextFieldDefaultVariants.textFieldOutlined(
                     label = "",
-                    placeHolder = "PIN confirmation",
+                    placeHolder = stringResource(R.string.sign_up_screen_text_field_pin_confirmation),
                     keyboardType = KeyboardType.Text,
                     leadingIcon = painterResource(R.drawable.ic_pcs_pin),
                     isTextCountRequired = true
@@ -195,7 +211,7 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                 enter = fadeIn() + slideInHorizontally(),
                 exit = fadeOut() + slideOutHorizontally()
             ) {
-                Text(text = "PIN are not the same!")
+                Text(text = stringResource(R.string.sign_up_screen_text_pin_validation))
             }
             PcsButton(
                 isVisible = uiState.isUserSaved,
@@ -205,31 +221,33 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                         showDialog = true
                     }
                 },
-                data = ButtonThemeDefaultVariants.buttonDefaultData(
-                    label = "Register me!",
-                    type = ButtonType.OUTLINED,
+                data = ButtonThemeDefaultVariants.buttonDataWithIcon(
+                    label = stringResource(R.string.sign_up_screen_text_sig_up_btn),
+                    type = ButtonType.FILLED,
                     contentDescription = "Content Description",
-                    isEnabled = isButtonEnabled
+                    isEnabled = isButtonEnabled,
+                    icon = painterResource(R.drawable.ic_pcs_person_add)
                 ),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-        }
-        if (showDialog) {
-            PcSAlertDialog(
-                data = AlertDialogDefaultVariants.alertDialogAnimation(
-                    title = "User created successfully!",
-                    message = "",
-                    confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
-                    dismissButtonText = "",
-                    onConfirm = { showDialog = false },
-                    dismissOnClickOutside = false,
-                    type = AlertDialogType.ANIMATION,
-                    onDismiss = {},
-                    lottieAnimation = R.raw.pcs_success_anim,
-                ),
-                autoPlayAnimation = true,
-                animationRepeatCount = 1
-            )
+
+            if (showDialog) {
+                PcSAlertDialog(
+                    data = AlertDialogDefaultVariants.alertDialogAnimation(
+                        title = "${stringResource(R.string.sign_up_screen_alert_dialog_title_text)}\n Tu usuario es: $userNameValue",
+                        message = "",
+                        confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
+                        dismissButtonText = "",
+                        onConfirm = { showDialog = false },
+                        dismissOnClickOutside = false,
+                        type = AlertDialogType.ANIMATION,
+                        onDismiss = {},
+                        lottieAnimation = R.raw.pcs_success_anim,
+                    ),
+                    autoPlayAnimation = true,
+                    animationRepeatCount = 1
+                )
+            }
         }
     }
 }
