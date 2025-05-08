@@ -1,6 +1,6 @@
 package com.print.color.printcolor.utils
 
-/** region const's */
+/** region steps const's */
 const val CONST_QUOTATION_STEP1_ID = "step1"
 const val CONST_QUOTATION_STEP2_ID = "step2"
 const val CONST_QUOTATION_STEP3_ID = "step3"
@@ -20,4 +20,6 @@ const val CONST_QUOTATION_STEP_VALUE = "stepValue"
 const val CONST_QUOTATION_STEP_QUOTATION_ICON = "quotationIcon"
 const val CONST_QUOTATION_STEP_QUOTATION_ID = "id"
 const val CONST_QUOTATION_STEP_QUOTATION_STEPS_MAPS = "steps"
-/** endregion const's */
+/** endregion steps const's */
+
+const val PRINT_COLOR_EMAIL = "@printColor.com"

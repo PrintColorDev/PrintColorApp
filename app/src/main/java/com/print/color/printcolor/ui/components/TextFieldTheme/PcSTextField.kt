@@ -129,9 +129,6 @@ fun PcsTextField(
                         label = {
                             Text(text = data.placeHolder)
                         },
-                        /*placeholder = {
-                            Text(text = data.placeHolder)
-                        },*/
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = data.keyboardType,

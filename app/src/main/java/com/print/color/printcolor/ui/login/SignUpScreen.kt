@@ -51,6 +51,7 @@ import com.print.color.printcolor.ui.components.DatePickerTheme.rememberSelected
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 import com.print.color.printcolor.ui.theme.PrintColorTheme
+import com.print.color.printcolor.utils.PRINT_COLOR_EMAIL
 
 const val MAX_PIN_LENGTH = 6
 const val MAX_PHONE_LENGTH = 10
@@ -218,6 +219,10 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                 onClick = {
                     signUpViewModel.onSignUp {
                         signUpViewModel.clearFields()
+                        signUpViewModel.signUpAuthService(
+                            user = "${uiState.userName}$PRINT_COLOR_EMAIL",
+                            password = uiState.pin
+                        )
                         showDialog = true
                     }
                 },
@@ -234,8 +239,11 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
             if (showDialog) {
                 PcSAlertDialog(
                     data = AlertDialogDefaultVariants.alertDialogAnimation(
-                        title = "${stringResource(R.string.sign_up_screen_alert_dialog_title_text)}\n Tu usuario es: $userNameValue",
-                        message = "",
+                        title = stringResource(R.string.sign_up_screen_alert_dialog_title_text),
+                        message = stringResource(
+                            R.string.sign_up_screen_alert_dialog_message_text,
+                            userNameValue
+                        ),
                         confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
                         dismissButtonText = "",
                         onConfirm = { showDialog = false },

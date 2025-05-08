@@ -157,6 +157,7 @@
     <string name="sign_up_screen_text_pin_validation">PIN are not the same!</string>
     <string name="sign_up_screen_text_sig_up_btn">Register me</string>
     <string name="sign_up_screen_alert_dialog_title_text">User created successfully!</string>
+    <string name="sign_up_screen_alert_dialog_message_text">Your user name is: %1$s</string>
 
 
 </resources>

@@ -158,6 +158,7 @@
     <string name="sign_up_screen_text_pin_validation">El PIN no coincide!</string>
     <string name="sign_up_screen_text_sig_up_btn">Registrarme</string>
     <string name="sign_up_screen_alert_dialog_title_text">Usuario registrado con éxito!</string>
+    <string name="sign_up_screen_alert_dialog_message_text">Your user name is: %1$s</string>
 
 
 </resources>

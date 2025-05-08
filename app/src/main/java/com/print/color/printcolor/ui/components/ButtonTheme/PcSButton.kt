@@ -72,7 +72,7 @@ fun PcsButton(
             if (isVisible) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(16.dp),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = LocalContentColor.current,
                     strokeWidth = 2.dp
                 )
             }

@@ -1,6 +1,7 @@
 package com.print.color.printcolor.data.di
 
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import dagger.Module
@@ -20,4 +21,8 @@ object DataModule {
     @Singleton
     @Provides
     fun provideStorage() = Firebase.storage
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
 }

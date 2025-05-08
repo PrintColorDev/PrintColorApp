@@ -1,6 +1,8 @@
 package com.print.color.printcolor.data.network
 
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.print.color.printcolor.data.response.QuotationResponse
 import com.print.color.printcolor.data.response.QuotationStepsResponse
@@ -21,9 +23,12 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 
-class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore: FirebaseFirestore) {
+class FirebaseDataBaseService @Inject constructor(
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseFireStore: FirebaseFirestore) {
 
     /** region Firebase path's*/
     companion object {
@@ -239,9 +244,19 @@ class FirebaseDataBaseService @Inject constructor(private val firebaseFireStore:
                 .addOnSuccessListener {
                     continuation.resume(true)
                 }.addOnFailureListener {
-                    //Log.e("Firestore", "Error al crear la cotización", it)
                     continuation.resume(false)
                 }
+        }
+    }
+
+    /** Fun to create new user, AuthService */
+    suspend fun signUp(email: String, password: String): FirebaseUser? {
+        return suspendCancellableCoroutine { continuation ->
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
+                continuation.resume(it.user)
+            }.addOnFailureListener {
+                continuation.resumeWithException(it)
+            }
         }
     }
     /** endregion SignUp functions*/

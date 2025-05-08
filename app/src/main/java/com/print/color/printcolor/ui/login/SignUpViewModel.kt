@@ -1,5 +1,6 @@
 package com.print.color.printcolor.ui.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
@@ -20,6 +21,9 @@ const val PIN_MAX_LENGTH = 6
 @HiltViewModel
 class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseDataBaseService) :
     ViewModel() {
+
+    private var _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState: StateFlow<SignUpUiState> = _uiState
@@ -76,6 +80,27 @@ class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseD
             isUserSaved(show = false)
         }
     }
+
+    /** add signup user */
+    fun signUpAuthService(user: String, password: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    firebaseDataBaseService.signUp(user, password)
+                }
+                if (result != null) {
+                    Log.e("SignUpViewModel", "Success signup")
+                } else {
+                    Log.e("SignUpViewModel", "Error")
+                }
+            } catch (e: Exception) {
+                Log.e("SignUpViewModel", "Error: ${e.message.orEmpty()}")
+            }
+            _isLoading.value = false
+        }
+    }
+
 
     fun clearFields() {
         _uiState.update {
