@@ -1,5 +1,7 @@
 package com.print.color.printcolor.ui.login
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -16,12 +18,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,16 +34,20 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
 import com.print.color.printcolor.R
 import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
+import com.print.color.printcolor.ui.components.NavigationRail.model.Routes
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 import com.print.color.printcolor.ui.theme.LightBlue
@@ -57,32 +65,51 @@ const val MAX_PASSWORD_LENGTH = 6
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginScreenViewModel: LoginScreenViewModel,
-    onLogin: () -> Unit,
-    onSignUp: () -> Unit
+    onSignUp: () -> Unit,
+    navController: NavHostController
 ) {
-    Row(modifier = Modifier.fillMaxSize()) {
-        Box(
-            modifier
-                .weight(.40f)
-                .background(Color.Black)
-                .fillMaxSize()
-        ) {
-            CarouselLoginContent()
+    val isLoading by loginScreenViewModel.isLoading.collectAsState()
+
+    Box(modifier = Modifier.then(modifier).fillMaxSize()) {
+        Row(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .weight(.40f)
+                    .background(Color.Black)
+                    .fillMaxSize()
+            ) {
+                CarouselLoginContent()
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(.60f)
+                    .fillMaxSize()
+            ) {
+                FieldsLoginContent(
+                    modifier = Modifier,
+                    loginScreenViewModel = loginScreenViewModel,
+                    onSignUp = { onSignUp() },
+                    navController = navController
+                )
+            }
         }
-        Box(
-            modifier
-                .weight(.60f)
-                .fillMaxSize()
-        ) {
-            FieldsLoginContent(
-                modifier = Modifier,
-                loginScreenViewModel = loginScreenViewModel,
-                onLogin = { onLogin() },
-                onSignUp = { onSignUp() }
-            )
+
+        if (isLoading) {
+            Log.d("circularProgress", "circularProgress")
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f)) // optional dimmed background
+                    .zIndex(1f), // ensures it's above other content
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -116,15 +143,15 @@ private fun CarouselLoginContent() {
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
+                /*Image(
                     painter = painterResource(id = R.drawable.ic_pc_logo),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.size(300.dp)
-                )
+                )*/
                 Text(
                     modifier = Modifier.padding(all = 24.dp),
                     style = MaterialTheme.typography.titleLarge,
@@ -145,9 +172,10 @@ private fun CarouselLoginContent() {
 @Composable
 private fun FieldsLoginContent(
     loginScreenViewModel: LoginScreenViewModel,
-    onLogin: () -> Unit,
+    //onLogin: () -> Unit,
     onSignUp: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ) {
 
     val uiState by loginScreenViewModel.uiState.collectAsState()
@@ -156,16 +184,26 @@ private fun FieldsLoginContent(
     val userNameValue = uiState.userName
     val passwordValue = uiState.password
 
+
     PrintColorTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
+
+
+
             ExtraSmoothWavyDiagonalBackground()
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_pc_logo),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(150.dp)
+                )
                 Text(
                     modifier = Modifier.padding(bottom = 16.dp),
                     style = MaterialTheme.typography.titleLarge,
@@ -223,7 +261,14 @@ private fun FieldsLoginContent(
                             text = stringResource(R.string.login_screen_forgot_pin_text)
                         )
                         PcsButton(
-                            onClick = { onLogin() },
+                            onClick = {
+                                loginScreenViewModel.onLoginClicked(
+                                    userName = userNameValue,
+                                    password = passwordValue
+                                ) {
+                                    navController.navigate(Routes.Home.route)
+                                }
+                            },
                             data = ButtonThemeDefaultVariants.buttonDataWithIcon(
                                 label = stringResource(R.string.login_screen_login_button_text),
                                 type = ButtonType.OUTLINED,
@@ -244,6 +289,15 @@ private fun FieldsLoginContent(
                             ),
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
+                        val context = LocalContext.current
+
+                        LaunchedEffect(uiState.error) {
+                            uiState.error?.let {
+                                Log.d("Login", it)
+                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
                     }
                 }
             }

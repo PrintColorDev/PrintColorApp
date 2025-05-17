@@ -1,4 +1,4 @@
-package com.print.color.printcolor.ui.login
+package com.print.color.printcolor.ui.signUp
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -110,7 +110,7 @@ class SignUpViewModel @Inject constructor(val firebaseDataBaseService: FirebaseD
                 phoneNumber = "",
                 userDate = 0,
                 pin = "",
-                pinConfirmation = ""
+                pinConfirmation = "",
             )
         }
     }

@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 // Helper function to get string resource from Context
 fun getStringResource(context: Context, @StringRes stringResId: Int): String {
@@ -34,5 +35,6 @@ fun formatPhoneNumber(number: String): String {
 fun convertMillisToDate(millis: Long?): String {
     if (millis == null || millis == 0L) return ""
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    formatter.timeZone = TimeZone.getTimeZone("UTC")
     return formatter.format(Date(millis))
 }

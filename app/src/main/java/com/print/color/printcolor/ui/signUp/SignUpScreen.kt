@@ -1,4 +1,4 @@
-package com.print.color.printcolor.ui.login
+package com.print.color.printcolor.ui.signUp
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -246,7 +246,10 @@ private fun TextFieldsContent(signUpViewModel: SignUpViewModel) {
                         ),
                         confirmButtonText = stringResource(R.string.alert_dialog_confirm_button_text),
                         dismissButtonText = "",
-                        onConfirm = { showDialog = false },
+                        onConfirm = {
+
+                            showDialog = false
+                        },
                         dismissOnClickOutside = false,
                         type = AlertDialogType.ANIMATION,
                         onDismiss = {},

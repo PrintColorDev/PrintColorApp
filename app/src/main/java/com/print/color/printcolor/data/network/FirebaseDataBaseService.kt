@@ -260,6 +260,12 @@ class FirebaseDataBaseService @Inject constructor(
         }
     }
     /** endregion SignUp functions*/
+
+
+    /** Fun to login, AuthService */
+    suspend fun login(user: String, password: String): FirebaseUser? {
+        return firebaseAuth.signInWithEmailAndPassword(user, password).await().user
+    }
 }
 
 /** region filter chip functions. */

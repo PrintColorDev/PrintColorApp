@@ -50,14 +50,14 @@ import com.print.color.printcolor.ui.components.NavigationRail.model.Routes
 import com.print.color.printcolor.ui.home.HomeScreen
 import com.print.color.printcolor.ui.login.LoginScreen
 import com.print.color.printcolor.ui.login.LoginScreenViewModel
-import com.print.color.printcolor.ui.login.SignUpScreen
-import com.print.color.printcolor.ui.login.SignUpViewModel
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.productQuotation.QuotationScreen
 import com.print.color.printcolor.ui.profile.ProfileScreen
 import com.print.color.printcolor.ui.quotationList.QuotationListScreen
 import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.settings.SettingsScreen
+import com.print.color.printcolor.ui.signUp.SignUpScreen
+import com.print.color.printcolor.ui.signUp.SignUpViewModel
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 
 @Composable
@@ -93,12 +93,13 @@ fun NavigationGraph(
         composable(Routes.Login.route) {
             LoginScreen(
                 loginScreenViewModel = loginScreenViewModel,
-                onLogin = {
+                /*onLogin = {
                     navController.navigate(Routes.Home.route)
-                },
+                },*/
                 onSignUp = {
                     navController.navigate(Routes.SignUp.route)
-                })
+                },
+                navController = navController)
         }
     }
 }

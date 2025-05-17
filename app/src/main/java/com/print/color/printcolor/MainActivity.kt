@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import com.print.color.printcolor.ui.components.NavigationRail.PcSNavigationRail
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
 import com.print.color.printcolor.ui.login.LoginScreenViewModel
-import com.print.color.printcolor.ui.login.SignUpViewModel
+import com.print.color.printcolor.ui.signUp.SignUpViewModel
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
 import com.print.color.printcolor.ui.theme.PrintColorTheme
