@@ -1,5 +1,6 @@
 package com.print.color.printcolor.ui.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.print.color.printcolor.data.network.FirebaseDataBaseService
@@ -38,7 +39,8 @@ class LoginScreenViewModel @Inject constructor(private val firebaseDataBaseServi
 
             try {
                 val result = withContext(Dispatchers.IO) {
-                    firebaseDataBaseService.login(userEmail, password)
+                    Log.d("LoginScreenViewModel", "onLoginClicked: $userEmail, $password")
+                    firebaseDataBaseService.login("david.pc.0310025@printcolor.com", "11177")
                 }
 
                 if (result != null) {

@@ -1,6 +1,9 @@
 package com.print.color.printcolor.ui.theme
 
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+
 
 val Black = Color(0xFF000000)
 val Pink = Color(0xFFE91E63)
@@ -18,6 +21,15 @@ val DarkLightBlue = Color(0xFF0288D1)
 val LightLightBlue = Color(0xFFB3E5FC)
 val DarkYellow = Color(0xFFFFA000)
 val LightYellow = Color(0xFFFFF9C4)
+
+// Alert
+val SuccessBorder = Color(0xFF4CAF50)
+val Success = Color(0xAA4CAF50)
+val ErrorBorder = Color(0xFFF44336)
+val Error = Color(0xAAF44336)
+val Warning = Color(0xAAFFC107)
+val WarningBorder = Color(0xFFFFC107)
+
 /*val primaryLight = Color(0xFF8C4A60)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFFFD9E2)

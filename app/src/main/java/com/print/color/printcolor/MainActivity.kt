@@ -10,12 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.print.color.printcolor.ui.components.NavigationRail.PcSNavigationRail
 import com.print.color.printcolor.ui.components.NavigationRail.model.NavigationRailData
 import com.print.color.printcolor.ui.login.LoginScreenViewModel
-import com.print.color.printcolor.ui.signUp.SignUpViewModel
 import com.print.color.printcolor.ui.productQuotation.ProductQuotationViewModel
 import com.print.color.printcolor.ui.quotationList.QuotationListViewModel
+import com.print.color.printcolor.ui.signUp.SignUpViewModel
 import com.print.color.printcolor.ui.theme.PrintColorTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +42,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseApp.initializeApp(this)
+
+        val appCheck = FirebaseAppCheck.getInstance()
+        appCheck.installAppCheckProviderFactory(
+            PlayIntegrityAppCheckProviderFactory.getInstance()
+        )
 
         setContent {
             val navigationRailItems = rememberNavigationRailItems()

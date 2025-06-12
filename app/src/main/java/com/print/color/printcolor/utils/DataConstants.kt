@@ -22,4 +22,4 @@ const val CONST_QUOTATION_STEP_QUOTATION_ID = "id"
 const val CONST_QUOTATION_STEP_QUOTATION_STEPS_MAPS = "steps"
 /** endregion steps const's */
 
-const val PRINT_COLOR_EMAIL = "@printColor.com"
+const val PRINT_COLOR_EMAIL = "@printcolor.com"

@@ -73,6 +73,10 @@ dependencies {
     //Glide
     implementation (libs.compose.glide)
 
+    implementation ("com.google.android.play:integrity:1.4.0")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+
+
     //Windows Size
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
     //implementation(libs.androidx.material3.window.size.class)
