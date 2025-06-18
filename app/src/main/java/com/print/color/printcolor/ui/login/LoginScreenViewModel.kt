@@ -40,10 +40,11 @@ class LoginScreenViewModel @Inject constructor(private val firebaseDataBaseServi
             try {
                 val result = withContext(Dispatchers.IO) {
                     Log.d("LoginScreenViewModel", "onLoginClicked: $userEmail, $password")
-                    firebaseDataBaseService.login("david.pc.0310025@printcolor.com", "11177")
+                    firebaseDataBaseService.login("asdasd.pc.05122025@printcolor.com", "11177")
                 }
 
                 if (result != null) {
+                    _uiState.update { it.copy(isLoggedIn = true) }
                     navigateToHome()
                 } else {
                     _uiState.update { it.copy(error = "Invalid username or password") }
@@ -56,6 +57,11 @@ class LoginScreenViewModel @Inject constructor(private val firebaseDataBaseServi
 
         }
     }
+
+    fun clearError() {
+        _uiState.update { it.copy(error = null) }
+    }
+
 
     data class LoginUIState(
         val userName: String = "",

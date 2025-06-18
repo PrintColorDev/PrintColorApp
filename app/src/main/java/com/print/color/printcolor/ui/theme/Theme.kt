@@ -77,11 +77,11 @@ data class ColorFamily(
 data class AlertColors(
     val  success: Color,
     val successBorder: Color,
-    val onSuccess: Color, // For text/icons on success color
+    val onSuccess: Color,
     val warning: Color,
     val warningBorder: Color,
-    val onWarning: Color, // For text/icons on warning color
-    val error: Color,         // You can choose to use your custom error or M3's error
+    val onWarning: Color,
+    val error: Color,
     val errorBorder: Color,
     val onError: Color
 )

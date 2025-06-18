@@ -1,7 +1,6 @@
 package com.print.color.printcolor.ui.login
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -34,7 +33,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -48,6 +46,10 @@ import com.print.color.printcolor.ui.components.ButtonTheme.PcsButton
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonData.ButtonType
 import com.print.color.printcolor.ui.components.ButtonTheme.model.ButtonThemeDefaultVariants
 import com.print.color.printcolor.ui.components.NavigationRail.model.Routes
+import com.print.color.printcolor.ui.components.SnackBar.PcSSnackBar
+import com.print.color.printcolor.ui.components.SnackBar.SnackBarController
+import com.print.color.printcolor.ui.components.SnackBar.model.SnackBarDefaultVariants
+import com.print.color.printcolor.ui.components.SnackBar.rememberSnackBarController
 import com.print.color.printcolor.ui.components.TextFieldTheme.PcsTextField
 import com.print.color.printcolor.ui.components.TextFieldTheme.model.TextFieldDefaultVariants
 import com.print.color.printcolor.ui.theme.LightBlue
@@ -69,6 +71,7 @@ fun LoginScreen(
     navController: NavHostController
 ) {
     val isLoading by loginScreenViewModel.isLoading.collectAsState()
+    val snackBarController = rememberSnackBarController()
 
     Box(modifier = Modifier.then(modifier).fillMaxSize()) {
         Row(modifier = Modifier.fillMaxSize()) {
@@ -90,7 +93,22 @@ fun LoginScreen(
                     modifier = Modifier,
                     loginScreenViewModel = loginScreenViewModel,
                     onSignUp = { onSignUp() },
-                    navController = navController
+                    navController = navController,
+                    snackBarController = snackBarController
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 32.dp), // Optional space from edge
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            snackBarController.snackBarData.value?.let { data ->
+                PcSSnackBar(
+                    snackBarData = data,
+                    onDismiss = { snackBarController.dismiss() }
                 )
             }
         }
@@ -100,8 +118,8 @@ fun LoginScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.3f)) // optional dimmed background
-                    .zIndex(1f), // ensures it's above other content
+                    .background(Color.Black.copy(alpha = 0.3f))
+                    .zIndex(1f),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -172,9 +190,9 @@ private fun CarouselLoginContent() {
 @Composable
 private fun FieldsLoginContent(
     loginScreenViewModel: LoginScreenViewModel,
-    //onLogin: () -> Unit,
     onSignUp: () -> Unit,
     modifier: Modifier = Modifier,
+    snackBarController: SnackBarController,
     navController: NavHostController
 ) {
 
@@ -186,13 +204,21 @@ private fun FieldsLoginContent(
 
 
     PrintColorTheme {
+        LaunchedEffect(uiState.error) {
+            uiState.error?.let {
+                loginScreenViewModel.clearError()
+                Log.d("Login", it)
+                snackBarController.show(
+                    SnackBarDefaultVariants.snackBarError("error credentials")
+
+                )
+            }
+        }
         Box(
             modifier = Modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-
-
 
             ExtraSmoothWavyDiagonalBackground()
             Column(
@@ -289,15 +315,6 @@ private fun FieldsLoginContent(
                             ),
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
-                        val context = LocalContext.current
-
-                        LaunchedEffect(uiState.error) {
-                            uiState.error?.let {
-                                Log.d("Login", it)
-                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-
                     }
                 }
             }
